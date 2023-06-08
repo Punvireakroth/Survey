@@ -14,7 +14,7 @@ const {
 // GET get survey
 // Not Authurized
 
-router.get("/public", getAllSurvey);
+router.get("/public", getAllSurvey); // WORK✅
 
 // GET get survey
 // Authurized

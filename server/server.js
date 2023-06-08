@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 // Routes folder
 const questionRoutes = require("./routes/questions");
 const surveyRoutes = require("./routes/surveys");
+const userRoutes = require("./routes/users");
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 // Routes
 app.use("/api/questions", questionRoutes);
 app.use("/api/surveys", surveyRoutes);
+app.use("/user", userRoutes);
 
 mongoose.connection.on(
   "error",
