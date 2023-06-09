@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt");
 // @access private ------------------
 
 const getUser = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ _id: req.id });
+  const user = await User.find();
   if (!user) {
     res.status(400);
     throw new Error("User not found");
@@ -17,25 +17,31 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 // @desc login or register a user
-// @route GET /users/login
+// @route POST /user/login
 // @access private ------------------
 
-const loginOrCreateUser = asyncHandler(async (req, res) => {
-  const { name, email, _id } = req.body;
+const createUser = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
   const user = await User.findOne({ email: email }).exec();
+
+  // Hash password
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
   if (user) {
-    res.status(200).json(user);
+    res.status(200).json({ message: "User is already exist" });
   } else {
     const newUser = await User.create({
       name: name,
       email: email,
-      _id: _id,
+      password: hashedPassword,
     });
     if (newUser) {
       res.status(200).json({
-        _id: id,
+        _id: newUser._id,
         name: name,
         email: email,
+        token: generateToken(newUser._id),
       });
     } else {
       res.status(400);
@@ -44,8 +50,16 @@ const loginOrCreateUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc login user
+// @route POST /user/login
+// @access private
+
+const loginUser = asyncHandler(async (req, res) => {
+  
+});
+
 // @desc Update user survey
-// @route GET /users/login
+// @route GET /user/login
 // @access private ------------------
 
 const updateUserSurveys = asyncHandler(async (req, res) => {
@@ -83,7 +97,15 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.status(200).json({ id: req.params.id, existState });
 });
 
+// Generate json web token
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+};
 
-// Generate 
-
-module.exports = { getUser, loginOrCreateUser, updateUserSurveys, deleteUser };
+module.exports = {
+  getUser,
+  createUser,
+  loginUser,
+  updateUserSurveys,
+  deleteUser,
+};
