@@ -14,6 +14,7 @@ This app hash an admin page to manage the survey and generate public link for us
 - React.js
 - JavaScript
 - Tailwind CSS
+- Material UI
 
 ### Authentication
 
