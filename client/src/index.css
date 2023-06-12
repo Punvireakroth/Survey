@@ -76,6 +76,9 @@ h3 {
   margin-right: 5px;
 }
 
+.header .logo img {
+  width: 100px;
+}
 // ---------------- Heading --------------------
 
 .heading {
@@ -192,6 +195,14 @@ h3 {
   border-color: #000 transparent #555 transparent;
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
+}
+
+.loadingSpinner {
+  margin: 0 auto;
+}
+
+.registerSpinner {
+  margin: 0 auto;
 }
 
 @keyframes spin {

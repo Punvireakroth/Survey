@@ -9,6 +9,13 @@ const surveyRoutes = require("./routes/surveys");
 const userRoutes = require("./routes/users");
 
 const app = express();
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: "http://localhost:5000",
+  })
+);
 
 // Connect with database
 const DB = process.env.DB_URI || "mongodb://127.0.0.1:27017/isi-survey";
