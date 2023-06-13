@@ -5,7 +5,7 @@ import {
 } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout, reset } from "../features/auth/authSlice";
+import { logout, reset } from "../../features/auth/authSlice";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -22,14 +22,16 @@ export default function Header() {
     <div>
       <header className="header">
         <div className="logo">
-          <Link to="/">Survey Admin</Link>
+          <Link to="/">
+            <h3>Survey Admin</h3>
+          </Link>
         </div>
         <ul>
           {user ? (
             <>
               <li>
                 <button className="btn" onClick={onLogOut}>
-                  <BsBoxArrowInLeft /> Login
+                  <BsBoxArrowInLeft /> Logout
                 </button>
               </li>
             </>

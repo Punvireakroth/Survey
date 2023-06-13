@@ -3,7 +3,7 @@ import { ToastContainer } from "react-toastify";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Header from "./components/Header";
+import Header from "./components/boilerplate/Header";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
