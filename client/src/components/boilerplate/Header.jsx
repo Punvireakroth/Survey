@@ -5,7 +5,7 @@ import {
 } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutUser, reset } from "../../features/auth/authSlice";
+import { logout, reset } from "../../features/auth/authSlice";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -13,9 +13,11 @@ export default function Header() {
   const { user } = useSelector((state) => state.auth);
 
   const onLogOut = () => {
-    dispatch(logoutUser());
-    dispatch(reset());
-    navigate("/");
+    if (user) {
+      dispatch(logout());
+      dispatch(reset());
+      navigate("/");
+    }
   };
 
   return (
