@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  getAllSurvey,
+  getSurveysByUser,
   getSurvey,
   createAndUpdateSurvey,
   updateSurvey,
@@ -12,19 +12,14 @@ const {
 } = require("../controllers/surveyController");
 
 // GET get survey
-// Not Authurized
-
-router.get("/public", getAllSurvey); // WORK✅
-
-// GET get survey
 // Authurized
 
 router.get("/:id", getSurvey); // WORK✅
 
-/*-------------------------
 // GET get survey by user
-router.get("/surveys-by-user/:id", );
---------------------------*/
+router.get("/surveys-by-user/:id", getSurveysByUser);
+
+router.get("/public", getSurvey);
 
 // POST create survey or update
 

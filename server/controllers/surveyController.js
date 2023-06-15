@@ -16,9 +16,35 @@ const getSurvey = asyncHandler(async (req, res) => {
 // @route GET api/surveys/public
 // @access private and public ------------------
 
-const getAllSurvey = asyncHandler(async (req, res) => {
-  const surveys = await Survey.find({});
-  res.status(200).json(surveys);
+const getSurveysByUser = asyncHandler(async (req, res) => {
+  //grab survey ids from database
+  const user = await User.findById(req.params.id);
+  const surveyIds = [...user.surveys];
+
+  if (!user) {
+    res.status(400);
+    throw new Error("That user was not found.");
+  } else if (surveyIds.length === 0) {
+    res.status(401).json("No surveys were found");
+  }
+
+  //grab surveys from database
+  let surveyList = [];
+  for (let i = 0; i < surveyIds.length; i++) {
+    const survey = await Survey.findById(surveyIds[i]);
+    if (!survey) {
+      console.log("no survey found");
+    } else {
+      const necessaryData = {
+        title: survey.title,
+        responseTotal: survey.questions[0].responses.length,
+        _id: survey._id,
+      };
+      surveyList.push(necessaryData);
+    }
+  }
+  //send surveys over
+  res.status(200).json(surveyList);
 });
 
 // @desc Create a new survey
@@ -63,29 +89,33 @@ const updateSurvey = asyncHandler(async (req, res) => {
   res.status(200).json(updatedSurvey);
 });
 
-// @desc Saving responses to a survey
-// @route PUT api/surveys/update-responses/:id
-// @access private
-
+//update surveys with responses
+//@route put
 const saveResponsesToSurvey = asyncHandler(async (req, res) => {
-  const surveyId = req.params.id;
-  const { questions } = req.body;
-
-  const updatedSurvey = await Survey.findByIdAndUpdate(
-    surveyId,
-    {
-      $push: {
-        "questions.$[].responses": { $each: questions.map((q) => q.response) },
-      },
-    },
-    { new: true }
-  );
-
-  if (!updatedSurvey) {
+  const survey = await Survey.findById(req.params.id);
+  if (!survey) {
     res.status(400);
     throw new Error("That Survey was not found.");
   }
+  //getting questions and the _id from the body
+  const { questions, _id } = req.body;
+  //new questions comes from database
+  let newQuestions = [...survey.questions];
 
+  newQuestions.forEach((originalQuestion) => {
+    //find matching index
+    let index = questions.findIndex(
+      (submittedQuestion) => submittedQuestion._id === originalQuestion._id
+    );
+    //push responses onto responses array
+    originalQuestion.responses.push(questions[index].response);
+  });
+
+  const updatedSurvey = await Survey.findByIdAndUpdate(
+    survey._id,
+    { questions: newQuestions },
+    { new: true }
+  );
   res.status(200).json(updatedSurvey);
 });
 
@@ -105,7 +135,7 @@ const deleteSurvey = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  getAllSurvey,
+  getSurveysByUser,
   getSurvey,
   createAndUpdateSurvey,
   updateSurvey,
