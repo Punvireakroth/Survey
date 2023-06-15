@@ -84,8 +84,8 @@ const DisplaySurveyList = (props) => {
     }
   }, [surveyList]);
 
-  const onCreateSurveyClick = (props) => {
-    props.sendSurveyId(null);
+  const onCreateSurveyClick = () => {
+    // props.sendSurveyId(null);
     navigate("/create-survey");
   };
 

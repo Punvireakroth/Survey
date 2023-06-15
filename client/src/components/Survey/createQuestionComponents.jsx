@@ -76,11 +76,11 @@ export function TrueFalse(props) {
       <Form.Control
         id={props.question._id}
         answernum={index}
+        type="text"
         answer="yes"
         onChange={props.onChange}
-        name="answerChoice"
+        name="answer"
         value={answer}
-        type="text"
         placeholder={answer}
       />
       <br />

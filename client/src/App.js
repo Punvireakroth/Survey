@@ -20,7 +20,10 @@ import Register from "./pages/Register";
 import Header from "./components/boilerplate/Header";
 import "react-toastify/dist/ReactToastify.css";
 
+import { useSelector } from "react-redux";
+
 function App() {
+  const { user } = useSelector((state) => state.auth);
   const [currentSurveyId, setCurrentSurveyId] = useState(null);
   const [error, setError] = useState(false);
 
@@ -37,7 +40,12 @@ function App() {
             <Route path="/" element={<Dashboard />}>
               <Route
                 path="dashboard"
-                element={<DisplaySurveyList sendSurveyId={sendSurveyId} />}
+                element={
+                  <DisplaySurveyList
+                    id={user !== null && user.id}
+                    sendSurveyId={sendSurveyId}
+                  />
+                }
               />
             </Route>
             <Route path="/login" element={<Login />} />
@@ -46,6 +54,7 @@ function App() {
               path="/create-survey/*"
               element={
                 <CreateSurvey
+                  id={user !== null && user.id}
                   surveyId={currentSurveyId}
                   sendSurveyId={sendSurveyId}
                 />
