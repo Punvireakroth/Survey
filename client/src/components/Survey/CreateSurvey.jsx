@@ -100,20 +100,20 @@ const CreateSurvey = (props) => {
   };
 
   // Add more answer for multiple choice questions
-  // const addMoreAnswerChoices = (e, id) => {
-  //   let questionArray = [...questions];
-  //   let questionIndex = questionArray.findIndex(
-  //     (question) => id === question._id
-  //   );
+  const addMoreAnswerChoices = (e, id) => {
+    let questionArray = [...questions];
+    let questionIndex = questionArray.findIndex(
+      (question) => id === question._id
+    );
 
-  //   let answerChoices = questionArray[questionIndex].answer_choices;
-  //   answerChoices.push("");
-  //   questionArray[questionIndex] = {
-  //     ...questionArray[questionIndex],
-  //     answer_choices: answerChoices,
-  //   };
-  //   setQuestions(questionArray);
-  // };
+    let answerChoices = questionArray[questionIndex].answer_choices;
+    answerChoices.push("");
+    questionArray[questionIndex] = {
+      ...questionArray[questionIndex],
+      answer_choices: answerChoices,
+    };
+    setQuestions(questionArray);
+  };
 
   // Remove answer choice from multiple choice question
   // const removeAnswerChoice = (e, id, ansIndex) => {
@@ -220,18 +220,19 @@ const CreateSurvey = (props) => {
         //       addMoreAnswerChoices={addMoreAnswerChoices}
         //     />
         //   );
-        case 1:
+        case "true/false":
           return (
             <TrueFalse
               key={question._id}
-              question={question.question}
-              answerChoices={question.answer_choices}
+              question={question}
+              answerChoices={addMoreAnswerChoices}
               handleChange={handleQuestionChange}
               id={question._id}
               removeQuestion={removeQuestion}
+              index={index}
             />
           );
-        case 2:
+        case "short response":
           return (
             <ShortResponse
               key={question._id}
@@ -239,9 +240,10 @@ const CreateSurvey = (props) => {
               handleChange={handleQuestionChange}
               id={question._id}
               removeQuestion={removeQuestion}
+              index={index}
             />
           );
-        case 3:
+        case "paragraph":
           return (
             <Paragraph
               key={question._id}
@@ -249,6 +251,7 @@ const CreateSurvey = (props) => {
               handleChange={handleQuestionChange}
               id={question._id}
               removeQuestion={removeQuestion}
+              index={index}
             />
           );
         default:
@@ -265,9 +268,8 @@ const CreateSurvey = (props) => {
         >
           <option></option>
           <option value="1">Short Response</option>
-          <option value="2">Multiple Choice</option>
-          <option value="3">True/False</option>
-          <option value="4">Paragraph Response</option>
+          <option value="2">True/False</option>
+          <option value="3">Paragraph</option>
         </Form.Select>
       </>
     );
@@ -286,19 +288,20 @@ const CreateSurvey = (props) => {
         questions.length >= 1 ? (
           <div>
             <Button
-              style={{ margin: 10 }}
+              className="m-2"
               variant="success"
               onClick={() => setShowAddQuestionButton(false)}
             >
               Add Question
             </Button>
 
-            <Button variant="info" onClick={onSubmitSurvey}>
+            <Button className="m-2" variant="info" onClick={onSubmitSurvey}>
               Save and Finish Survey
             </Button>
           </div>
         ) : (
           <Button
+            className="m-2"
             variant="info"
             onClick={() => setShowAddQuestionButton(false)}
           >
