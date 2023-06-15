@@ -17,7 +17,7 @@ function Dashboard() {
   }, [user, navigate]);
 
   // State
-  const [view, setView] = useState("createSurvey");
+  const [view, setView] = useState("displaySurveyList");
   const [currentSurveyId, setCurrentSurveyId] = useState("");
 
   const switchView = (newView) => {

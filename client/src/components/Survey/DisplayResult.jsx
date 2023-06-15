@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { ShortResponseResult } from "./displayResultComponents";
 import { Container } from "react-bootstrap";
 
-function DisplayResult() {
+export default function DisplayResult() {
   const { id } = useParams();
   const [survey, setSurvey] = useState(null);
   const [result, setResult] = useState(null);
