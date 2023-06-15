@@ -1,15 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
-import { Button, Container, Row, Col, Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import uniqid from "uniqid";
 import {
-  MultipleChoice,
+  // MultipleChoice,
   Paragraph,
   ShortResponse,
   TrueFalse,
   SurveyTitle,
 } from "./createQuestionComponents";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const CreateSurvey = (props) => {
   const [survey, setSurvey] = useState({
@@ -22,7 +22,6 @@ const CreateSurvey = (props) => {
   const [showAddQuestionButton, setShowAddQuestionButton] = useState(true);
   const [questions, setQuestions] = useState([]);
   const [editingPreviousSurvey, setEditingPreviousSurvey] = useState(false);
-  const navigate = useNavigate();
   const { id } = useParams();
 
   // Get Survey
@@ -31,15 +30,13 @@ const CreateSurvey = (props) => {
       const response = await fetch(url, fetchOptions);
       const responseData = await response.json();
 
-      let questions = [];
-      responseData.questions.forEach((question) => {
-        let newQuestion = {
+      let questions = responseData.questions.map((question) => {
+        return {
           _id: question._id,
           type: question.type,
           question: question.question,
-          answer_choice: question.answer_choices,
+          answer_choices: question.answer_choices,
         };
-        questions.push(newQuestion);
       });
 
       let updatedSurvey = {
@@ -55,7 +52,7 @@ const CreateSurvey = (props) => {
     } catch (e) {
       console.log(e.error);
     }
-  });
+  }, []);
 
   const startSurvey = () => {
     if (id) {
@@ -102,51 +99,92 @@ const CreateSurvey = (props) => {
     }
   };
 
-  // Add more answer for multiplechoice questions
-  const addMoreAnswerChoices = (e, id) => {
-    let questionArray = [...questions];
-    let questionIndex = questionArray.findIndex(
-      (question) => id === question._id
-    );
+  // Add more answer for multiple choice questions
+  // const addMoreAnswerChoices = (e, id) => {
+  //   let questionArray = [...questions];
+  //   let questionIndex = questionArray.findIndex(
+  //     (question) => id === question._id
+  //   );
 
-    let answerChoices = questionArray[questionIndex].answer_choices;
-    answerChoices.push("");
-    questionArray[questionIndex] = {
-      ...questionArray[questionIndex],
-      answer_choices: answerChoices,
-    };
-    setQuestions(questionArray);
-  };
+  //   let answerChoices = questionArray[questionIndex].answer_choices;
+  //   answerChoices.push("");
+  //   questionArray[questionIndex] = {
+  //     ...questionArray[questionIndex],
+  //     answer_choices: answerChoices,
+  //   };
+  //   setQuestions(questionArray);
+  // };
 
-  // Add question to the survey
+  // Remove answer choice from multiple choice question
+  // const removeAnswerChoice = (e, id, ansIndex) => {
+  //   let questionArray = [...questions];
+  //   let questionIndex = questionArray.findIndex(
+  //     (question) => id === question._id
+  //   );
+
+  //   let answerChoices = questionArray[questionIndex].answer_choices;
+  //   answerChoices.splice(ansIndex, 1);
+  //   questionArray[questionIndex] = {
+  //     ...questionArray[questionIndex],
+  //     answer_choices: answerChoices,
+  //   };
+  //   setQuestions(questionArray);
+  // };
+
+  // const onQuestionTypeChange = (e) => {
+  //   setQuestionType(Number(e.target.value));
+  //   setShowAddQuestionButton(false);
+  // };
+
+  // Add question to survey
+
   const addQuestion = (e) => {
     setShowAddQuestionButton(true);
-    let newQuestion = {
-      _id: uniqid("question-"),
-      type: questionType,
-      question: "",
-      answer_choices: [],
-    };
-    setQuestions([...questions, newQuestion]);
+
+    if (e.target.value === "1") {
+      let questionArray = [...questions];
+      questionArray.push({
+        type: "short response",
+        question: "",
+        answer_choices: [],
+        responses: [],
+      });
+      setQuestions(questionArray);
+    } else if (e.target.value === "2") {
+      let questionArray = [...questions];
+      questionArray.push({
+        type: "true/false",
+        question: "",
+        answer_choices: ["True", "False"],
+        _id: uniqid("question-"),
+        responses: [],
+      });
+      setQuestions(questionArray);
+    } else if (e.target.value === "3") {
+      let questionArray = [...questions];
+      questionArray.push({
+        type: "paragraph",
+        question: "",
+        answer_choices: [],
+        _id: uniqid("question-"),
+        responses: [],
+      });
+      setQuestions(questionArray);
+    }
   };
 
-  // Delete question
-  const deleteQuestion = (e, id) => {
+  // Remove question from survey
+  const removeQuestion = (e, id) => {
     let questionArray = [...questions];
     let questionIndex = questionArray.findIndex(
       (question) => id === question._id
     );
+
     questionArray.splice(questionIndex, 1);
     setQuestions(questionArray);
   };
 
-  // change question type
-  const handleQuestionTypeChange = (e) => {
-    setQuestionType(parseInt(e.target.value));
-    setShowAddQuestionButton(false);
-  };
-
-  // When click on submit to create a new suevey
+  // Submit survey
   const onSubmitSurvey = (e) => {
     e.preventDefault();
 
@@ -167,72 +205,110 @@ const CreateSurvey = (props) => {
   };
 
   const makeSurvey = () => {
-    let surveyComponents = [];
-    for (let i = 0; i < questions.length; i++) {
-      let question = questions[i];
-      if (question.type === 1) {
-        surveyComponents.push(
-          <MultipleChoice
-            key={question._id}
-            question={question.question}
-            answerChoices={question.answer_choices}
-            handleChange={handleQuestionChange}
-            id={question._id}
-            deleteQuestion={deleteQuestion}
-            addMoreAnswerChoices={addMoreAnswerChoices}
-          />
-        );
-      } else if (question.type === 2) {
-        surveyComponents.push(
-          <TrueFalse
-            key={question._id}
-            question={question.question}
-            answerChoices={question.answer_choices}
-            handleChange={handleQuestionChange}
-            id={question._id}
-            deleteQuestion={deleteQuestion}
-          />
-        );
-      } else if (question.type === 3) {
-        surveyComponents.push(
-          <ShortResponse
-            key={question._id}
-            question={question.question}
-            handleChange={handleQuestionChange}
-            id={question._id}
-            deleteQuestion={deleteQuestion}
-          />
-        );
-      } else if (question.type === 4) {
-        surveyComponents.push(
-          <Paragraph
-            key={question._id}
-            question={question.question}
-            handleChange={handleQuestionChange}
-            id={question._id}
-            deleteQuestion={deleteQuestion}
-          />
-        );
+    const form = questions.map((question, index) => {
+      console.log(question.type);
+      switch (question.type) {
+        // case 1:
+        //   return (
+        //     <MultipleChoice
+        //       key={question._id}
+        //       question={question.question}
+        //       answerChoices={question.answer_choices}
+        //       handleChange={handleQuestionChange}
+        //       id={question._id}
+        //       removeQuestion={removeQuestion}
+        //       addMoreAnswerChoices={addMoreAnswerChoices}
+        //     />
+        //   );
+        case 1:
+          return (
+            <TrueFalse
+              key={question._id}
+              question={question.question}
+              answerChoices={question.answer_choices}
+              handleChange={handleQuestionChange}
+              id={question._id}
+              removeQuestion={removeQuestion}
+            />
+          );
+        case 2:
+          return (
+            <ShortResponse
+              key={question._id}
+              question={question.question}
+              handleChange={handleQuestionChange}
+              id={question._id}
+              removeQuestion={removeQuestion}
+            />
+          );
+        case 3:
+          return (
+            <Paragraph
+              key={question._id}
+              question={question.question}
+              handleChange={handleQuestionChange}
+              id={question._id}
+              removeQuestion={removeQuestion}
+            />
+          );
+        default:
+          return null;
       }
-    }
-    return surveyComponents;
+    });
+    const chooseQuestionTypeForm = (
+      <>
+        <h4>Choose a Question Type</h4>
+        <Form.Select
+          size="small"
+          aria-label="Select Question Type"
+          onChange={addQuestion}
+        >
+          <option></option>
+          <option value="1">Short Response</option>
+          <option value="2">Multiple Choice</option>
+          <option value="3">True/False</option>
+          <option value="4">Paragraph Response</option>
+        </Form.Select>
+      </>
+    );
+
+    return { form, chooseQuestionTypeForm };
   };
 
-  let displayedSurveyCreator = makeSurvey();
+  const { form, chooseQuestionTypeForm } = makeSurvey();
 
   return (
-    <Container className="mb-5">
-      <Row className="justify-content-center">
-        <Col md={8}>
-          <h2>Create Survey</h2>
-          {editingPreviousSurvey && (
-            <div className="alert alert-info">
-              You edit the previos saved survey
-            </div>
-          )}
-        </Col>
-      </Row>
-    </Container>
+    <div className="mb-5">
+      <SurveyTitle onChange={handleSurveyChange} survey={survey} />
+      {form}
+      {showAddQuestionButton === true ? (
+        //showAddAndSaveBtns()
+        questions.length >= 1 ? (
+          <div>
+            <Button
+              style={{ margin: 10 }}
+              variant="success"
+              onClick={() => setShowAddQuestionButton(false)}
+            >
+              Add Question
+            </Button>
+
+            <Button variant="info" onClick={onSubmitSurvey}>
+              Save and Finish Survey
+            </Button>
+          </div>
+        ) : (
+          <Button
+            variant="info"
+            onClick={() => setShowAddQuestionButton(false)}
+          >
+            Add Question
+          </Button>
+        )
+      ) : (
+        chooseQuestionTypeForm
+      )}
+    </div>
   );
 };
 
