@@ -2,19 +2,18 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useLocation,
-  useNavigate,
+  Outlet,
 } from "react-router-dom";
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 
 import CreateSurvey from "./components/Survey/CreateSurvey";
 import DisplaySurvey from "./components/Survey/DisplaySurvey";
 import DisplaySurveyList from "./components/Survey/DisplaySurveyList";
 import DisplayResult from "./components/Survey/DisplayResult";
-import { NotFound } from "./pages/NotFound";
+import SurveySubmit from "./components/Survey/SurveySubmit";
+import NotFound from "./pages/NotFound";
 
 import { ToastContainer } from "react-toastify";
-import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Header from "./components/boilerplate/Header";
@@ -22,10 +21,21 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useSelector } from "react-redux";
 
+function BasicLayout() {
+  return (
+    <>
+      <Outlet />
+    </>
+  );
+}
+
+function DisplayResultLayout() {
+  return <Outlet />;
+}
+
 function App() {
   const { user } = useSelector((state) => state.auth);
   const [currentSurveyId, setCurrentSurveyId] = useState(null);
-  const [error, setError] = useState(false);
 
   const sendSurveyId = (id) => {
     setCurrentSurveyId(id);
@@ -37,7 +47,7 @@ function App() {
         <div className="container">
           <Header />
           <Routes>
-            <Route path="/" element={<Dashboard />}>
+            <Route path="/" element={<BasicLayout />}>
               <Route
                 path="dashboard"
                 element={
@@ -47,20 +57,47 @@ function App() {
                   />
                 }
               />
+              <Route
+                path="create-survey/*"
+                element={
+                  <CreateSurvey
+                    id={user !== null && user.id}
+                    surveyId={currentSurveyId}
+                    sendSurveyId={sendSurveyId}
+                  />
+                }
+              />
+              <Route
+                path="create-survey/:id/*"
+                element={
+                  <CreateSurvey
+                    id={user !== null && user._id}
+                    surveyId={currentSurveyId}
+                    sendSurveyId={sendSurveyId}
+                  />
+                }
+              />
+              <Route
+                path="/display-results/:id/*"
+                element={<DisplayResult />}
+              />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+            <Route path="/display-survey/" element={<DisplayResultLayout />}>
+              <Route
+                path=":id"
+                element={
+                  <DisplaySurvey
+                    id={user !== null && user._id}
+                    surveyId={currentSurveyId}
+                    sendSurveyId={sendSurveyId}
+                  />
+                }
+              />
+              <Route path="submit-survey/:id" element={<SurveySubmit />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route
-              path="/create-survey/*"
-              element={
-                <CreateSurvey
-                  id={user !== null && user.id}
-                  surveyId={currentSurveyId}
-                  sendSurveyId={sendSurveyId}
-                />
-              }
-            />
-            <Route path="/display-results/:id/*" element={<DisplayResult />} />
           </Routes>
         </div>
       </Router>

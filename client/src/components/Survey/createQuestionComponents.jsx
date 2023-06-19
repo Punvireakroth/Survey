@@ -18,58 +18,6 @@ export function ShortResponse(props) {
   );
 }
 
-// export function MultipleChoice(props) {
-//   const answerChoices = props.question.answer_choices.map((answer, index) => (
-//     <div key={index}>
-//       <Form.Control
-//         id={props.question._id}
-//         name="answerChoice"
-//         answernum={index}
-//         answer="yes"
-//         onChange={props.onChange}
-//         value={answer}
-//         type="text"
-//         placeholder={answer}
-//       />
-//       <br />
-//     </div>
-//   ));
-
-//   return (
-//     <Form.Group className="mb-3">
-//       <CloseButton
-//         className="closeBtn"
-//         onClick={(e) => props.removeQuestion(e, props.question._id)}
-//       />
-//       <h4>
-//         Question {props.index + 1}:
-//         <medium className="text-muted"> Multiple Choice Question</medium>
-//       </h4>
-//       <Form.Label>Edit Your Question:</Form.Label>
-//       <Form.Control
-//         id={props.question._id}
-//         answer="no"
-//         onChange={props.onChange}
-//         name="multiple choice"
-//         value={props.question.question}
-//         type="text"
-//         placeholder={props.question.question}
-//       />
-
-//       <br />
-//       <br />
-//       <Form.Label>Edit Your Answer Choices:</Form.Label>
-//       {answerChoices}
-//       <Button
-//         variant="info"
-//         onClick={(e) => props.addAnswerChoice(e, props.question._id)}
-//       >
-//         Add More Answer Choices
-//       </Button>
-//     </Form.Group>
-//   );
-// }
-
 export function TrueFalse(props) {
   const answerChoices = props.question.answer_choices.map((answer, index) => (
     <div key={index}>
@@ -79,7 +27,7 @@ export function TrueFalse(props) {
         type="text"
         answer="yes"
         onChange={props.onChange}
-        name="answer"
+        name="answerChoice"
         value={answer}
         placeholder={answer}
       />
@@ -108,7 +56,6 @@ export function TrueFalse(props) {
         type="text"
         placeholder={props.question.question}
       />
-
       <br />
       <br />
       <Form.Label>Edit Your Answer Choices:</Form.Label>

@@ -47,7 +47,7 @@ const DisplaySurvey = (props) => {
         questions: questions,
         title: responseData.title,
         description: responseData.description,
-        user_id: responseData.user_id,
+        // user_id: responseData.user_id,
         creationTime: responseData.creationTime,
       };
       setSurvey(updatedSurvey);
@@ -94,10 +94,10 @@ const DisplaySurvey = (props) => {
 
   useEffect(() => {
     setSurvey({ ...survey, _id: id });
-    callApi(`/api/surveys/${id}`, {
+    callApi(`api/surveys/${id}`, {
       method: "GET",
     });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (survey.title === undefined) {

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import uniqid from "uniqid";
 import {
   // MultipleChoice,
@@ -16,7 +17,6 @@ const CreateSurvey = (props) => {
     title: "",
     description: "",
     questions: [],
-    user_id: "",
   });
   const [questionType, setQuestionType] = useState(1);
   const [showAddQuestionButton, setShowAddQuestionButton] = useState(true);
@@ -116,25 +116,25 @@ const CreateSurvey = (props) => {
   };
 
   // Remove answer choice from multiple choice question
-  // const removeAnswerChoice = (e, id, ansIndex) => {
-  //   let questionArray = [...questions];
-  //   let questionIndex = questionArray.findIndex(
-  //     (question) => id === question._id
-  //   );
+  const removeAnswerChoice = (e, id, ansIndex) => {
+    let questionArray = [...questions];
+    let questionIndex = questionArray.findIndex(
+      (question) => id === question._id
+    );
 
-  //   let answerChoices = questionArray[questionIndex].answer_choices;
-  //   answerChoices.splice(ansIndex, 1);
-  //   questionArray[questionIndex] = {
-  //     ...questionArray[questionIndex],
-  //     answer_choices: answerChoices,
-  //   };
-  //   setQuestions(questionArray);
-  // };
+    let answerChoices = questionArray[questionIndex].answer_choices;
+    answerChoices.splice(ansIndex, 1);
+    questionArray[questionIndex] = {
+      ...questionArray[questionIndex],
+      answer_choices: answerChoices,
+    };
+    setQuestions(questionArray);
+  };
 
-  // const onQuestionTypeChange = (e) => {
-  //   setQuestionType(Number(e.target.value));
-  //   setShowAddQuestionButton(false);
-  // };
+  const onQuestionTypeChange = (e) => {
+    setQuestionType(Number(e.target.value));
+    setShowAddQuestionButton(false);
+  };
 
   // Add question to survey
 
@@ -185,23 +185,33 @@ const CreateSurvey = (props) => {
   };
 
   // Submit survey
-  const onSubmitSurvey = (e) => {
+  const onSubmitSurvey = async (e) => {
     e.preventDefault();
 
-    fetch("/api/surveys/create-update", {
-      method: "POST",
-      body: JSON.stringify({
-        questions: questions,
-        title: survey.title,
-        description: survey.description,
-        user_id: survey.user_id,
-        creationTime: new Date(),
-        survey_id: survey._id,
-      }),
-    });
+    try {
+      const response = await fetch("/api/surveys/create-update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          questions: questions,
+          title: survey.title,
+          description: survey.description,
+          creationTime: new Date(),
+        }),
+      });
 
-    props.sendSurveyId(survey._id);
-    window.open(`/display-survey/${survey._id}`, "_blank");
+      if (response.ok) {
+        const responseData = await response.json();
+        props.sendSurveyId(responseData._id);
+        window.open(`/display-survey/${responseData._id}`, "_blank");
+      } else {
+        console.log("Survey submission failed. Please try again.");
+      }
+    } catch (error) {
+      console.log("An error occurred while submitting the survey:", error);
+    }
   };
 
   const makeSurvey = () => {
@@ -226,7 +236,7 @@ const CreateSurvey = (props) => {
               key={question._id}
               question={question}
               answerChoices={addMoreAnswerChoices}
-              handleChange={handleQuestionChange}
+              onChange={handleQuestionChange}
               id={question._id}
               removeQuestion={removeQuestion}
               index={index}
@@ -237,7 +247,7 @@ const CreateSurvey = (props) => {
             <ShortResponse
               key={question._id}
               question={question.question}
-              handleChange={handleQuestionChange}
+              onChange={handleQuestionChange}
               id={question._id}
               removeQuestion={removeQuestion}
               index={index}
@@ -248,7 +258,7 @@ const CreateSurvey = (props) => {
             <Paragraph
               key={question._id}
               question={question.question}
-              handleChange={handleQuestionChange}
+              onChange={handleQuestionChange}
               id={question._id}
               removeQuestion={removeQuestion}
               index={index}

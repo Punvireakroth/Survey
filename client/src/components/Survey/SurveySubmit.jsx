@@ -1,7 +1,7 @@
-import { Link, useParams, navigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 
-export function SurveySubmit() {
+export default function SurveySubmit() {
   let navigate = useNavigate();
   let { id } = useParams();
 

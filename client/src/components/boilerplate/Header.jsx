@@ -24,7 +24,7 @@ export default function Header() {
     <div>
       <header className="header">
         <div className="logo">
-          <Link to="/">
+          <Link to="/dashboard">
             <h3>Survey Admin</h3>
           </Link>
         </div>
