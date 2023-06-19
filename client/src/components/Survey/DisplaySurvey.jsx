@@ -6,19 +6,23 @@ import {
   SurveyTitle,
   Paragraph,
   ShortResponse,
+  MultipleChoice,
   TrueFalse,
 } from "./displayQuestionComponents";
 
 const DisplaySurvey = (props) => {
   const [survey, setSurvey] = useState({});
-  const [newForm, setNewForm] = useState(
-    <div style={{ textAlign: "center", padding: 20 }}>
-      <Spinner animation="border" />
-    </div>
-  );
+  const [newForm, setNewForm] = useState();
+  <div style={{ textAlign: "center", padding: 20 }}>
+    <Spinner animation="border" />
+  </div>;
   const navigate = useNavigate();
   const { id } = useParams();
 
+  console.log("--------------------");
+  console.log(props.questions);
+  console.log("--------------------");
+  // Function that use for calling API
   const callApi = useCallback(async (url, fetchOptions) => {
     try {
       const response = await fetch(
@@ -26,13 +30,14 @@ const DisplaySurvey = (props) => {
         fetchOptions
       );
       const responseData = await response.json();
+      console.log(responseData);
 
       let questions = [];
       responseData.questions.forEach((question) => {
         const newQuestion = {
           _id: question._id,
           type: question.type,
-          question: question.answer_choices,
+          question: question.question,
           response: {
             response: "",
             time: "",
@@ -41,27 +46,25 @@ const DisplaySurvey = (props) => {
         };
         questions.push(newQuestion);
       });
-
       let updatedSurvey = {
         _id: responseData._id,
         questions: questions,
         title: responseData.title,
         description: responseData.description,
-        // user_id: responseData.user_id,
         creationTime: responseData.creationTime,
       };
       setSurvey(updatedSurvey);
-    } catch (err) {
-      console.log(err);
+    } catch (e) {
+      console.log(e.error);
     }
-  });
+  }, []);
 
   const handleChange = (e, responseId, responseType, answerVlaue) => {
     let surveyObject = { ...survey };
     let index = surveyObject.questions.findIndex(
       (question) => question.response._id === responseId
     );
-    surveyObject.questions[index].response.response = {
+    surveyObject.questions[index].response = {
       ...surveyObject.questions[index].response,
       response: e.target.value,
       time: new Date(),
@@ -94,10 +97,11 @@ const DisplaySurvey = (props) => {
 
   useEffect(() => {
     setSurvey({ ...survey, _id: id });
+    // call api to get information about survey
     callApi(`api/surveys/${id}`, {
       method: "GET",
     });
-  }, [id]);
+  }, [id, callApi]);
 
   useEffect(() => {
     if (survey.title === undefined) {
@@ -121,7 +125,7 @@ const DisplaySurvey = (props) => {
             );
           case "true/false":
             return (
-              <TrueFalse
+              <MultipleChoice
                 key={question._id}
                 question={question}
                 index={index}

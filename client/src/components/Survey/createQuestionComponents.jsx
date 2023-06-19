@@ -10,10 +10,18 @@ export function ShortResponse(props) {
       />
       <h4>
         Question {props.index + 1}:
-        <medium className="text-muted">YES/NO</medium>
+        <medium className="text-muted">Short Reponse Question</medium>
       </h4>
       <Form.Label>Add your Question:</Form.Label>
-      <Form.Control />
+      <Form.Control
+        id={props.question._id}
+        answer="no"
+        onChange={props.onChange}
+        name="short response"
+        value={props.question.question}
+        type="text"
+        placeholder="Add Your Question"
+      />
     </Form.Group>
   );
 }

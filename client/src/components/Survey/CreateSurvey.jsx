@@ -24,6 +24,8 @@ const CreateSurvey = (props) => {
   const [editingPreviousSurvey, setEditingPreviousSurvey] = useState(false);
   const { id } = useParams();
 
+  // Rest of the code...
+
   // Get Survey
   const callApiToGetSurvey = useCallback(async (url, fetchOptions) => {
     try {
@@ -76,11 +78,9 @@ const CreateSurvey = (props) => {
     setSurvey(surveyObject);
   };
 
-  const handleQuestionChange = (e) => {
+  const handleQuestionChange = (e, questionIndex) => {
     let questionArray = [...questions];
-    let questionIndex = questionArray.findIndex(
-      (question) => e.target.id === question._id
-    );
+
     if (e.target.getAttribute("answer") === "yes") {
       let answerChoices = questionArray[questionIndex].answer_choices;
       answerChoices[e.target.getAttribute("answernum")] = e.target.value;
@@ -89,14 +89,14 @@ const CreateSurvey = (props) => {
         ...questionArray[questionIndex],
         answer_choices: answerChoices,
       };
-      setQuestions(questionArray);
     } else {
       questionArray[questionIndex] = {
         ...questionArray[questionIndex],
         question: e.target.value,
       };
-      setQuestions(questionArray);
     }
+
+    setQuestions(questionArray);
   };
 
   // Add more answer for multiple choice questions
@@ -147,6 +147,7 @@ const CreateSurvey = (props) => {
         type: "short response",
         question: "",
         answer_choices: [],
+        _id: uniqid("question-"),
         responses: [],
       });
       setQuestions(questionArray);
@@ -185,6 +186,35 @@ const CreateSurvey = (props) => {
   };
 
   // Submit survey
+  // const onSubmitSurvey = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const response = await fetch("/api/surveys/create-update", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         questions: questions,
+  //         title: survey.title,
+  //         description: survey.description,
+  //         creationTime: new Date(),
+  //       }),
+  //     });
+
+  //     if (response.ok) {
+  //       const responseData = await response.json();
+  //       props.sendSurveyId(responseData._id);
+  //       window.open(`/display-survey/${responseData._id}`, "_blank");
+  //     } else {
+  //       console.log("Survey submission failed. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.log("An error occurred while submitting the survey:", error);
+  //   }
+  // };
+
   const onSubmitSurvey = async (e) => {
     e.preventDefault();
 
@@ -195,7 +225,11 @@ const CreateSurvey = (props) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          questions: questions,
+          questions: questions.map((question) => ({
+            type: question.type,
+            question: question.question,
+            answer_choices: question.answer_choices,
+          })),
           title: survey.title,
           description: survey.description,
           creationTime: new Date(),
@@ -218,25 +252,14 @@ const CreateSurvey = (props) => {
     const form = questions.map((question, index) => {
       console.log(question.type);
       switch (question.type) {
-        // case 1:
-        //   return (
-        //     <MultipleChoice
-        //       key={question._id}
-        //       question={question.question}
-        //       answerChoices={question.answer_choices}
-        //       handleChange={handleQuestionChange}
-        //       id={question._id}
-        //       removeQuestion={removeQuestion}
-        //       addMoreAnswerChoices={addMoreAnswerChoices}
-        //     />
-        //   );
+        // ...
         case "true/false":
           return (
             <TrueFalse
               key={question._id}
               question={question}
               answerChoices={addMoreAnswerChoices}
-              onChange={handleQuestionChange}
+              onChange={(e) => handleQuestionChange(e, index)} // Pass the question index to handleQuestionChange
               id={question._id}
               removeQuestion={removeQuestion}
               index={index}
@@ -247,7 +270,7 @@ const CreateSurvey = (props) => {
             <ShortResponse
               key={question._id}
               question={question.question}
-              onChange={handleQuestionChange}
+              onChange={(e) => handleQuestionChange(e, index)} // Pass the question index to handleQuestionChange
               id={question._id}
               removeQuestion={removeQuestion}
               index={index}
@@ -258,7 +281,7 @@ const CreateSurvey = (props) => {
             <Paragraph
               key={question._id}
               question={question.question}
-              onChange={handleQuestionChange}
+              onChange={(e) => handleQuestionChange(e, index)} // Pass the question index to handleQuestionChange
               id={question._id}
               removeQuestion={removeQuestion}
               index={index}
