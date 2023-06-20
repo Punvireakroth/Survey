@@ -9,7 +9,7 @@ const questionSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  answer_choice: [String],
+  answer_choices: [String],
   survey_id: String,
   user_id: String,
   responses: [{}],

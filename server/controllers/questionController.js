@@ -15,17 +15,13 @@ const getQuestion = asyncHandler(async (req, res) => {
 // @route POST api/guestions/create
 // @access private ------------------
 const createQuestion = asyncHandler(async (req, res) => {
-  // const questions = JSON.parse(req.body.questions);
+  const questions = JSON.parse(req.body.questions);
 
-  // for (let i = 0; i < questions.length; i++) {
-  //   let addedQuestion = await Question.create(question);
-  // }
+  for (let i = 0; i < questions.length; i++) {
+    let addedQuestion = await Question.create(question);
+  }
 
-  const questions = Array.isArray(req.body) ? req.body : [req.body];
-
-  const createdQuestions = await Question.create(questions);
-
-  res.status(200).json(createdQuestions);
+  res.status(200).json(questions);
 });
 
 // @desc Update a question

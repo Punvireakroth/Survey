@@ -17,6 +17,13 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
+
 // Connect with database
 const DB = process.env.DB_URI || "mongodb://127.0.0.1:27017/isi-survey";
 mongoose.connect(DB, {
