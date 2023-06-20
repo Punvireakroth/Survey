@@ -139,26 +139,31 @@ const updateSurvey = asyncHandler(async (req, res) => {
   res.status(200).json(updatedSurvey);
 });
 
-//update surveys with responses
+//update surveys with responses (It's when the user submits the survey)
 //@route put
+//@access private
 const saveResponsesToSurvey = asyncHandler(async (req, res) => {
   const survey = await Survey.findById(req.params.id);
   if (!survey) {
     res.status(400);
     throw new Error("That Survey was not found.");
   }
-  //getting questions and the _id from the body
+  // Getting questions and the _id from the body
   const { questions, _id } = req.body;
-  //new questions comes from database
+  // New questions come from the database
   let newQuestions = [...survey.questions];
 
   newQuestions.forEach((originalQuestion) => {
-    //find matching index
+    // Find matching index
     let index = questions.findIndex(
       (submittedQuestion) => submittedQuestion._id === originalQuestion._id
     );
-    //push responses onto responses array
-    originalQuestion.responses.push(questions[index].response);
+    // Initialize responses as an empty array if it's undefined
+    originalQuestion.responses = originalQuestion.responses || [];
+    // Ensure questions[index].response is defined before accessing its value
+    const response = questions[index]?.response || "";
+    // Push response onto responses array
+    originalQuestion.responses.push(response);
   });
 
   const updatedSurvey = await Survey.findByIdAndUpdate(
