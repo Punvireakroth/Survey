@@ -11,7 +11,7 @@ export function ShortResponse(props) {
       </Form.Label>
       <Form.Control
         id={props.question._id}
-        onChange={(e) => props.onChange(e, "short response")}
+        onChange={(e) => props.onChange(e, props.responseId, "short response")}
         name="short response"
         value={props.question.response.response}
         type="text"
@@ -22,25 +22,25 @@ export function ShortResponse(props) {
 
 export function TrueFalse(props) {
   const [answerValue, setAnswerValue] = useState(null);
-  const [isChecked, setIsChecked] = useState([]);
-
-  useEffect(() => {
-    if (props.question.answer_choices) {
-      setIsChecked(
-        props.question.answer_choices.map((answer) => ({
+  const [isChecked, setIsChecked] = useState(() =>
+    props.question.answer_choices
+      ? props.question.answer_choices.map((answer) => ({
           answer_choice: answer,
           value: false,
         }))
-      );
-    }
-  }, [props.question.answer_choices]);
+      : []
+  );
 
   const onChangeChecked = (e, index) => {
-    const updatedIsChecked = isChecked.map((item, i) => ({
-      ...item,
-      value: i === index,
-    }));
+    let updatedIsChecked = [...isChecked];
 
+    for (let i = 0; i < updatedIsChecked.length; i++) {
+      if (i === index) {
+        updatedIsChecked[i].value = true;
+      } else {
+        updatedIsChecked[i].value = false;
+      }
+    }
     setIsChecked(updatedIsChecked);
     setAnswerValue(e.target.value);
   };
@@ -81,7 +81,7 @@ export function Paragraph(props) {
       </Form.Label>
       <Form.Control
         id={props.question._id}
-        onChange={(e) => props.onChange(e, "paragraph")}
+        onChange={(e) => props.onChange(e, props.responseId, "paragraph")}
         name="paragraph"
         value={props.question.response.response}
         type="text"

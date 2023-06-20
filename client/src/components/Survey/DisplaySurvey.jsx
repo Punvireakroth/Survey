@@ -26,7 +26,6 @@ const DisplaySurvey = (props) => {
         fetchOptions
       );
       const responseData = await response.json();
-      console.log(responseData);
 
       let questions = [];
       responseData.questions.forEach((question) => {
@@ -55,11 +54,12 @@ const DisplaySurvey = (props) => {
     }
   }, []);
 
-  const handleChange = (e, responseId, responseType, answerVlaue) => {
+  const handleChange = (e, responseId, responseType, answerValue) => {
     let surveyObject = { ...survey };
     let index = surveyObject.questions.findIndex(
       (question) => question.response._id === responseId
     );
+
     surveyObject.questions[index].response = {
       ...surveyObject.questions[index].response,
       response: e.target.value,
@@ -85,7 +85,11 @@ const DisplaySurvey = (props) => {
         }
       );
 
-      navigate(`/display-survey/submit-survey/${id}`);
+      if (response.ok) {
+        navigate(`/display-survey/submit-survey/${id}`);
+      } else {
+        throw new Error("Failed to submit the survey.");
+      }
     } catch (err) {
       console.log(err);
     }
