@@ -105,7 +105,6 @@ const CreateSurvey = (props) => {
     let questionIndex = questionArray.findIndex(
       (question) => id === question._id
     );
-
     let answerChoices = questionArray[questionIndex].answer_choices;
     answerChoices.push("");
     questionArray[questionIndex] = {
@@ -184,36 +183,6 @@ const CreateSurvey = (props) => {
     questionArray.splice(questionIndex, 1);
     setQuestions(questionArray);
   };
-
-  // Submit survey
-  // const onSubmitSurvey = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const response = await fetch("/api/surveys/create-update", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         questions: questions,
-  //         title: survey.title,
-  //         description: survey.description,
-  //         creationTime: new Date(),
-  //       }),
-  //     });
-
-  //     if (response.ok) {
-  //       const responseData = await response.json();
-  //       props.sendSurveyId(responseData._id);
-  //       window.open(`/display-survey/${responseData._id}`, "_blank");
-  //     } else {
-  //       console.log("Survey submission failed. Please try again.");
-  //     }
-  //   } catch (error) {
-  //     console.log("An error occurred while submitting the survey:", error);
-  //   }
-  // };
 
   const onSubmitSurvey = async (e) => {
     e.preventDefault();

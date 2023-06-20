@@ -6,7 +6,6 @@ import {
   SurveyTitle,
   Paragraph,
   ShortResponse,
-  MultipleChoice,
   TrueFalse,
 } from "./displayQuestionComponents";
 
@@ -19,9 +18,6 @@ const DisplaySurvey = (props) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  console.log("--------------------");
-  console.log(props.questions);
-  console.log("--------------------");
   // Function that use for calling API
   const callApi = useCallback(async (url, fetchOptions) => {
     try {
@@ -111,7 +107,9 @@ const DisplaySurvey = (props) => {
         </div>
       );
     } else {
-      let form = survey.questions.map((question, index) => {
+      let form = null;
+
+      form = survey.questions.map((question, index) => {
         switch (question.type) {
           case "short response":
             return (
@@ -125,7 +123,7 @@ const DisplaySurvey = (props) => {
             );
           case "true/false":
             return (
-              <MultipleChoice
+              <TrueFalse
                 key={question._id}
                 question={question}
                 index={index}
@@ -147,6 +145,7 @@ const DisplaySurvey = (props) => {
             return null;
         }
       });
+
       setNewForm(form);
     }
   }, [survey]);

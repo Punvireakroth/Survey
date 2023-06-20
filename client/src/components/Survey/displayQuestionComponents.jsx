@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import uniqid from "uniqid";
 
@@ -20,105 +20,52 @@ export function ShortResponse(props) {
   );
 }
 
-// export function TrueFalse(props) {
-//   const [answerValue, setAnswerValue] = useState(null);
-//   const [isChecked, setIsChecked] = useState(
-//     props.question.answer_choices.map((answer) => ({
-//       answer_choice: answer,
-//       value: false,
-//     }))
-//   );
-
-//   const onChangeChecked = (e, index) => {
-//     //find the answer in the isChecked object
-
-//     let updatedIsChecked = [...isChecked];
-
-//     for (let i = 0; i < updatedIsChecked.length; i++) {
-//       if (i === index) {
-//         updatedIsChecked[i].value = true;
-//       } else {
-//         updatedIsChecked[i].value = false;
-//       }
-//     }
-//     setIsChecked(updatedIsChecked);
-//     setAnswerValue(e.target.value);
-//   };
-
-//   const answerChoices = props.question.answer_choices.map((answer, index) => {
-//     return (
-//       <Form.Check
-//         key={uniqid()}
-//         label={answer}
-//         value={answer}
-//         name={props.question._id}
-//         type="radio"
-//         checked={isChecked[index].value}
-//         onChange={(e) => {
-//           onChangeChecked(e, index);
-//           props.onChange(e, props.responseId, "multiple choice");
-//         }}
-//       />
-//     );
-//   });
-
-//   return (
-//     <Form.Group className="mb-3">
-//       <Form.Label>
-//         {props.index + 1}) {props.question.question}
-//       </Form.Label>
-
-//       {answerChoices}
-//     </Form.Group>
-//   );
-// }
-
-export function MultipleChoice(props) {
+export function TrueFalse(props) {
   const [answerValue, setAnswerValue] = useState(null);
-  const [isChecked, setIsChecked] = useState(
-    props.question.answer_choices.map((answer) => ({
-      answer_choice: answer,
-      value: false,
-    }))
-  );
+  const [isChecked, setIsChecked] = useState([]);
+
+  useEffect(() => {
+    if (props.question.answer_choices) {
+      setIsChecked(
+        props.question.answer_choices.map((answer) => ({
+          answer_choice: answer,
+          value: false,
+        }))
+      );
+    }
+  }, [props.question.answer_choices]);
 
   const onChangeChecked = (e, index) => {
-    //find the answer in the isChecked object
+    const updatedIsChecked = isChecked.map((item, i) => ({
+      ...item,
+      value: i === index,
+    }));
 
-    let updatedIsChecked = [...isChecked];
-
-    for (let i = 0; i < updatedIsChecked.length; i++) {
-      if (i === index) {
-        updatedIsChecked[i].value = true;
-      } else {
-        updatedIsChecked[i].value = false;
-      }
-    }
     setIsChecked(updatedIsChecked);
     setAnswerValue(e.target.value);
   };
 
-  const answerChoices = props.question.answer_choices.map((answer, index) => {
-    return (
-      <Form.Check
-        key={uniqid()}
-        label={answer}
-        value={answer}
-        name={props.question._id}
-        type="radio"
-        checked={isChecked[index].value}
-        onChange={(e) => {
-          onChangeChecked(e, index);
-          props.onChange(e, props.responseId, "multiple choice");
-        }}
-      />
-    );
-  });
+  const answerChoices = props.question.answer_choices
+    ? props.question.answer_choices.map((answer, index) => (
+        <Form.Check
+          key={uniqid()}
+          label={answer}
+          value={answer}
+          name={props.question._id}
+          type="radio"
+          checked={isChecked[index]?.value}
+          onChange={(e) => {
+            onChangeChecked(e, index);
+            props.onChange(e, props.responseId, "true/false");
+          }}
+        />
+      ))
+    : null;
 
   return (
     <Form.Group className="mb-3">
       <Form.Label>
-        {props.index + 1}) {props.question.text}
+        {props.index + 1}) {props.question.question}
       </Form.Label>
 
       {answerChoices}
