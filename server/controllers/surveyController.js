@@ -139,7 +139,7 @@ const updateSurvey = asyncHandler(async (req, res) => {
   res.status(200).json(updatedSurvey);
 });
 
-//update surveys with responses (It's when the user submits the survey)
+//update surveys with responses (It's when the user submits the survey) ✅
 //@route put
 //@access private
 const saveResponsesToSurvey = asyncHandler(async (req, res) => {
