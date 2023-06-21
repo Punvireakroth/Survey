@@ -155,7 +155,7 @@ const DisplaySurvey = (props) => {
   }, [survey]);
 
   return (
-    <div className="displaySurvey">
+    <div className="displaySurvey pt-6" style={{ marginTop: "114px" }}>
       <SurveyTitle survey={survey} />
       {newForm}
       <Button onClick={submitSurvey}>Submit Survey</Button>
