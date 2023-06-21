@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 function BasicLayout() {
   return (
     <>
+      <Header />
       <Outlet />
     </>
   );
@@ -45,7 +46,6 @@ function App() {
     <>
       <Router>
         <div className="container">
-          <Header />
           <Routes>
             <Route path="/" element={<BasicLayout />}>
               <Route
