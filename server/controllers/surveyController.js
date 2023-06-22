@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 
 // Models
 const Survey = require("../models/surveyModel");
+const User = require("../models/userModel");
 
 // @desc Get specific the surveys
 // @route GET api/surveys/:id
@@ -17,34 +18,49 @@ const getSurvey = asyncHandler(async (req, res) => {
 // @access private and public ------------------
 
 const getSurveysByUser = asyncHandler(async (req, res) => {
-  //grab survey ids from database
-  const user = await User.findById(req.params.id);
-  const surveyIds = [...user.surveys];
+  // //grab survey ids from database
+  // const user = await User.findById(req.params.id);
+  // const surveyIds = [...user.surveys];
+  // if (!user) {
+  //   res.status(400);
+  //   throw new Error("That user was not found.");
+  // } else if (surveyIds.length === 0) {
+  //   res.status(401).json("No surveys were found");
+  // }
+  // //grab surveys from database
+  // let surveyList = [];
+  // for (let i = 0; i < surveyIds.length; i++) {
+  //   const survey = await Survey.findById(surveyIds[i]);
+  //   if (!survey) {
+  //     console.log("no survey found");
+  //   } else {
+  //     const necessaryData = {
+  //       title: survey.title,
+  //       responseTotal: survey.questions[0].responses.length,
+  //       _id: survey._id,
+  //     };
+  //     surveyList.push(necessaryData);
+  //   }
+  // }
+  // //send surveys over
+  // res.status(200).json(surveyList);
 
-  if (!user) {
-    res.status(400);
-    throw new Error("That user was not found.");
-  } else if (surveyIds.length === 0) {
-    res.status(401).json("No surveys were found");
-  }
+  // Find all surveys in the Survey collection
+  const surveys = await Survey.find();
 
-  //grab surveys from database
-  let surveyList = [];
-  for (let i = 0; i < surveyIds.length; i++) {
-    const survey = await Survey.findById(surveyIds[i]);
-    if (!survey) {
-      console.log("no survey found");
-    } else {
-      const necessaryData = {
-        title: survey.title,
-        responseTotal: survey.questions[0].responses.length,
-        _id: survey._id,
-      };
-      surveyList.push(necessaryData);
-    }
+  if (surveys.length === 0) {
+    res.status(404).json("No surveys found");
+  } else {
+    // Extract necessary data from each survey
+    const surveyList = surveys.map((survey) => ({
+      title: survey.title,
+      responseTotal: survey.questions[0].responses.length,
+      _id: survey._id,
+    }));
+
+    // Send the survey list as the response
+    res.status(200).json(surveyList);
   }
-  //send surveys over
-  res.status(200).json(surveyList);
 });
 
 // @desc Create a new survey
