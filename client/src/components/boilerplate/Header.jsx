@@ -24,15 +24,27 @@ export default function Header() {
     <div>
       <header className="header">
         <div className="logo">
-          <Link to="/dashboard">
-            <h3>Survey Admin</h3>
+          <Link
+            to="/dashboard"
+            style={{
+              textDecoration: "none",
+              fontSize: "1.7rem",
+              fontWeight: 600,
+              color: "#fff",
+            }}
+          >
+            Admin
           </Link>
         </div>
         <ul>
           {user ? (
             <>
               <li>
-                <button className="btn" onClick={onLogOut}>
+                <button
+                  className="btn"
+                  onClick={onLogOut}
+                  style={{ color: "#fff", fontSize: "1.2rem", fontWeight: 400 }}
+                >
                   <BsBoxArrowInLeft /> Logout
                 </button>
               </li>

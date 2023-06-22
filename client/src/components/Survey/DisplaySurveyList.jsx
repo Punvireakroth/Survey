@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Table, Container, Col, Row, Button, Spinner } from "react-bootstrap";
 // Use to get currnet user information
 import { useSelector } from "react-redux";
+import { FaPlus } from "react-icons/fa";
 
 const DisplaySurveyList = (props) => {
   const [userData, setUserData] = useState(null);
+  const [responseCount, setResponseCount] = useState(0);
   const [surveyDataCounter, setSurveyDataCounter] = useState(0);
   const [surveyList, setSurveyList] = useState(null);
   const [tableItems, setTableItems] = useState(
@@ -51,7 +53,6 @@ const DisplaySurveyList = (props) => {
 
   useEffect(() => {
     // if user data is truthy make the api call
-
     if (userData) {
       if (surveyDataCounter === 0) {
         setSurveyDataCounter(1);
@@ -59,6 +60,16 @@ const DisplaySurveyList = (props) => {
       }
     }
   }, [userData]);
+
+  let total = 0;
+  useEffect(() => {
+    if (surveyList) {
+      surveyList.map((survey) => {
+        total += survey.responseTotal;
+      });
+    }
+    setResponseCount(total);
+  }, [surveyList]);
 
   useEffect(() => {
     if (surveyList) {
@@ -103,75 +114,129 @@ const DisplaySurveyList = (props) => {
   };
 
   return (
-    <main
-      className="main"
-      style={{
-        backgroundColor: "rgb(237, 244, 245)",
-        borderRadius: 10,
-        padding: 50,
-      }}
-    >
-      <Container className="dashboardbg p-0" fluid>
-        <Row
-          className={tableItems ? "dashboardTitle" : null}
-          style={{ paddingTop: 20 }}
+    <>
+      <main
+        className="main"
+        style={{
+          borderRadius: 10,
+          padding: 50,
+          position: "relative",
+          backgroundColor: "rgb(237, 244, 245)",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: 40,
+            right: 100,
+            width: 190,
+            height: 190,
+            background: "#008cba",
+            borderRadius: 40,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            padding: "20px 10px", // Adjust the padding values
+            margin: "0 -10px", // Adjust the margin values
+          }}
         >
-          <Col sm={12} lg={12}>
-            <h2
-              style={{
-                textAlign: "left",
-                fontWeight: "bold",
-              }}
-            >
-              Survey Dashboard
-            </h2>
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={12} lg={12} style={{ padding: 15, textAlign: "left" }}>
-            <Button
-              onClick={onCreateSurveyClick}
-              variant="primary"
-              className="createSrvyBtn"
-              style={{
-                borderRadius: 5,
-                borderWidth: 1,
-                backgroundColor: "#1e90ff",
-                paddingTop: 10,
-                paddingBottom: 10,
-                paddingLeft: 40,
-                paddingRight: 40,
-                fontSize: 20,
-              }}
-            >
-              Create a New Survey
-            </Button>
+          <p
+            style={{
+              fontWeight: "bold",
+              fontSize: 4 + "em",
+              textAlign: "center",
+            }}
+          >
+            {responseCount}
             <br />
-            <br />
-          </Col>
-        </Row>
+            <p
+              style={{ fontSize: 1.5 + "rem", fontWeight: "normal", margin: 0 }}
+            >
+              Responses
+            </p>
+          </p>
+        </div>
 
-        {tableItems && (
-          <Row>
+        <Container className="dashboardbg p-0" fluid>
+          <Row
+            className={tableItems ? "dashboardTitle" : null}
+            style={{ paddingTop: 20 }}
+          >
             <Col sm={12} lg={12}>
-              <h4 style={{ textAlign: "center", fontWeight: "bold" }}>
-                Your Surveys
-              </h4>
-              <div style={{ borderTop: "solid", paddingTop: 8 }}>
-                <Table
-                  striped
-                  bordered
-                  hover
-                  style={{ width: "50%", textAlign: "center" }}
-                >
-                  <tbody>{tableItems}</tbody>
-                </Table>
-              </div>
+              <h2
+                style={{
+                  textAlign: "left",
+                  fontWeight: "bold",
+                  color: "#193c96",
+                }}
+              >
+                Survey Dashboard
+              </h2>
             </Col>
           </Row>
-        )}
-      </Container>
-    </main>
+          <Row>
+            <Col sm={12} lg={12} style={{ padding: 15, textAlign: "left" }}>
+              <Button
+                onClick={onCreateSurveyClick}
+                variant="primary"
+                className="createSrvyBtn"
+                style={{
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  backgroundColor: "#1e90ff",
+                  paddingTop: 10,
+                  paddingBottom: 10,
+                  paddingLeft: 40,
+                  paddingRight: 40,
+                  fontSize: 20,
+                  backgroundColor: "#0c66a9",
+                  borderColor: "#0c66a9",
+                }}
+              >
+                <FaPlus /> Create a New Survey
+              </Button>
+              <br />
+              <br />
+            </Col>
+          </Row>
+        </Container>
+      </main>
+
+      {/* Survey Section */}
+
+      <section>
+        <Container
+          style={{ backgroundColor: "#edf4f5", marginTop: 40, padding: 50 }}
+        >
+          {tableItems && (
+            <Row>
+              <Col sm={12} lg={12}>
+                <h4
+                  style={{
+                    textAlign: "left",
+                    fontWeight: "normal",
+                    color: "#193c96",
+                  }}
+                >
+                  Your Surveys
+                </h4>
+                <div style={{ borderTop: "solid", paddingTop: 8 }}>
+                  <Table
+                    striped
+                    bordered
+                    hover
+                    style={{ width: "50%", textAlign: "center" }}
+                  >
+                    <tbody>{tableItems}</tbody>
+                  </Table>
+                </div>
+              </Col>
+            </Row>
+          )}
+        </Container>
+      </section>
+    </>
   );
 };
 
