@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Table, Container, Col, Row, Button, Spinner } from "react-bootstrap";
+// Use to get currnet user information
+import { useSelector } from "react-redux";
 
 const DisplaySurveyList = (props) => {
   const [userData, setUserData] = useState(null);
@@ -17,10 +19,13 @@ const DisplaySurveyList = (props) => {
   );
   let navigate = useNavigate();
 
-  const callApi = useCallback(async () => {
+  // get current user information
+  const { user } = useSelector((state) => state.auth);
+
+  const callApi = useCallback(async (userId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/surveys/surveys-by-user/${props.userId}`,
+        `http://localhost:5000/api/surveys/surveys-by-user/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -39,10 +44,18 @@ const DisplaySurveyList = (props) => {
   });
 
   useEffect(() => {
+    if (user) {
+      setUserData(user);
+    }
+  });
+
+  useEffect(() => {
+    // if user data is truthy make the api call
+
     if (userData) {
       if (surveyDataCounter === 0) {
         setSurveyDataCounter(1);
-        callApi();
+        callApi(user._id);
       }
     }
   }, [userData]);
@@ -66,7 +79,7 @@ const DisplaySurveyList = (props) => {
               target="_blank"
               style={{ textDecoration: "none" }}
             >
-              Public Survey Link
+              ទៅកាន់ការស្ទង់មតិ
             </Link>
           </th>
           <th className="dashboardTableSmall">
@@ -75,7 +88,7 @@ const DisplaySurveyList = (props) => {
               to={`/display-results/${survey._id}`}
               style={{ textDecoration: "none" }}
             >
-              Results ({survey.responseTotal})
+              ទទួលបាន ({survey.responseTotal}) ការឆ្លើយតប
             </Link>
           </th>
         </tr>
@@ -90,7 +103,14 @@ const DisplaySurveyList = (props) => {
   };
 
   return (
-    <main className="main" style={{ backgroundColor: "rgb(237, 244, 245)" }}>
+    <main
+      className="main"
+      style={{
+        backgroundColor: "rgb(237, 244, 245)",
+        borderRadius: 10,
+        padding: 50,
+      }}
+    >
       <Container className="dashboardbg p-0" fluid>
         <Row
           className={tableItems ? "dashboardTitle" : null}
@@ -99,8 +119,7 @@ const DisplaySurveyList = (props) => {
           <Col sm={12} lg={12}>
             <h2
               style={{
-                textAlign: "center",
-                paddingTop: 20,
+                textAlign: "left",
                 fontWeight: "bold",
               }}
             >
@@ -109,14 +128,23 @@ const DisplaySurveyList = (props) => {
           </Col>
         </Row>
         <Row>
-          <Col sm={12} lg={12} className="text-center" style={{ padding: 15 }}>
+          <Col sm={12} lg={12} style={{ padding: 15, textAlign: "left" }}>
             <Button
               onClick={onCreateSurveyClick}
               variant="primary"
               className="createSrvyBtn"
-              style={{ borderRadius: 5, borderWidth: 1 }}
+              style={{
+                borderRadius: 5,
+                borderWidth: 1,
+                backgroundColor: "#1e90ff",
+                paddingTop: 10,
+                paddingBottom: 10,
+                paddingLeft: 40,
+                paddingRight: 40,
+                fontSize: 20,
+              }}
             >
-              Click Here to Create a New Survey
+              Create a New Survey
             </Button>
             <br />
             <br />
