@@ -8,11 +8,7 @@ const bcrypt = require("bcrypt");
 // @access private ------------------
 
 const getUser = asyncHandler(async (req, res) => {
-  const user = await User.find();
-  if (!user) {
-    res.status(400);
-    throw new Error("User not found");
-  }
+  const user = await User.findOne({ _id: req.id });
   res.status(200).json(user);
 });
 
