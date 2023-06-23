@@ -5,7 +5,18 @@ import uniqid from "uniqid";
 
 export function ShortResponse(props) {
   return (
-    <Form.Group className="mb-3">
+    <Form.Group
+      className="mb-3"
+      style={{
+        marginTop: 30,
+        backgroundColor: "#edf4f5",
+        padding: 20,
+        borderRadius: 7,
+        border: "3px dashed rgba(122, 192, 215, .6)",
+        color: "#0c66a9",
+        fontSize: 1.4 + "rem",
+      }}
+    >
       <Form.Label>
         {props.index + 1}) {props.question.question}
       </Form.Label>
@@ -15,6 +26,14 @@ export function ShortResponse(props) {
         name="short response"
         value={props.question.response.response}
         type="text"
+        placeholder="Your answer"
+        className="custom-input shadow-none"
+        style={{
+          borderRadius: 1,
+          color: "#42a4c4",
+          fontSize: 1.1 + "rem",
+          borderColor: "#undefined",
+        }}
       />
     </Form.Group>
   );
@@ -75,7 +94,18 @@ export function TrueFalse(props) {
 
 export function Paragraph(props) {
   return (
-    <Form.Group className="mb-3">
+    <Form.Group
+      className="mb-3"
+      style={{
+        marginTop: 30,
+        backgroundColor: "#edf4f5",
+        padding: 20,
+        borderRadius: 7,
+        border: "3px dashed rgba(122, 192, 215, .6)",
+        color: "#0c66a9",
+        fontSize: 1.4 + "rem",
+      }}
+    >
       <Form.Label>
         {props.index + 1}) {props.question.question}
       </Form.Label>
@@ -87,6 +117,14 @@ export function Paragraph(props) {
         type="text"
         as="textarea"
         rows={3}
+        className="custom-input"
+        placeholder="Your answer"
+        style={{
+          borderRadius: 1,
+          color: "#42a4c4",
+          fontSize: 1.1 + "rem",
+          borderColor: "#undefined",
+        }}
       />
     </Form.Group>
   );
@@ -94,12 +132,19 @@ export function Paragraph(props) {
 
 export function SurveyTitle(props) {
   return (
-    <>
-      <h2 style={{ textAlign: "center" }}>{props.survey.title}</h2>
+    <div
+      style={{
+        paddingTop: 77,
+        paddingBottom: 77,
+        backgroundColor: "#0c66a9",
+        marginBottom: 30,
+        color: "#fff",
+      }}
+    >
+      <h1 style={{ textAlign: "center" }}>{props.survey.title}</h1>
       <h4 style={{ textAlign: "center" }} className="text-muted">
         {props.survey.description}
       </h4>
-      <br />
-    </>
+    </div>
   );
 }

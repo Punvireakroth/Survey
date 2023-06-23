@@ -156,10 +156,34 @@ const DisplaySurvey = (props) => {
   }, [survey]);
 
   return (
-    <div className="displaySurvey pt-6" style={{ marginTop: "114px" }}>
+    <div
+      className="displaySurvey pt-6"
+      style={{ fontFamily: "Nokora", fontSize: 1.2 + "rem", marginBottom: 50 }}
+    >
       <SurveyTitle survey={survey} />
       {newForm}
-      <Button onClick={submitSurvey}>Submit Survey</Button>
+      <Button
+        onClick={submitSurvey}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          backgroundColor: "#ffffff",
+          paddingTop: 7,
+          paddingBottom: 7,
+          paddingLeft: 50,
+          paddingRight: 50,
+          borderRadius: 50,
+          color: "#fff",
+          borderColor: "#0c66a9 ",
+          backgroundColor: "#0c66a9 ",
+          borderWidth: 2.9,
+          marginTop: 40,
+          marginBottom: 40 + "px",
+        }}
+      >
+        Submit
+      </Button>
+      <br />
     </div>
   );
 };

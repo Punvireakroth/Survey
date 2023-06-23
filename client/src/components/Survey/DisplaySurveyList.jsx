@@ -94,7 +94,14 @@ const DisplaySurveyList = (props) => {
         //   </Card.Body>
         // </Card>
 
-        <Card style={{ fontFamily: "Nokora", height: 400, borderRadius: 20 }}>
+        <Card
+          style={{
+            fontFamily: "Nokora",
+            height: 400,
+            borderRadius: 20,
+            marginBottom: 40,
+          }}
+        >
           <Card.Header
             as="h6"
             style={{
@@ -111,7 +118,6 @@ const DisplaySurveyList = (props) => {
               <Button
                 style={{
                   backgroundColor: "#d33c64",
-                  // padding: 20,
                   paddingTop: 7,
                   paddingBottom: 7,
                   paddingLeft: 20,

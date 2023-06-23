@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Nokora:wght@100;400;700&family=Open+Sans:wght@300;400;500;700&display=swap");
-
 * {
   margin: 0;
   padding: 0;
@@ -9,6 +8,8 @@
 body {
   font-family: "Open Sans", sans-serif;
   height: 100vh;
+  width: 100%;
+  background-color: #edf4f5;
 }
 
 a {
@@ -34,13 +35,13 @@ h2 {
   margin-bottom: 10px;
   color: #193c96;
 }
+.custom-input::placeholder {
+  color: #42a4c4 !important;
+}
 
-.container {
-  width: 100%;
-  max-width: 80%;
-  margin: 0 auto;
-  padding: 0 20px;
-  text-align: center;
+.custom-input::focus {
+  outline: none !important;
+  border: 1px solid red !important;
 }
 
 .header {
@@ -81,7 +82,6 @@ h2 {
 .header .logo img {
   width: 100px;
 }
-// ---------------- Heading --------------------
 
 .heading {
   font-size: 2rem;
@@ -94,133 +94,10 @@ h2 {
   color: #828282;
 }
 
-.goals {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.goal {
-  background-color: #f4f4f4;
-  margin: 10px 0;
-  padding: 20px 0 10px;
-  position: relative;
-}
-
-.goal .close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  cursor: pointer;
-  border: none;
-  background: none;
-}
-
-.form,
-.content {
-  max-width: 50%;
-  margin: 0 auto;
-}
-
-.form-group {
-  margin-bottom: 10px;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #e6e6e6;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  font-family: inherit;
-}
-
-.form-group label {
-  text-align: left;
-  display: block;
-  margin: 0 0 5px 3px;
-}
-
-.btn {
-  padding: 10px 20px;
-  border: 1px solid #102363;
-  border-radius: 5px;
-  background: #102363;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: center;
-  appearance: button;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn svg {
-  margin-right: 8px;
-}
-
-.btn-reverse {
-  background: #fff;
-  color: #000;
-}
-
-.btn-block {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.btn:hover {
-  transform: scale(0.98);
-}
-
-.loadingSpinnerContainer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 5000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.loadingSpinner {
-  width: 64px;
-  height: 64px;
-  border: 8px solid;
-  border-color: #000 transparent #555 transparent;
-  border-radius: 50%;
-  animation: spin 1.2s linear infinite;
-}
-
-.loadingSpinner {
-  margin: 0 auto;
-}
-
-.registerSpinner {
-  margin: 0 auto;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 @media (max-width: 600px) {
   .form {
     width: 90%;
   }
-
   .heading h1 {
     font-size: 2rem;
   }
