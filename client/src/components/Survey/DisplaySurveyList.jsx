@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Table, Container, Col, Row, Button, Spinner } from "react-bootstrap";
+import {
+  Table,
+  Container,
+  Col,
+  Row,
+  Button,
+  Spinner,
+  Card,
+} from "react-bootstrap";
+
 // Use to get currnet user information
 import { useSelector } from "react-redux";
 import { FaPlus } from "react-icons/fa";
@@ -74,35 +83,54 @@ const DisplaySurveyList = (props) => {
   useEffect(() => {
     if (surveyList) {
       let items = surveyList.map((survey, index) => (
-        <tr key={index}>
-          <th className="dashboardTableLarge">
-            <Link
-              to={`/create-survey/${survey._id}`}
-              style={{ textDecoration: "none" }}
-            >
-              {survey.title}
-            </Link>
-          </th>
-          <th className="dashboardTableSmall">
-            <Link
-              className="linkSmall"
-              to={`/display-survey/${survey._id}`}
-              target="_blank"
-              style={{ textDecoration: "none" }}
-            >
-              ទៅកាន់ការស្ទង់មតិ
-            </Link>
-          </th>
-          <th className="dashboardTableSmall">
-            <Link
-              className="linkSmall"
-              to={`/display-results/${survey._id}`}
-              style={{ textDecoration: "none" }}
-            >
-              ទទួលបាន ({survey.responseTotal}) ការឆ្លើយតប
-            </Link>
-          </th>
-        </tr>
+        <Card style={{ width: "18rem" }}>
+          <Card.Img
+            variant="top"
+            src="https://i.pinimg.com/564x/76/1e/4e/761e4e53c11d254fbd67b5211c5316ba.jpg"
+          />
+          <Card.Body>
+            <Card.Title>{survey.title}</Card.Title>
+            <Card.Text>{survey.description}------</Card.Text>
+            <Button variant="primary">
+              <Link
+                to={`/create-survey/${survey._id}`}
+                style={{ color: "#fff", textDecoration: "none" }}
+              >
+                Edit Survey
+              </Link>
+            </Button>
+          </Card.Body>
+        </Card>
+
+        // <tr key={index}>
+        //   <th className="dashboardTableLarge">
+        //     <Link
+        //       to={`/create-survey/${survey._id}`}
+        //       style={{ textDecoration: "none", fontFamily: "Nokora" }}
+        //     >
+        //       {survey.title}
+        //     </Link>
+        //   </th>
+        //   <th className="dashboardTableSmall">
+        //     <Link
+        //       className="linkSmall"
+        //       to={`/display-survey/${survey._id}`}
+        //       target="_blank"
+        //       style={{ textDecoration: "none", fontFamily: "Nokora" }}
+        //     >
+        //       ទៅកាន់ការស្ទង់មតិ
+        //     </Link>
+        //   </th>
+        //   <th className="dashboardTableSmall">
+        //     <Link
+        //       className="linkSmall"
+        //       to={`/display-results/${survey._id}`}
+        //       style={{ textDecoration: "none", fontFamily: "Nokora" }}
+        //     >
+        //       ទទួលបាន ({survey.responseTotal}) ការឆ្លើយតប
+        //     </Link>
+        //   </th>
+        // </tr>
       ));
       setTableItems(items);
     }
@@ -182,7 +210,7 @@ const DisplaySurveyList = (props) => {
                 variant="primary"
                 className="createSrvyBtn"
                 style={{
-                  borderRadius: 5,
+                  borderRadius: 50,
                   borderWidth: 1,
                   backgroundColor: "#1e90ff",
                   paddingTop: 10,
@@ -221,7 +249,7 @@ const DisplaySurveyList = (props) => {
                 >
                   Your Surveys
                 </h4>
-                <div style={{ borderTop: "solid", paddingTop: 8 }}>
+                <div>
                   <Table
                     striped
                     bordered

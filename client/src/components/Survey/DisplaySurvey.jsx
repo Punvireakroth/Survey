@@ -33,6 +33,7 @@ const DisplaySurvey = (props) => {
           _id: question._id,
           type: question.type,
           question: question.question,
+          description: question.description,
           response: {
             response: "",
             time: "",

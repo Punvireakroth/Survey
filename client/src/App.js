@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Outlet,
+  useLocation,
 } from "react-router-dom";
 import { useState } from "react";
 
@@ -12,6 +13,7 @@ import DisplaySurveyList from "./components/Survey/DisplaySurveyList";
 import DisplayResult from "./components/Survey/DisplayResult";
 import SurveySubmit from "./components/Survey/SurveySubmit";
 import NotFound from "./pages/NotFound";
+import Welcome from "./pages/Welcome";
 
 import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
@@ -22,9 +24,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 
 function BasicLayout() {
+  const location = useLocation();
+  // Check if current path is '/'
+  const isHomePage = location.pathname === "/";
+
   return (
     <>
-      <Header />
+      {!isHomePage && <Header />}
       <Outlet />
     </>
   );
@@ -48,6 +54,7 @@ function App() {
         <div className="container">
           <Routes>
             <Route path="/" element={<BasicLayout />}>
+              <Route path="/" element={<Welcome />} />
               <Route
                 path="dashboard"
                 element={
