@@ -1,18 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Table,
-  Container,
-  Col,
-  Row,
-  Button,
-  Spinner,
-  Card,
-} from "react-bootstrap";
+import { Container, Col, Row, Button, Spinner, Card } from "react-bootstrap";
 
 // Use to get currnet user information
 import { useSelector } from "react-redux";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaLink } from "react-icons/fa";
 
 const DisplaySurveyList = (props) => {
   const [userData, setUserData] = useState(null);
@@ -83,25 +75,121 @@ const DisplaySurveyList = (props) => {
   useEffect(() => {
     if (surveyList) {
       let items = surveyList.map((survey, index) => (
-        <Card style={{ width: "18rem" }}>
-          <Card.Img
-            variant="top"
-            src="https://i.pinimg.com/564x/76/1e/4e/761e4e53c11d254fbd67b5211c5316ba.jpg"
-          />
-          <Card.Body>
-            <Card.Title>{survey.title}</Card.Title>
-            <Card.Text>{survey.description}------</Card.Text>
-            <Button variant="primary">
-              <Link
-                to={`/create-survey/${survey._id}`}
-                style={{ color: "#fff", textDecoration: "none" }}
+        // <Card style={{ width: "18rem" }}>
+        //   <Card.Img
+        //     variant="top"
+        //     src="https://i.pinimg.com/564x/76/1e/4e/761e4e53c11d254fbd67b5211c5316ba.jpg"
+        //   />
+        //   <Card.Body>
+        //     <Card.Title>{survey.title}</Card.Title>
+        //     <Card.Text>{survey.description}------</Card.Text>
+        //     <Button variant="primary">
+        //       <Link
+        //         to={`/create-survey/${survey._id}`}
+        //         style={{ color: "#fff", textDecoration: "none" }}
+        //       >
+        //         Edit Survey
+        //       </Link>
+        //     </Button>
+        //   </Card.Body>
+        // </Card>
+
+        <Card style={{ fontFamily: "Nokora", height: 400, borderRadius: 20 }}>
+          <Card.Header
+            as="h6"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <div className="text-muted" style={{ padding: 5, marginLeft: 5 }}>
+              ទទួលបាន​ការឆ្លើយតបចំនួន {survey.responseTotal}
+            </div>
+
+            <div style={{ display: "flex" }}>
+              <Button
+                style={{
+                  backgroundColor: "#d33c64",
+                  padding: 20,
+                  borderRadius: 50,
+                  fontSize: 0.9 + "rem",
+                  color: "#fff",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                  marginRight: 7,
+                  height: 28,
+                  width: 70,
+                  textDecoration: "none",
+                  borderColor: "#d33c64",
+                }}
               >
-                Edit Survey
+                Delete
+              </Button>
+              <Button
+                variant="primary"
+                style={{
+                  backgroundColor: "#008cba",
+                  padding: 20,
+                  borderRadius: 50,
+                  color: "#fff",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                  margin: 0,
+                  height: 28,
+                  width: 28,
+                  textDecoration: "none",
+                  borderColor: "#008cba",
+                  fontSize: 0.9 + "rem",
+                }}
+              >
+                Edit
+              </Button>
+            </div>
+          </Card.Header>
+          <Card.Body
+            style={{
+              textAlign: "left",
+            }}
+          >
+            <div style={{ padding: 10 }}>
+              <Card.Title as="h2">{survey.title}</Card.Title>
+              <Card.Text style={{}}>
+                <hr
+                  style={{
+                    borderBottom: "none",
+                    border: "none",
+                    borderTop: "4px dotted #008cba",
+                    width: "50%",
+                  }}
+                />
+              </Card.Text>
+            </div>
+
+            <div>
+              <Link
+                to={`/display-results/${survey._id}`}
+                target="_blank"
+                style={{
+                  backgroundColor: "#0c66a9",
+                  padding: 7,
+                  borderRadius: 50,
+                  color: "#fff",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                  margin: 10,
+                  textDecoration: "none",
+                }}
+              >
+                Go to survey &nbsp;
+                <FaLink />
               </Link>
-            </Button>
+            </div>
           </Card.Body>
         </Card>
-
         // <tr key={index}>
         //   <th className="dashboardTableLarge">
         //     <Link
@@ -238,29 +326,31 @@ const DisplaySurveyList = (props) => {
           style={{ backgroundColor: "#edf4f5", marginTop: 40, padding: 50 }}
         >
           {tableItems && (
-            <Row>
-              <Col sm={12} lg={12}>
-                <h4
-                  style={{
-                    textAlign: "left",
-                    fontWeight: "normal",
-                    color: "#193c96",
-                  }}
-                >
-                  Your Surveys
-                </h4>
-                <div>
-                  <Table
-                    striped
-                    bordered
-                    hover
-                    style={{ width: "50%", textAlign: "center" }}
-                  >
-                    <tbody>{tableItems}</tbody>
-                  </Table>
-                </div>
-              </Col>
-            </Row>
+            <Container>{tableItems}</Container>
+
+            // <Row>
+            //   <Col sm={12} lg={12}>
+            //     <h4
+            //       style={{
+            //         textAlign: "left",
+            //         fontWeight: "normal",
+            //         color: "#193c96",
+            //       }}
+            //     >
+            //       Your Surveys
+            //     </h4>
+            //     <div>
+            //       <Table
+            //         striped
+            //         bordered
+            //         hover
+            //         style={{ width: "50%", textAlign: "center" }}
+            //       >
+            //         <tbody>{}</tbody>
+            //       </Table>
+            //     </div>
+            //   </Col>
+            // </Row>
           )}
         </Container>
       </section>
