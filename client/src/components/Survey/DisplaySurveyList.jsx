@@ -111,7 +111,11 @@ const DisplaySurveyList = (props) => {
               <Button
                 style={{
                   backgroundColor: "#d33c64",
-                  padding: 20,
+                  // padding: 20,
+                  paddingTop: 7,
+                  paddingBottom: 7,
+                  paddingLeft: 20,
+                  paddingRight: 20,
                   borderRadius: 50,
                   fontSize: 0.9 + "rem",
                   color: "#fff",
@@ -131,7 +135,10 @@ const DisplaySurveyList = (props) => {
                 variant="primary"
                 style={{
                   backgroundColor: "#008cba",
-                  padding: 20,
+                  paddingTop: 7,
+                  paddingBottom: 7,
+                  paddingLeft: 20,
+                  paddingRight: 20,
                   borderRadius: 50,
                   color: "#fff",
                   alignItems: "center",
@@ -139,7 +146,7 @@ const DisplaySurveyList = (props) => {
                   display: "flex",
                   margin: 0,
                   height: 28,
-                  width: 28,
+                  width: 50,
                   textDecoration: "none",
                   borderColor: "#008cba",
                   fontSize: 0.9 + "rem",
@@ -166,15 +173,36 @@ const DisplaySurveyList = (props) => {
                   }}
                 />
               </Card.Text>
+              <Button
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  backgroundColor: "#ffffff",
+                  paddingTop: 7,
+                  paddingBottom: 7,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  borderRadius: 50,
+                  color: "#0c66a9",
+                  borderColor: "#008cba",
+                  borderWidth: 2.9,
+                  marginTop: 40,
+                }}
+              >
+                See all responses
+              </Button>
             </div>
 
             <div>
               <Link
-                to={`/display-results/${survey._id}`}
+                to={`/display-survey/${survey._id}`}
                 target="_blank"
                 style={{
                   backgroundColor: "#0c66a9",
-                  padding: 7,
+                  paddingTop: 7,
+                  paddingBottom: 7,
+                  paddingLeft: 20,
+                  paddingRight: 20,
                   borderRadius: 50,
                   color: "#fff",
                   alignItems: "center",
@@ -182,6 +210,9 @@ const DisplaySurveyList = (props) => {
                   display: "flex",
                   margin: 10,
                   textDecoration: "none",
+                  position: "absolute",
+                  bottom: 10,
+                  right: 10,
                 }}
               >
                 Go to survey &nbsp;
@@ -323,8 +354,23 @@ const DisplaySurveyList = (props) => {
 
       <section>
         <Container
-          style={{ backgroundColor: "#edf4f5", marginTop: 40, padding: 50 }}
+          style={{
+            backgroundColor: "#edf4f5",
+            marginTop: 40,
+            padding: 50,
+          }}
         >
+          <h2
+            style={{
+              textAlign: "left",
+              fontWeight: "600",
+              color: "#193c96",
+              marginLeft: 15,
+              marginBottom: 25,
+            }}
+          >
+            Your Surveys
+          </h2>
           {tableItems && (
             <Container>{tableItems}</Container>
 
