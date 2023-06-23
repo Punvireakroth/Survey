@@ -52,11 +52,16 @@ const getSurveysByUser = asyncHandler(async (req, res) => {
     res.status(404).json("No surveys found");
   } else {
     // Extract necessary data from each survey
-    const surveyList = surveys.map((survey) => ({
-      title: survey.title,
-      responseTotal: survey.questions[0].responses.length,
-      _id: survey._id,
-    }));
+    const surveyList = surveys.map((survey) => {
+      const responseTotal = survey.questions[0]?.responses?.length || 0;
+
+      return {
+        title: survey.title,
+        description: survey.description,
+        responseTotal,
+        _id: survey._id,
+      };
+    });
 
     // Send the survey list as the response
     res.status(200).json(surveyList);
