@@ -75,25 +75,6 @@ const DisplaySurveyList = (props) => {
   useEffect(() => {
     if (surveyList) {
       let items = surveyList.map((survey, index) => (
-        // <Card style={{ width: "18rem" }}>
-        //   <Card.Img
-        //     variant="top"
-        //     src="https://i.pinimg.com/564x/76/1e/4e/761e4e53c11d254fbd67b5211c5316ba.jpg"
-        //   />
-        //   <Card.Body>
-        //     <Card.Title>{survey.title}</Card.Title>
-        //     <Card.Text>{survey.description}------</Card.Text>
-        //     <Button variant="primary">
-        //       <Link
-        //         to={`/create-survey/${survey._id}`}
-        //         style={{ color: "#fff", textDecoration: "none" }}
-        //       >
-        //         Edit Survey
-        //       </Link>
-        //     </Button>
-        //   </Card.Body>
-        // </Card>
-
         <Card
           style={{
             fontFamily: "Nokora",
@@ -137,29 +118,31 @@ const DisplaySurveyList = (props) => {
               >
                 Delete
               </Button>
-              <Button
-                variant="primary"
-                style={{
-                  backgroundColor: "#008cba",
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  borderRadius: 50,
-                  color: "#fff",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  display: "flex",
-                  margin: 0,
-                  height: 28,
-                  width: 50,
-                  textDecoration: "none",
-                  borderColor: "#008cba",
-                  fontSize: 0.9 + "rem",
-                }}
-              >
-                Edit
-              </Button>
+              <Link to={`/create-survey/${survey._id}`} target="_blank">
+                <Button
+                  variant="primary"
+                  style={{
+                    backgroundColor: "#008cba",
+                    paddingTop: 7,
+                    paddingBottom: 7,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    borderRadius: 50,
+                    color: "#fff",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    display: "flex",
+                    margin: 0,
+                    height: 28,
+                    width: 50,
+                    textDecoration: "none",
+                    borderColor: "#008cba",
+                    fontSize: 0.9 + "rem",
+                  }}
+                >
+                  Edit
+                </Button>
+              </Link>
             </div>
           </Card.Header>
           <Card.Body
