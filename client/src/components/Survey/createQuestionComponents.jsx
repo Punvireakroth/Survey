@@ -3,14 +3,32 @@ import CloseButton from "react-bootstrap/CloseButton";
 
 export function ShortResponse(props) {
   return (
-    <Form.Group className="mb-3">
+    <Form.Group
+      className="mb-3"
+      style={{
+        marginTop: 30,
+        backgroundColor: "#edf4f5",
+        padding: 20,
+        borderRadius: 7,
+        border: "3px dashed rgba(122, 192, 215, .6)",
+        color: "#0c66a9",
+        fontSize: 1.4 + "rem",
+        position: "relative",
+      }}
+    >
       <CloseButton
         className="closeBtn"
         onClick={(e) => props.removeQuestion(e, props.question.id)}
+        style={{ position: "absolute", top: 10, right: 10 }}
       />
       <h4>
-        Question {props.index + 1}:
-        <medium className="text-muted">Short Reponse Question</medium>
+        Question {props.index + 1}:{" "}
+        <medium
+          className="text-muted"
+          style={{ color: "gray", fontSize: 1.2 + "rem" }}
+        >
+          Short Reponse Question
+        </medium>
       </h4>
       <Form.Label>Add your Question:</Form.Label>
       <Form.Control
@@ -21,6 +39,12 @@ export function ShortResponse(props) {
         value={props.question.question}
         type="text"
         placeholder="Add Your Question"
+        style={{
+          borderRadius: 1,
+          color: "#42a4c4",
+          fontSize: 1.1 + "rem",
+          borderColor: "#008cba",
+        }}
       />
     </Form.Group>
   );
@@ -52,7 +76,13 @@ export function TrueFalse(props) {
 
       <h4>
         Question {props.index + 1}:
-        <medium className="text-muted"> True/False Question</medium>
+        <medium
+          className="text-muted"
+          style={{ color: "gray", fontSize: 1.2 + "rem" }}
+        >
+          {" "}
+          True/False Question
+        </medium>
       </h4>
       <Form.Label>Add Your Question:</Form.Label>
       <Form.Control
@@ -74,15 +104,39 @@ export function TrueFalse(props) {
 
 export function Paragraph(props) {
   return (
-    <Form.Group className="mb-3">
+    <Form.Group
+      className="mb-3"
+      style={{
+        marginTop: 30,
+        backgroundColor: "#edf4f5",
+        padding: 20,
+        borderRadius: 7,
+        border: "3px dashed rgba(122, 192, 215, .6)",
+        color: "#0c66a9",
+        fontSize: 1.4 + "rem",
+        position: "relative",
+      }}
+    >
       <CloseButton
         className="closeBtn"
         onClick={(e) => props.removeQuestion(e, props.question._id)}
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          color: "#0c66a9",
+        }}
       />
 
       <h4>
         Question {props.index + 1}:
-        <medium className="text-muted"> Paragraph Response Question</medium>
+        <medium
+          className="text-muted"
+          style={{ color: "gray", fontSize: 1.2 + "rem" }}
+        >
+          {" "}
+          Paragraph Response Question
+        </medium>
       </h4>
       <Form.Label>Add Your Question:</Form.Label>
       <Form.Control
@@ -93,6 +147,12 @@ export function Paragraph(props) {
         value={props.question.question}
         type="text"
         placeholder="Add Your Question"
+        style={{
+          borderRadius: 1,
+          color: "#42a4c4",
+          fontSize: 1.1 + "rem",
+          borderColor: "#008cba",
+        }}
       />
     </Form.Group>
   );
@@ -100,7 +160,19 @@ export function Paragraph(props) {
 
 export function SurveyTitle(props) {
   return (
-    <Form.Group className="mb-3">
+    <Form.Group
+      className="mb-3"
+      style={{
+        marginTop: 30,
+        backgroundColor: "#edf4f5",
+        padding: 20,
+        borderRadius: 7,
+        border: "3px dashed rgba(122, 192, 215, .6)",
+        color: "#0c66a9",
+        fontSize: 1.4 + "rem",
+        position: "relative",
+      }}
+    >
       <h4>Survey Title and Description</h4>
       <Form.Label>Add a Title to Your Survey</Form.Label>
       <Form.Control
@@ -110,6 +182,12 @@ export function SurveyTitle(props) {
         value={props.title}
         type="text"
         placeholder="Your Survey Title"
+        style={{
+          borderRadius: 1,
+          color: "#42a4c4",
+          fontSize: 1.1 + "rem",
+          borderColor: "#008cba",
+        }}
       />
       <br />
       <Form.Label>Add a Description to Your Survey</Form.Label>
@@ -120,6 +198,12 @@ export function SurveyTitle(props) {
         value={props.description}
         type="text"
         placeholder="Your Survey Description"
+        style={{
+          borderRadius: 1,
+          color: "#42a4c4",
+          fontSize: 1.1 + "rem",
+          borderColor: "#008cba",
+        }}
       />
     </Form.Group>
   );
