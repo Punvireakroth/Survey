@@ -1,9 +1,68 @@
 import { Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 
 import uniqid from "uniqid";
 
 export function ShortResponse(props) {
+  // get user location
+  const [currLocation, setCurrLocation] = useState("ចុចប៊ូតុងយកទីតាំង");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getLocation = () => {
+    setIsLoading(true);
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      setCurrLocation({ latitude, longitude });
+      console.log(currLocation);
+      setIsLoading(false);
+
+      if (props.question.question.includes("ទីតាំង")) {
+        props.onChange(
+          { target: { value: `${latitude}, ${longitude}` } },
+          props.responseId,
+          "short response"
+        );
+      }
+    });
+  };
+
+  // useEffect(() => {
+  //   const geolocationGet = () => {
+  //     navigator.geolocation.getCurrentPosition((position) => {
+  //       const { latitude, longitude } = position.coords;
+  //       setCurrLocation({ latitude, longitude });
+  //       console.log(currLocation);
+  //     });
+  //   };
+
+  //   const debounce = (fn, delay) => {
+  //     let timeoutId;
+  //     return (...args) => {
+  //       clearTimeout(timeoutId);
+  //       timeoutId = setTimeout(() => {
+  //         fn.apply(this, args);
+  //       }, delay);
+  //     };
+  //   };
+
+  //   const delayedGeolocationGet = debounce(geolocationGet, 1000);
+
+  //   delayedGeolocationGet();
+
+  //   return () => {
+  //     clearTimeout(delayedGeolocationGet);
+  //   };
+  // }, []);
+
+  // If question about location is asked, set the default value to the user's location
+
+  const getLocationButton = props.question.question.includes("ទីតាំង");
+
+  const handleInputClick = (e) => {
+    e.target.select(); // Select the text in the input field
+  };
+
   return (
     <Form.Group
       className="mb-3"
@@ -15,6 +74,7 @@ export function ShortResponse(props) {
         border: "3px dashed rgba(122, 192, 215, .6)",
         color: "#0c66a9",
         fontSize: 1.4 + "rem",
+        position: "relative",
       }}
     >
       <Form.Label>
@@ -22,6 +82,7 @@ export function ShortResponse(props) {
       </Form.Label>
       <Form.Control
         id={props.question._id}
+        onClick={handleInputClick} // Handle click event to select the text
         onChange={(e) => props.onChange(e, props.responseId, "short response")}
         name="short response"
         value={props.question.response.response}
@@ -32,9 +93,34 @@ export function ShortResponse(props) {
           borderRadius: 1,
           color: "#42a4c4",
           fontSize: 1.1 + "rem",
-          borderColor: "#undefined",
         }}
       />
+      {getLocationButton && (
+        <Button
+          variant="primary"
+          onClick={getLocation}
+          disabled={isLoading}
+          style={{
+            marginLeft: "10px",
+            position: "absolute",
+            right: 20,
+            top: 10,
+            alignItems: "center",
+            backgroundColor: "#ffffff",
+            paddingTop: 2,
+            paddingBottom: 0,
+            paddingLeft: 20,
+            paddingRight: 20,
+            borderRadius: 50,
+            color: "#fff",
+            borderColor: "#0c66a9 ",
+            backgroundColor: "#0c66a9 ",
+            borderWidth: 2.9,
+          }}
+        >
+          {isLoading ? "Loading..." : "យកទីតំាង Auto"}
+        </Button>
+      )}
     </Form.Group>
   );
 }
