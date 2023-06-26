@@ -3,7 +3,6 @@ import { Button, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import uniqid from "uniqid";
 import {
-  // MultipleChoice,
   Paragraph,
   ShortResponse,
   TrueFalse,
@@ -284,6 +283,17 @@ const CreateSurvey = (props) => {
   return (
     <div className="mb-5">
       <SurveyTitle onChange={handleSurveyChange} survey={survey} />
+      <hr
+        style={{
+          marginTop: 30,
+          borderBottomStyle: "none",
+          borderTopStyle: "dotted",
+          width: 20 + "%",
+          margin: 0 + " auto",
+          borderWidth: 9 + "px",
+          borderColor: "#42a4c4",
+        }}
+      />
       {form}
       {showAddQuestionButton === true ? (
         //showAddAndSaveBtns()
@@ -293,11 +303,44 @@ const CreateSurvey = (props) => {
               className="m-2"
               variant="success"
               onClick={() => setShowAddQuestionButton(false)}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                paddingTop: 7,
+                paddingBottom: 7,
+                paddingLeft: 30,
+                paddingRight: 30,
+                borderRadius: 50,
+                color: "#ffffff",
+                borderWidth: 2.9,
+                marginTop: 40,
+                marginBottom: 40 + "px",
+              }}
             >
               Add Question
             </Button>
 
-            <Button className="m-2" variant="info" onClick={onSubmitSurvey}>
+            <Button
+              className="m-2"
+              variant="info"
+              onClick={onSubmitSurvey}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                backgroundColor: "#ffffff",
+                paddingTop: 7,
+                paddingBottom: 7,
+                paddingLeft: 50,
+                paddingRight: 50,
+                borderRadius: 50,
+                color: "#ffffff",
+                borderColor: "#0c66a9 ",
+                backgroundColor: "#0c66a9 ",
+                borderWidth: 2.9,
+                marginTop: 40,
+                marginBottom: 40 + "px",
+              }}
+            >
               Save and Finish Survey
             </Button>
           </div>
@@ -306,6 +349,22 @@ const CreateSurvey = (props) => {
             className="m-2"
             variant="info"
             onClick={() => setShowAddQuestionButton(false)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              backgroundColor: "#ffffff",
+              paddingTop: 7,
+              paddingBottom: 7,
+              paddingLeft: 50,
+              paddingRight: 50,
+              borderRadius: 50,
+              color: "#ffffff",
+              borderColor: "#0c66a9 ",
+              backgroundColor: "#0c66a9 ",
+              borderWidth: 2.9,
+              marginTop: 40,
+              marginBottom: 40 + "px",
+            }}
           >
             Add Question
           </Button>
@@ -313,6 +372,8 @@ const CreateSurvey = (props) => {
       ) : (
         chooseQuestionTypeForm
       )}
+      <br />
+      <br />
     </div>
   );
 };
