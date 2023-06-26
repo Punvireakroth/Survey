@@ -152,7 +152,7 @@ const DisplaySurveyList = (props) => {
           >
             <div style={{ padding: 10 }}>
               <Card.Title as="h2">{survey.title}</Card.Title>
-              <Card.Text style={{}}>
+              <Card.Text>
                 <hr
                   style={{
                     borderBottom: "none",
@@ -162,24 +162,30 @@ const DisplaySurveyList = (props) => {
                   }}
                 />
               </Card.Text>
-              <Button
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  backgroundColor: "#ffffff",
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  borderRadius: 50,
-                  color: "#0c66a9",
-                  borderColor: "#008cba",
-                  borderWidth: 2.9,
-                  marginTop: 40,
-                }}
+              <Link
+                to={`/display-results/${survey._id}`}
+                target="_blank"
+                style={{ textDecoration: "none" }}
               >
-                See all responses
-              </Button>
+                <Button
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    backgroundColor: "#ffffff",
+                    paddingTop: 7,
+                    paddingBottom: 7,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    borderRadius: 50,
+                    color: "#0c66a9",
+                    borderColor: "#008cba",
+                    borderWidth: 2.9,
+                    marginTop: 40,
+                  }}
+                >
+                  See all responses
+                </Button>
+              </Link>
             </div>
 
             <div>
