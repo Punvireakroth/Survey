@@ -1,4 +1,4 @@
-import { Button, Container, Row, Col, Form, Spinner } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import uniqid from "uniqid";
@@ -23,17 +23,24 @@ const DisplaySurvey = (props) => {
     try {
       const response = await fetch(
         `http://localhost:5000/${url}`,
-        fetchOptions
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        ...fetchOptions
       );
+
       const responseData = await response.json();
 
       let questions = [];
+
       responseData.questions.forEach((question) => {
         const newQuestion = {
           _id: question._id,
           type: question.type,
           question: question.question,
-          description: question.description,
+          answer_choices: question.answer_choices,
           response: {
             response: "",
             time: "",
@@ -71,6 +78,8 @@ const DisplaySurvey = (props) => {
 
   const submitSurvey = async (e) => {
     e.preventDefault();
+
+    // Save response to database
     try {
       const response = await fetch(
         `http://localhost:5000/api/surveys/update-responses/${survey._id}`,
@@ -85,7 +94,6 @@ const DisplaySurvey = (props) => {
           }),
         }
       );
-
       if (response.ok) {
         navigate(`/display-survey/submit-survey/${id}`);
       } else {
@@ -102,7 +110,7 @@ const DisplaySurvey = (props) => {
     callApi(`api/surveys/${id}`, {
       method: "GET",
     });
-  }, [id, callApi]);
+  }, []);
 
   useEffect(() => {
     if (survey.title === undefined) {
@@ -112,9 +120,7 @@ const DisplaySurvey = (props) => {
         </div>
       );
     } else {
-      let form = null;
-
-      form = survey.questions.map((question, index) => {
+      let form = survey.questions.map((question, index) => {
         switch (question.type) {
           case "short response":
             return (
