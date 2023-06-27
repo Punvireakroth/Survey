@@ -1,7 +1,7 @@
 import { Table, Row, Col } from "react-bootstrap";
 
 export function ShortResponseResult(props) {
-  const responses = props.question.response.map((response, index) => {
+  const responses = props.question.responses.map((response, index) => {
     <tr key={index}>
       <th style={{ fontWeight: "normal" }}>
         {index + 1}

@@ -1,21 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { ShortResponseResult } from "./displayResultComponents";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 
 export default function DisplayResult() {
   const { id } = useParams();
   const [survey, setSurvey] = useState(null);
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState(
+    <div style={{ textAlign: "center", padding: 20 }}>
+      <Spinner animation="border" />
+    </div>
+  );
 
   const callApi = async (url, fetchOptions) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/${url}`,
-        fetchOptions
-      );
+      const response = await fetch(`http://localhost:5000/${url}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        ...fetchOptions,
+      });
+
       const responseData = await response.json();
       setSurvey(responseData);
+      console.log(survey);
     } catch (e) {
       console.log(e.error);
     }
@@ -23,32 +31,34 @@ export default function DisplayResult() {
   useEffect(() => {
     callApi(`api/surveys/${id}`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
     });
   }, [id]);
 
   useEffect(() => {
     if (survey) {
-      const updateResult = survey.questions.map((question, index) => {
-        return (
-          <ShortResponseResult
-            key={question._id}
-            question={question}
-            index={index + 1}
-          />
-        );
+      const updatedResults = survey.questions.map((question, index) => {
+        if (
+          question.type === "short response" ||
+          question.type === "paragraph"
+        ) {
+          return (
+            <ShortResponseResult
+              key={id}
+              question={question}
+              index={index + 1}
+            />
+          );
+        }
       });
-      setResult(updateResult);
+      setResult(updatedResults);
     }
   }, [survey]);
 
   return (
-    <Container>
+    <div>
       <h2>{survey ? survey.title : null}</h2>
       <h4>Survey Result</h4>
       <Container>{result}</Container>
-    </Container>
+    </div>
   );
 }
