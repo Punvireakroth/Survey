@@ -73,24 +73,6 @@ const getSurveysByUser = asyncHandler(async (req, res) => {
 // @access private
 
 const createAndUpdateSurvey = asyncHandler(async (req, res) => {
-  // // Check for existing survey if exist => UPDATE : if not => CREAT
-  // const surveyId = req.body.survey_id;
-  // const existingSurvey = await Survey.findById(surveyId);
-
-  // if (existingSurvey) {
-  //   // If it exist UPDATE it
-  //   const updatedSurvey = await Survey.findByIdAndUpdate(surveyId, req.body, {
-  //     new: true,
-  //   });
-  //   res.status(200).json(updatedSurvey);
-  // } else {
-  //   // If it not exist, create it
-  //   const newSurvey = await Survey.create(req.body);
-  //   res.status(200).json(newSurvey);
-  // }
-
-  //check if the surveyid is already there
-  //if there, the survey must be updated
   //if not there, the survey must be created
   let findSurvey = await Survey.findById(req.body.survey_id);
   if (findSurvey) {
