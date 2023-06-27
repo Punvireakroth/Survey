@@ -17,27 +17,37 @@ const CreateSurvey = (props) => {
     description: "",
     questions: [],
   });
-  const [questionType, setQuestionType] = useState(1);
   const [showAddQuestionButton, setShowAddQuestionButton] = useState(true);
-  const [questions, setQuestions] = useState([]);
   const [editingPreviousSurvey, setEditingPreviousSurvey] = useState(false);
+  const [questions, setQuestions] = useState([]);
   const { id } = useParams();
-
-  // Rest of the code...
 
   // Get Survey
   const callApiToGetSurvey = useCallback(async (url, fetchOptions) => {
     try {
-      const response = await fetch(url, fetchOptions);
+      const response = await fetch(
+        url,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        ...fetchOptions
+      );
+
       const responseData = await response.json();
 
-      let questions = responseData.questions.map((question) => {
-        return {
+      // add blank responses to each question
+      let questions = [];
+
+      responseData.questions.forEach((question) => {
+        let newQuestion = {
           _id: question._id,
           type: question.type,
           question: question.question,
           answer_choices: question.answer_choices,
         };
+        questions.push(newQuestion);
       });
 
       let updatedSurvey = {
@@ -45,7 +55,6 @@ const CreateSurvey = (props) => {
         questions: [],
         title: responseData.title,
         description: responseData.description,
-        user_id: responseData.user_id,
       };
 
       setSurvey(updatedSurvey);
@@ -53,7 +62,7 @@ const CreateSurvey = (props) => {
     } catch (e) {
       console.log(e.error);
     }
-  }, []);
+  });
 
   const startSurvey = () => {
     if (id) {
@@ -70,16 +79,16 @@ const CreateSurvey = (props) => {
 
   // Update data based on the user input
   const handleSurveyChange = (e) => {
-    let surveyObject = {
-      ...survey,
-    };
+    let surveyObject = { ...survey };
     surveyObject[e.target.name] = e.target.value;
     setSurvey(surveyObject);
   };
 
-  const handleQuestionChange = (e, questionIndex) => {
+  const handleQuestionChange = (e) => {
     let questionArray = [...questions];
-
+    let questionIndex = questionArray.findIndex(
+      (question) => e.target.id === question._id
+    );
     if (e.target.getAttribute("answer") === "yes") {
       let answerChoices = questionArray[questionIndex].answer_choices;
       answerChoices[e.target.getAttribute("answernum")] = e.target.value;
@@ -88,14 +97,14 @@ const CreateSurvey = (props) => {
         ...questionArray[questionIndex],
         answer_choices: answerChoices,
       };
+      setQuestions(questionArray);
     } else {
       questionArray[questionIndex] = {
         ...questionArray[questionIndex],
         question: e.target.value,
       };
+      setQuestions(questionArray);
     }
-
-    setQuestions(questionArray);
   };
 
   // Add more answer for multiple choice questions
@@ -127,11 +136,6 @@ const CreateSurvey = (props) => {
       answer_choices: answerChoices,
     };
     setQuestions(questionArray);
-  };
-
-  const onQuestionTypeChange = (e) => {
-    setQuestionType(Number(e.target.value));
-    setShowAddQuestionButton(false);
   };
 
   // Add question to survey
@@ -185,7 +189,6 @@ const CreateSurvey = (props) => {
 
   const onSubmitSurvey = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch("/api/surveys/create-update", {
         method: "POST",
@@ -193,21 +196,18 @@ const CreateSurvey = (props) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          questions: questions.map((question) => ({
-            type: question.type,
-            question: question.question,
-            answer_choices: question.answer_choices,
-          })),
+          questions: questions,
           title: survey.title,
           description: survey.description,
           creationTime: new Date(),
+          survey_id: survey._id,
         }),
       });
 
       if (response.ok) {
         const responseData = await response.json();
-        props.sendSurveyId(responseData._id);
-        window.open(`/display-survey/${responseData._id}`, "_blank");
+        props.sendSurveyId(survey._id);
+        window.open(`/display-survey/${survey._id}`, "_blank");
       } else {
         console.log("Survey submission failed. Please try again.");
       }
