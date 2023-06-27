@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ShortResponseResult } from "./displayResultComponents";
 import { Container, Spinner } from "react-bootstrap";
