@@ -2,28 +2,38 @@ import { Table, Row, Col } from "react-bootstrap";
 
 export function ShortResponseResult(props) {
   const responses = props.question.responses.map((response, index) => {
-    <tr key={index}>
-      <th style={{ fontWeight: "normal" }}>
-        {index + 1}
-        {response.response}
-      </th>
-    </tr>;
+    return (
+      <tr key={index}>
+        <th style={{ fontWeight: "normal" }}>
+          {index + 1}) {response.response}
+        </th>
+      </tr>
+    );
   });
 
   return (
-    <Row>
+    <Row
+      style={{
+        backgroundColor: "#edf4f5",
+        paddingTop: 20,
+        marginTop: 30,
+        color: "#008cba",
+      }}
+    >
       <Col lg={3} sm={12} style={{ flexGrow: 6, margin: 10 }}>
-        <h4 style={{ textAlign: "center", fontWeight: 500 }}>
-          Question {props.index}: {props.question.question}
+        <h4
+          style={{ textAlign: "left", fontWeight: 500, fontFamily: "Nokora" }}
+        >
+          សំណួរទី {props.index}: {props.question.question}
         </h4>
         <div style={{ overflowY: "scroll", height: 300 }}>
-          <Table striped bordered hover>
+          <Table striped bordered hover style={{ fontFamily: "Nokora" }}>
             <thead>
               <tr>
-                <th>Responses</th>
+                <th style={{ color: "#008cba" }}>ការឆ្លើយតប</th>
               </tr>
             </thead>
-            <tbody>{responses}</tbody>
+            <tbody style={{ color: "#008cba" }}>{responses}</tbody>
           </Table>
         </div>
       </Col>
@@ -33,12 +43,9 @@ export function ShortResponseResult(props) {
 
 export function SurveyTitle(props) {
   return (
-    <>
-      <h2 style={{ textAlign: "center" }}>{props.survey.title}</h2>
-      <h4 style={{ textAlign: "center" }} className="text-muted">
-        {props.survey.description}
-      </h4>
+    <div>
+      <h2>{props.survey.title}</h2>
       <br />
-    </>
+    </div>
   );
 }

@@ -48,6 +48,8 @@ export default function DisplayResult() {
               index={index + 1}
             />
           );
+        } else {
+          return null;
         }
       });
       setResult(updatedResults);
@@ -56,8 +58,28 @@ export default function DisplayResult() {
 
   return (
     <div>
-      <h2>{survey ? survey.title : null}</h2>
-      <h4>Survey Result</h4>
+      <div
+        style={{
+          backgroundColor: "#edf4f5",
+          color: "#008cba",
+          paddingTop: 20,
+          paddingBottom: 20,
+          borderRadius: 7,
+        }}
+      >
+        <h2
+          style={{
+            textAlign: "center",
+            fontFamily: "Nokora",
+            fontWeight: "bold",
+          }}
+        >
+          {survey ? survey.title : null}
+        </h2>
+        <h4 style={{ textAlign: "center", fontFamily: "Nokora" }}>
+          លិទ្ធផលពីការឆ្លើយតប
+        </h4>
+      </div>
       <Container>{result}</Container>
     </div>
   );
