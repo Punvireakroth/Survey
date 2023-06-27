@@ -169,22 +169,18 @@ const saveResponsesToSurvey = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("That Survey was not found.");
   }
-  // Getting questions and the _id from the body
+  //getting questions and the _id from the body
   const { questions, _id } = req.body;
-  // New questions come from the database
+  //new questions comes from database
   let newQuestions = [...survey.questions];
 
   newQuestions.forEach((originalQuestion) => {
-    // Find matching index
+    //find matching index
     let index = questions.findIndex(
       (submittedQuestion) => submittedQuestion._id === originalQuestion._id
     );
-    // Initialize responses as an empty array if it's undefined
-    originalQuestion.responses = originalQuestion.responses || [];
-    // Ensure questions[index].response is defined before accessing its value
-    const response = questions[index]?.response || "";
-    // Push response onto responses array
-    originalQuestion.responses.push(response);
+    //push responses onto responses array
+    originalQuestion.responses.push(questions[index].response);
   });
 
   const updatedSurvey = await Survey.findByIdAndUpdate(
