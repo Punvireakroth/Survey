@@ -24,44 +24,24 @@ const CreateSurvey = (props) => {
   // Get Survey
   const callApiToGetSurvey = useCallback(async (url, fetchOptions) => {
     try {
-      const response = await fetch(
-        url,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+      const response = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
         },
-        ...fetchOptions
-      );
+        ...fetchOptions,
+      });
 
       const responseData = await response.json();
 
-      // add blank responses to each question
-      let questions = [];
+      // Update survey state with fetched survey data
+      setSurvey(responseData);
 
-      responseData.questions.forEach((question) => {
-        let newQuestion = {
-          _id: question._id,
-          type: question.type,
-          question: question.question,
-          answer_choices: question.answer_choices,
-        };
-        questions.push(newQuestion);
-      });
-
-      let updatedSurvey = {
-        _id: responseData._id,
-        questions: [],
-        title: responseData.title,
-        description: responseData.description,
-      };
-
-      setSurvey(updatedSurvey);
-      setQuestions(questions);
-    } catch (e) {
-      console.log(e.error);
+      // Update questions state
+      setQuestions(responseData.questions);
+    } catch (error) {
+      console.log("An error occurred while fetching the survey:", error);
     }
-  });
+  }, []);
 
   const startSurvey = () => {
     if (id) {
@@ -74,95 +54,91 @@ const CreateSurvey = (props) => {
 
   useEffect(() => {
     startSurvey();
-  }, []);
+  }, [id]);
 
   // Update data based on the user input
   const handleSurveyChange = (e) => {
-    let surveyObject = { ...survey };
-    surveyObject[e.target.name] = e.target.value;
-    setSurvey(surveyObject);
+    setSurvey((prevSurvey) => ({
+      ...prevSurvey,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const handleQuestionChange = (e) => {
-    let questionArray = [...questions];
-    let questionIndex = questionArray.findIndex(
-      (question) => e.target.id === question._id
-    );
-
-    questionArray[questionIndex] = {
-      ...questionArray[questionIndex],
-      question: e.target.value,
-    };
-
-    setQuestions(questionArray);
+  const handleQuestionChange = (e, questionIndex) => {
+    setQuestions((prevQuestions) => {
+      const updatedQuestions = [...prevQuestions];
+      updatedQuestions[questionIndex] = {
+        ...updatedQuestions[questionIndex],
+        question: e.target.value,
+      };
+      return updatedQuestions;
+    });
   };
 
   // Add more answer for multiple choice questions
-  const addMoreAnswerChoices = (e, id) => {
-    let questionArray = [...questions];
-    let questionIndex = questionArray.findIndex(
-      (question) => id === question._id
-    );
-    let answerChoices = questionArray[questionIndex].answer_choices;
-    answerChoices.push("");
-    questionArray[questionIndex] = {
-      ...questionArray[questionIndex],
-      answer_choices: answerChoices,
-    };
-    setQuestions(questionArray);
+  const addMoreAnswerChoices = (e, questionIndex) => {
+    setQuestions((prevQuestions) => {
+      const updatedQuestions = [...prevQuestions];
+      const answerChoices = updatedQuestions[questionIndex].answer_choices;
+      answerChoices.push("");
+      updatedQuestions[questionIndex] = {
+        ...updatedQuestions[questionIndex],
+        answer_choices: answerChoices,
+      };
+      return updatedQuestions;
+    });
   };
 
   // Add question to survey
-
   const addQuestion = (e) => {
     setShowAddQuestionButton(true);
+    const questionType = e.target.value;
 
-    if (e.target.value === "1") {
-      let questionArray = [...questions];
-      questionArray.push({
-        type: "short response",
-        question: "",
-        answer_choices: [],
-        _id: uniqid("question-"),
-        responses: [],
-      });
-      setQuestions(questionArray);
-    } else if (e.target.value === "2") {
-      let questionArray = [...questions];
-      questionArray.push({
-        type: "true/false",
-        question: "",
-        answer_choices: ["True", "False"],
-        _id: uniqid("question-"),
-        responses: [],
-      });
-      setQuestions(questionArray);
-    } else if (e.target.value === "3") {
-      let questionArray = [...questions];
-      questionArray.push({
-        type: "paragraph",
-        question: "",
-        answer_choices: [],
-        _id: uniqid("question-"),
-        responses: [],
-      });
-      setQuestions(questionArray);
-    }
+    setQuestions((prevQuestions) => {
+      let updatedQuestions = [...prevQuestions];
+
+      if (questionType === "1") {
+        updatedQuestions.push({
+          type: "short response",
+          question: "",
+          answer_choices: [],
+          _id: uniqid("question-"),
+          responses: [],
+        });
+      } else if (questionType === "2") {
+        updatedQuestions.push({
+          type: "true/false",
+          question: "",
+          answer_choices: ["True", "False"],
+          _id: uniqid("question-"),
+          responses: [],
+        });
+      } else if (questionType === "3") {
+        updatedQuestions.push({
+          type: "paragraph",
+          question: "",
+          answer_choices: [],
+          _id: uniqid("question-"),
+          responses: [],
+        });
+      }
+
+      return updatedQuestions;
+    });
   };
 
   // Remove question from survey
-  const removeQuestion = (e, id) => {
-    let questionArray = [...questions];
-    let questionIndex = questionArray.findIndex(
-      (question) => id === question._id
-    );
-
-    questionArray.splice(questionIndex, 1);
-    setQuestions(questionArray);
+  const removeQuestion = (questionIndex) => {
+    setQuestions((prevQuestions) => {
+      const updatedQuestions = [...prevQuestions];
+      updatedQuestions.splice(questionIndex, 1);
+      return updatedQuestions;
+    });
   };
 
   const onSubmitSurvey = async (e) => {
     e.preventDefault();
+
     try {
       const response = await fetch("/api/surveys/create-update", {
         method: "POST",
@@ -179,9 +155,9 @@ const CreateSurvey = (props) => {
       });
 
       if (response.ok) {
-        await response.json();
-        props.sendSurveyId(survey._id);
-        window.open(`/display-survey/${survey._id}`, "_blank");
+        const responseData = await response.json();
+        props.sendSurveyId(responseData._id);
+        window.open(`/display-survey/${responseData._id}`, "_blank");
       } else {
         console.log("Survey submission failed. Please try again.");
       }
@@ -192,18 +168,16 @@ const CreateSurvey = (props) => {
 
   const makeSurvey = () => {
     const form = questions.map((question, index) => {
-      console.log(question.type);
       switch (question.type) {
-        // ...
         case "true/false":
           return (
             <TrueFalse
               key={question._id}
               question={question}
               answerChoices={addMoreAnswerChoices}
-              onChange={handleQuestionChange} // Pass the question index to handleQuestionChange
+              onChange={(e) => handleQuestionChange(e, index)}
               id={question._id}
-              removeQuestion={removeQuestion}
+              removeQuestion={() => removeQuestion(index)}
               index={index}
             />
           );
@@ -212,9 +186,9 @@ const CreateSurvey = (props) => {
             <ShortResponse
               key={question._id}
               question={question}
-              onChange={handleQuestionChange} // Pass the question index to handleQuestionChange
+              onChange={(e) => handleQuestionChange(e, index)}
               id={question._id}
-              removeQuestion={removeQuestion}
+              removeQuestion={() => removeQuestion(index)}
               index={index}
             />
           );
@@ -223,9 +197,9 @@ const CreateSurvey = (props) => {
             <Paragraph
               key={question._id}
               question={question}
-              onChange={handleQuestionChange} // Pass the question index to handleQuestionChange
+              onChange={(e) => handleQuestionChange(e, index)}
               id={question._id}
-              removeQuestion={removeQuestion}
+              removeQuestion={() => removeQuestion(index)}
               index={index}
             />
           );
@@ -233,6 +207,7 @@ const CreateSurvey = (props) => {
           return null;
       }
     });
+
     const chooseQuestionTypeForm = (
       <>
         <h4>Choose a Question Type</h4>
@@ -270,7 +245,6 @@ const CreateSurvey = (props) => {
       />
       {form}
       {showAddQuestionButton === true ? (
-        //showAddAndSaveBtns()
         questions.length >= 1 ? (
           <div>
             <Button
@@ -308,8 +282,8 @@ const CreateSurvey = (props) => {
                 paddingRight: 50,
                 borderRadius: 50,
                 color: "#ffffff",
-                borderColor: "#0c66a9 ",
-                backgroundColor: "#0c66a9 ",
+                borderColor: "#0c66a9",
+                backgroundColor: "#0c66a9",
                 borderWidth: 2.9,
                 marginTop: 40,
                 marginBottom: 40 + "px",
@@ -333,8 +307,8 @@ const CreateSurvey = (props) => {
               paddingRight: 50,
               borderRadius: 50,
               color: "#ffffff",
-              borderColor: "#0c66a9 ",
-              backgroundColor: "#0c66a9 ",
+              borderColor: "#0c66a9",
+              backgroundColor: "#0c66a9",
               borderWidth: 2.9,
               marginTop: 40,
               marginBottom: 40 + "px",
