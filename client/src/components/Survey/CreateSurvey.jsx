@@ -8,7 +8,7 @@ import {
   SurveyTitle,
 } from "./createQuestionComponents";
 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const CreateSurvey = (props) => {
   const [survey, setSurvey] = useState({
@@ -20,6 +20,8 @@ const CreateSurvey = (props) => {
   const [editingPreviousSurvey, setEditingPreviousSurvey] = useState(false);
   const [questions, setQuestions] = useState([]);
   const { id } = useParams();
+
+  const Navigate = useNavigate();
 
   // Get Survey
   const callApiToGetSurvey = useCallback(async (url, fetchOptions) => {
@@ -157,6 +159,7 @@ const CreateSurvey = (props) => {
       if (response.ok) {
         const responseData = await response.json();
         props.sendSurveyId(responseData._id);
+        Navigate(`/dashboard`);
         window.open(`/display-survey/${responseData._id}`, "_blank");
       } else {
         console.log("Survey submission failed. Please try again.");
