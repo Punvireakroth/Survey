@@ -5,10 +5,7 @@ const surveySchema = mongoose.Schema({
     type: [{}],
     required: true,
   },
-  // user_id: {
-  //   type: String,
-  //   required: true,
-  // },
+
   title: {
     type: String,
   },
@@ -18,6 +15,7 @@ const surveySchema = mongoose.Schema({
   creationTime: {
     type: String,
   },
+  _id: { type: String },
 });
 
 module.exports = mongoose.model("Survey", surveySchema);

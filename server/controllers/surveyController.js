@@ -102,6 +102,8 @@ const createAndUpdateSurvey = asyncHandler(async (req, res) => {
     );
     res.status(200).json(updatedSurvey);
   } else {
+    // potetial delete later
+
     const survey = await Survey.create({
       questions: req.body.questions,
       user_id: req.body.user_id,
