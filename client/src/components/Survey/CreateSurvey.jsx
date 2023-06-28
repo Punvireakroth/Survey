@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useSelector } from "react-redux";
 import uniqid from "uniqid";
 import {
   Paragraph,
@@ -89,22 +88,13 @@ const CreateSurvey = (props) => {
     let questionIndex = questionArray.findIndex(
       (question) => e.target.id === question._id
     );
-    if (e.target.getAttribute("answer") === "yes") {
-      let answerChoices = questionArray[questionIndex].answer_choices;
-      answerChoices[e.target.getAttribute("answernum")] = e.target.value;
 
-      questionArray[questionIndex] = {
-        ...questionArray[questionIndex],
-        answer_choices: answerChoices,
-      };
-      setQuestions(questionArray);
-    } else {
-      questionArray[questionIndex] = {
-        ...questionArray[questionIndex],
-        question: e.target.value,
-      };
-      setQuestions(questionArray);
-    }
+    questionArray[questionIndex] = {
+      ...questionArray[questionIndex],
+      question: e.target.value,
+    };
+
+    setQuestions(questionArray);
   };
 
   // Add more answer for multiple choice questions
@@ -115,22 +105,6 @@ const CreateSurvey = (props) => {
     );
     let answerChoices = questionArray[questionIndex].answer_choices;
     answerChoices.push("");
-    questionArray[questionIndex] = {
-      ...questionArray[questionIndex],
-      answer_choices: answerChoices,
-    };
-    setQuestions(questionArray);
-  };
-
-  // Remove answer choice from multiple choice question
-  const removeAnswerChoice = (e, id, ansIndex) => {
-    let questionArray = [...questions];
-    let questionIndex = questionArray.findIndex(
-      (question) => id === question._id
-    );
-
-    let answerChoices = questionArray[questionIndex].answer_choices;
-    answerChoices.splice(ansIndex, 1);
     questionArray[questionIndex] = {
       ...questionArray[questionIndex],
       answer_choices: answerChoices,
@@ -205,7 +179,7 @@ const CreateSurvey = (props) => {
       });
 
       if (response.ok) {
-        const responseData = await response.json();
+        await response.json();
         props.sendSurveyId(survey._id);
         window.open(`/display-survey/${survey._id}`, "_blank");
       } else {
@@ -227,7 +201,7 @@ const CreateSurvey = (props) => {
               key={question._id}
               question={question}
               answerChoices={addMoreAnswerChoices}
-              onChange={(e) => handleQuestionChange(e, index)} // Pass the question index to handleQuestionChange
+              onChange={handleQuestionChange} // Pass the question index to handleQuestionChange
               id={question._id}
               removeQuestion={removeQuestion}
               index={index}
@@ -237,8 +211,8 @@ const CreateSurvey = (props) => {
           return (
             <ShortResponse
               key={question._id}
-              question={question.question}
-              onChange={(e) => handleQuestionChange(e, index)} // Pass the question index to handleQuestionChange
+              question={question}
+              onChange={handleQuestionChange} // Pass the question index to handleQuestionChange
               id={question._id}
               removeQuestion={removeQuestion}
               index={index}
@@ -248,8 +222,8 @@ const CreateSurvey = (props) => {
           return (
             <Paragraph
               key={question._id}
-              question={question.question}
-              onChange={(e) => handleQuestionChange(e, index)} // Pass the question index to handleQuestionChange
+              question={question}
+              onChange={handleQuestionChange} // Pass the question index to handleQuestionChange
               id={question._id}
               removeQuestion={removeQuestion}
               index={index}

@@ -34,7 +34,7 @@ export function ShortResponse(props) {
       <Form.Control
         id={props.question._id}
         answer="no"
-        onChange={props.onChange}
+        onChange={(e) => props.onChange(e)}
         name="short response"
         value={props.question.question}
         type="text"
