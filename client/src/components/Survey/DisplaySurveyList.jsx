@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Container, Col, Row, Button, Spinner, Card } from "react-bootstrap";
+import {
+  Container,
+  Col,
+  Row,
+  Button,
+  Spinner,
+  Card,
+  Modal,
+} from "react-bootstrap";
 
 // Use to get currnet user information
 import { useSelector } from "react-redux";
@@ -11,6 +19,8 @@ const DisplaySurveyList = (props) => {
   const [responseCount, setResponseCount] = useState(0);
   const [surveyDataCounter, setSurveyDataCounter] = useState(0);
   const [surveyList, setSurveyList] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [surveyIdToDelete, setSurveyIdToDelete] = useState(null);
   const [tableItems, setTableItems] = useState(
     <tr>
       <th>
@@ -20,6 +30,7 @@ const DisplaySurveyList = (props) => {
       </th>
     </tr>
   );
+
   let navigate = useNavigate();
 
   // get current user information
@@ -27,14 +38,11 @@ const DisplaySurveyList = (props) => {
 
   const callApi = useCallback(async (userId) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/surveys/surveys-by-user/${userId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`/api/surveys/surveys-by-user/${userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const responseData = await response.json();
       if (responseData === "No surveys found") {
         setTableItems(null);
@@ -97,6 +105,7 @@ const DisplaySurveyList = (props) => {
 
             <div style={{ display: "flex" }}>
               <Button
+                onClick={() => handleDeleteSurvey(survey._id)}
                 style={{
                   backgroundColor: "#d33c64",
                   paddingTop: 7,
@@ -135,8 +144,8 @@ const DisplaySurveyList = (props) => {
                     margin: 0,
                     height: 28,
                     width: 50,
-                    textDecoration: "none",
                     borderColor: "#008cba",
+                    textDecoration: "none",
                     fontSize: 0.9 + "rem",
                   }}
                 >
@@ -221,6 +230,44 @@ const DisplaySurveyList = (props) => {
     }
   }, [surveyList]);
 
+  // handle the delete survey
+  const handleDeleteSurvey = async (surveyId) => {
+    setShowConfirmation(true); // show the confirmation modal
+    // Store the surveyId in a separate state variable to access it inside the modal
+    setSurveyIdToDelete(surveyId);
+  };
+
+  // Confirm delete survey modal
+  const handleConfirmDelete = async () => {
+    try {
+      const reponse = await fetch(`/api/surveys/delete/${surveyIdToDelete}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (reponse.ok) {
+        const updatedSurveyList = surveyList.filter(
+          (survey) => survey._id !== surveyIdToDelete
+        );
+        setSurveyList(updatedSurveyList);
+        console.log("A Survey was deleted it's ID is ", surveyIdToDelete);
+        setShowConfirmation(false); // Close the confirmation modal
+      } else {
+        console.log("Survey not deleted successfully");
+      }
+    } catch (e) {
+      console.log(e.error);
+    }
+  };
+
+  // Cancel delete survey modal
+  const handleCancelDelete = () => {
+    setShowConfirmation(false); // Close the confirmation modal
+  };
+
+  // Create a new survey
   const onCreateSurveyClick = () => {
     // props.sendSurveyId(null);
     navigate("/create-survey");
@@ -338,6 +385,49 @@ const DisplaySurveyList = (props) => {
             Your Surveys
           </h2>
           {tableItems && <Container>{tableItems}</Container>}
+
+          {/* Confirmation Modal */}
+          <Modal
+            show={showConfirmation}
+            onHide={handleCancelDelete}
+            centered
+            style={{ border: "none" }}
+          >
+            <Modal.Header closeButton style={{ color: "#0c66a9" }}>
+              <Modal.Title>Delete Confirmation</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ fontFamily: "Nokora", color: "#008cba" }}>
+              <p>តើអ្នកប្រាកដថាចង់លុបការស្ទង់មតិមួយនេះទេ?</p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                onClick={handleCancelDelete}
+                style={{
+                  backgroundColor: "#008cba",
+                  borderColor: "#008cba",
+                  borderRadius: 50,
+                  borderWidth: 1,
+                  paddingLeft: 10,
+                  paddingRight: 10,
+                }}
+              >
+                cancel
+              </Button>
+              <Button
+                style={{
+                  backgroundColor: "#d33c64",
+                  borderColor: "#d33c64",
+                  borderRadius: 50,
+                  borderWidth: 1,
+                  paddingLeft: 10,
+                  paddingRight: 10,
+                }}
+                onClick={handleConfirmDelete}
+              >
+                Delete
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </Container>
       </section>
     </>
