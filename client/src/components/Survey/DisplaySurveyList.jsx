@@ -216,35 +216,6 @@ const DisplaySurveyList = (props) => {
             </div>
           </Card.Body>
         </Card>
-        // <tr key={index}>
-        //   <th className="dashboardTableLarge">
-        //     <Link
-        //       to={`/create-survey/${survey._id}`}
-        //       style={{ textDecoration: "none", fontFamily: "Nokora" }}
-        //     >
-        //       {survey.title}
-        //     </Link>
-        //   </th>
-        //   <th className="dashboardTableSmall">
-        //     <Link
-        //       className="linkSmall"
-        //       to={`/display-survey/${survey._id}`}
-        //       target="_blank"
-        //       style={{ textDecoration: "none", fontFamily: "Nokora" }}
-        //     >
-        //       ទៅកាន់ការស្ទង់មតិ
-        //     </Link>
-        //   </th>
-        //   <th className="dashboardTableSmall">
-        //     <Link
-        //       className="linkSmall"
-        //       to={`/display-results/${survey._id}`}
-        //       style={{ textDecoration: "none", fontFamily: "Nokora" }}
-        //     >
-        //       ទទួលបាន ({survey.responseTotal}) ការឆ្លើយតប
-        //     </Link>
-        //   </th>
-        // </tr>
       ));
       setTableItems(items);
     }
@@ -366,33 +337,7 @@ const DisplaySurveyList = (props) => {
           >
             Your Surveys
           </h2>
-          {tableItems && (
-            <Container>{tableItems}</Container>
-
-            // <Row>
-            //   <Col sm={12} lg={12}>
-            //     <h4
-            //       style={{
-            //         textAlign: "left",
-            //         fontWeight: "normal",
-            //         color: "#193c96",
-            //       }}
-            //     >
-            //       Your Surveys
-            //     </h4>
-            //     <div>
-            //       <Table
-            //         striped
-            //         bordered
-            //         hover
-            //         style={{ width: "50%", textAlign: "center" }}
-            //       >
-            //         <tbody>{}</tbody>
-            //       </Table>
-            //     </div>
-            //   </Col>
-            // </Row>
-          )}
+          {tableItems && <Container>{tableItems}</Container>}
         </Container>
       </section>
     </>
