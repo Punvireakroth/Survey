@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import uniqid from "uniqid";
 import {
+  NewSection,
   SurveyTitle,
   Paragraph,
   ShortResponse,
@@ -98,6 +99,14 @@ const DisplaySurvey = (props) => {
                 responseId={question.response._id}
               />
             );
+          case "new section":
+            return (
+              <NewSection
+                key={question._id}
+                question={question}
+                index={index}
+              />
+            );
           default:
             return null;
         }
@@ -107,7 +116,7 @@ const DisplaySurvey = (props) => {
     }
   }, [survey]);
 
-  const handleChange = (e, responseId, responseType, answerValue) => {
+  const handleChange = (e, responseId) => {
     let surveyObject = { ...survey };
     let index = surveyObject.questions.findIndex(
       (question) => question.response._id === responseId
