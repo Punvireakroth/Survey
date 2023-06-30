@@ -1,6 +1,50 @@
 import { Form, Button } from "react-bootstrap";
 import CloseButton from "react-bootstrap/CloseButton";
 
+// Component for adding a new Section
+export function NewSection(props) {
+  return (
+    <Form.Group
+      className="mb-3"
+      style={{
+        marginTop: 30,
+        backgroundColor: "#1193be",
+        padding: 20,
+        paddingTop: 30,
+        borderRadius: 7,
+        paddingBottom: 20,
+        border: "4px solid #a8d5e3",
+        color: "#fff",
+        fontSize: 1.4 + "rem",
+        position: "relative",
+      }}
+    >
+      <CloseButton
+        className="closeBtn"
+        variant="white"
+        onClick={(e) => props.removeQuestion(e, props.question.id)}
+        style={{ position: "absolute", top: 10, right: 10 }}
+      />
+      <Form.Label style={{ fontWeight: "bold" }}>Add a New Section</Form.Label>
+      <Form.Control
+        id={props.question._id}
+        answer="no"
+        onChange={(e) => props.onChange(e)}
+        name="short response"
+        value={props.question.question}
+        type="text"
+        placeholder="Your Section Name"
+        style={{
+          borderRadius: 1,
+          color: "#42a4c4",
+          fontSize: 1.1 + "rem",
+          borderColor: "#008cba",
+        }}
+      />
+    </Form.Group>
+  );
+}
+
 export function ShortResponse(props) {
   return (
     <Form.Group
