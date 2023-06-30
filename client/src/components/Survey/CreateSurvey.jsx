@@ -5,6 +5,7 @@ import {
   Paragraph,
   ShortResponse,
   TrueFalse,
+  NewSection,
   SurveyTitle,
 } from "./createQuestionComponents";
 
@@ -123,6 +124,12 @@ const CreateSurvey = (props) => {
           _id: uniqid("question-"),
           responses: [],
         });
+      } else if (questionType === "4") {
+        updatedQuestions.push({
+          type: "new section",
+          question: "",
+          answer_choices: [],
+        });
       }
 
       return updatedQuestions;
@@ -206,6 +213,17 @@ const CreateSurvey = (props) => {
               index={index}
             />
           );
+        case "new section":
+          return (
+            <NewSection
+              id={question._id}
+              key={question._id}
+              question={question}
+              onChange={(e) => handleQuestionChange(e, index)}
+              removeQuestion={() => removeQuestion(index)}
+              index={index}
+            />
+          );
         default:
           return null;
       }
@@ -223,6 +241,7 @@ const CreateSurvey = (props) => {
           <option value="1">Short Response</option>
           <option value="2">True/False</option>
           <option value="3">Paragraph</option>
+          <option value="4">New Section</option>
         </Form.Select>
       </>
     );
