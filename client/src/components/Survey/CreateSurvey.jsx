@@ -128,7 +128,6 @@ const CreateSurvey = (props) => {
         updatedQuestions.push({
           type: "new section",
           question: "",
-          answer_choices: [],
         });
       }
 
@@ -177,7 +176,26 @@ const CreateSurvey = (props) => {
   };
 
   const makeSurvey = () => {
+    // Question index couting (Start from -1 because when I start from 0 the first question is question number 2)
+    let questionIndex = -1;
+
     const form = questions.map((question, index) => {
+      // check if question is a new section skip question index
+      if (question.type === "new section") {
+        // For section type, render the text without counting
+        return (
+          <NewSection
+            id={question._id}
+            key={question._id}
+            question={question}
+            onChange={(e) => handleQuestionChange(e, index)}
+            removeQuestion={() => removeQuestion(index)}
+          />
+        );
+      }
+      // For other question types, increment question index and render the corresponding question component
+      questionIndex++;
+
       switch (question.type) {
         case "true/false":
           return (
@@ -188,7 +206,7 @@ const CreateSurvey = (props) => {
               onChange={(e) => handleQuestionChange(e, index)}
               id={question._id}
               removeQuestion={() => removeQuestion(index)}
-              index={index}
+              index={questionIndex}
             />
           );
         case "short response":
@@ -199,7 +217,7 @@ const CreateSurvey = (props) => {
               onChange={(e) => handleQuestionChange(e, index)}
               id={question._id}
               removeQuestion={() => removeQuestion(index)}
-              index={index}
+              index={questionIndex}
             />
           );
         case "paragraph":
@@ -210,18 +228,7 @@ const CreateSurvey = (props) => {
               onChange={(e) => handleQuestionChange(e, index)}
               id={question._id}
               removeQuestion={() => removeQuestion(index)}
-              index={index}
-            />
-          );
-        case "new section":
-          return (
-            <NewSection
-              id={question._id}
-              key={question._id}
-              question={question}
-              onChange={(e) => handleQuestionChange(e, index)}
-              removeQuestion={() => removeQuestion(index)}
-              index={index}
+              index={questionIndex}
             />
           );
         default:
