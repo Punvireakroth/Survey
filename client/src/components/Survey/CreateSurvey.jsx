@@ -238,18 +238,30 @@ const CreateSurvey = (props) => {
 
     const chooseQuestionTypeForm = (
       <>
-        <h4>Choose a Question Type</h4>
-        <Form.Select
-          size="small"
-          aria-label="Select Question Type"
-          onChange={addQuestion}
-        >
-          <option></option>
-          <option value="1">Short Response</option>
-          <option value="2">True/False</option>
-          <option value="3">Paragraph</option>
-          <option value="4">New Section</option>
-        </Form.Select>
+        <div style={{ backgroundColor: "#edf4f5", marginTop: 20, padding: 20 }}>
+          <h4 style={{ color: "#0c66a9", marginBottom: 1.2 + "rem" }}>
+            Choose a Question Type
+          </h4>
+          <Form.Select
+            size="small"
+            aria-label="Select Question Type"
+            onChange={addQuestion}
+            style={{
+              borderRadius: 1,
+              color: "#42a4c4",
+              fontSize: 1.1 + "rem",
+              borderColor: "#008cba",
+            }}
+          >
+            <option style={{ backgroundColor: "#0c66a9", color: "#fff" }}>
+              Choose one below
+            </option>
+            <option value="1">Short Response (Question type)</option>
+            <option value="2">True/False (Question type)</option>
+            <option value="3">Paragraph (Question type)</option>
+            <option value="4">New Section</option>
+          </Form.Select>
+        </div>
       </>
     );
 
