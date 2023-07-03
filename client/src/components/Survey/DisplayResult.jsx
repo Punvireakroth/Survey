@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { ShortResponseResult } from "./displayResultComponents";
+import { ShortResponseResult, NewSection } from "./displayResultComponents";
 import { Container, Spinner } from "react-bootstrap";
 
 export default function DisplayResult() {
@@ -35,8 +35,14 @@ export default function DisplayResult() {
   }, [id]);
 
   useEffect(() => {
+    let questionIndex = 0;
     if (survey) {
       const updatedResults = survey.questions.map((question, index) => {
+        if (question.type === "new section") {
+          return <NewSection key={question._id} question={question} />;
+        }
+        questionIndex++;
+
         if (
           question.type === "short response" ||
           question.type === "paragraph"
@@ -45,7 +51,7 @@ export default function DisplayResult() {
             <ShortResponseResult
               key={id}
               question={question}
-              index={index + 1}
+              index={questionIndex}
             />
           );
         } else {
