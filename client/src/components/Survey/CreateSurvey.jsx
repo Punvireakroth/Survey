@@ -4,7 +4,6 @@ import uniqid from "uniqid";
 import {
   Paragraph,
   ShortResponse,
-  TrueFalse,
   NewSection,
   SurveyTitle,
 } from "./createQuestionComponents";
@@ -197,18 +196,18 @@ const CreateSurvey = (props) => {
       questionIndex++;
 
       switch (question.type) {
-        case "true/false":
-          return (
-            <TrueFalse
-              key={question._id}
-              question={question}
-              answerChoices={addMoreAnswerChoices}
-              onChange={(e) => handleQuestionChange(e, index)}
-              id={question._id}
-              removeQuestion={() => removeQuestion(index)}
-              index={questionIndex}
-            />
-          );
+        // case "true/false":
+        //   return (
+        //     <TrueFalse
+        //       key={question._id}
+        //       question={question}
+        //       answerChoices={addMoreAnswerChoices}
+        //       onChange={(e) => handleQuestionChange(e, index)}
+        //       id={question._id}
+        //       removeQuestion={() => removeQuestion(index)}
+        //       index={questionIndex}
+        //     />
+        //   );
         case "short response":
           return (
             <ShortResponse
@@ -257,7 +256,7 @@ const CreateSurvey = (props) => {
               Choose one below
             </option>
             <option value="1">Short Response (Question type)</option>
-            <option value="2">True/False (Question type)</option>
+            {/* <option value="2">True/False (Question type)</option> */}
             <option value="3">Paragraph (Question type)</option>
             <option value="4">New Section</option>
           </Form.Select>
