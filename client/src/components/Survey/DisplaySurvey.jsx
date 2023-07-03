@@ -60,6 +60,7 @@ const DisplaySurvey = (props) => {
   }, []);
 
   useEffect(() => {
+    let questionIndex = -1;
     if (survey.title === undefined) {
       setNewForm(
         <div style={{ textAlign: "center", padding: 20 }}>
@@ -68,13 +69,27 @@ const DisplaySurvey = (props) => {
       );
     } else {
       let form = survey.questions.map((question, index) => {
+        // If the question is a new section, skip the question index
+        if (question.type === "new section") {
+          // render the text without counting it as a question
+          return (
+            <NewSection
+              id={question._id}
+              key={question._id}
+              question={question}
+            />
+          );
+        }
+        // If the question is not a new section, increment the question index
+        questionIndex++;
+
         switch (question.type) {
           case "short response":
             return (
               <ShortResponse
                 key={question._id}
                 question={question}
-                index={index}
+                index={questionIndex}
                 onChange={handleChange}
                 responseId={question.response._id}
               />
@@ -84,7 +99,7 @@ const DisplaySurvey = (props) => {
               <TrueFalse
                 key={question._id}
                 question={question}
-                index={index}
+                index={questionIndex}
                 onChange={handleChange}
                 responseId={question.response._id}
               />
@@ -94,19 +109,12 @@ const DisplaySurvey = (props) => {
               <Paragraph
                 key={question._id}
                 question={question}
-                index={index}
+                index={questionIndex}
                 onChange={handleChange}
                 responseId={question.response._id}
               />
             );
-          case "new section":
-            return (
-              <NewSection
-                key={question._id}
-                question={question}
-                index={index}
-              />
-            );
+
           default:
             return null;
         }
