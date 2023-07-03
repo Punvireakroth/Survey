@@ -1,4 +1,4 @@
-import { Table, Row, Col } from "react-bootstrap";
+import { Table, Row, Col, Form } from "react-bootstrap";
 
 export function ShortResponseResult(props) {
   const responses = props.question.responses.map((response, index) => {
@@ -38,6 +38,32 @@ export function ShortResponseResult(props) {
         </div>
       </Col>
     </Row>
+  );
+}
+
+export function NewSection(props) {
+  return (
+    <Form.Group
+      className="mb-3"
+      style={{
+        marginTop: 30,
+        backgroundColor: "#1193be",
+        padding: 50,
+        borderRadius: 7,
+        border: "3px none rgba(122, 192, 215, .6)",
+        color: "#fff",
+        fontSize: 1.4 + "rem",
+      }}
+    >
+      <h4
+        style={{
+          textAlign: "center",
+          fontSize: 1.5 + "em",
+        }}
+      >
+        {props.question.question}
+      </h4>
+    </Form.Group>
   );
 }
 
