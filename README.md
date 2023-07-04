@@ -29,3 +29,12 @@ This app hash an admin page to manage the survey and generate public link for us
    - NODE_ENV=
    - PORT=
    - MONGO_URI=
+
+# App screenshots
+
+![Alt text](https://www.mediafire.com/view/kb003k052m4qleu)
+![Alt text](https://www.mediafire.com/view/nqm67z1xby1uvt6)
+![Alt text](https://www.mediafire.com/view/k2shiabkwfwz3i1)
+![Alt text](https://www.mediafire.com/view/z91576wvyccvvfo)
+![Alt text](https://www.mediafire.com/view/jxhtbgz6ul6jrd8)
+![Alt text](https://www.mediafire.com/view/8b9il0cc4ugnbug)
