@@ -7,17 +7,24 @@ export function ShortResponse(props) {
   // form validation
   const [isValid, setIsValid] = useState(false); // Track validity of the input
   const [isFilled, setIsFilled] = useState(false); // Track if the input is filled
+  const [isTouched, setIsTouched] = useState(false); // Track if the input field has been touched
+
+  const handleBlur = () => {
+    setIsTouched(true);
+    setIsValid(props.question.response.response.trim() !== "");
+  };
 
   const handleChange = (e) => {
-    props.onChange(e, props.responseId, "short response");
-    setIsFilled(e.target.value.length > 2);
-    setIsValid(e.target.value.length > 2); // Set validity based on input length
+    props.onChange(e, props.responseId);
   };
+
+  useEffect(() => {
+    setIsValid(props.question.response.response.trim() !== "");
+  }, [props.question.response.response]);
 
   // get user location
   const [currLocation, setCurrLocation] = useState("ចុចប៊ូតុងយកទីតាំង");
   const [isLoading, setIsLoading] = useState(false);
-  const [isInvalid, setIsInvalid] = useState(false);
 
   const getLocation = () => {
     setIsValid(true);
@@ -42,11 +49,6 @@ export function ShortResponse(props) {
 
   const getLocationButton = props.question.question.includes("ទីតាំង");
 
-  // const handleInputChange = (e) => {
-  //   setIsInvalid(false);
-  //   props.onChange(e, props.responseId, "short response");
-  // };
-
   return (
     <Form noValidate validated={isValid} onSubmit={props.submitSurvey}>
       <Form.Group
@@ -69,12 +71,12 @@ export function ShortResponse(props) {
           id={props.question._id}
           onClick={(e) => e.target.select()} // Handle click event to select the text
           onChange={handleChange}
+          onBlur={handleBlur}
           name="short response"
           value={props.question.response.response}
           type="text"
           placeholder="Your answer"
-          className="custom-input shadow-none"
-          isInvalid={!isValid} // Add the isInvalid prop to show the validation feedback
+          className={isTouched && !isValid ? "is-invalid" : ""}
           style={{
             borderRadius: 1,
             color: "#42a4c4",
