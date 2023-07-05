@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, Button, FormControl } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 
 import uniqid from "uniqid";
 
@@ -48,6 +48,8 @@ export function ShortResponse(props) {
   // If question about location is asked, set the default value to the user's location
 
   const getLocationButton = props.question.question.includes("ទីតាំង");
+  const isLocationQuestion =
+    getLocationButton && currLocation !== "ចុចប៊ូតុងយកទីតាំង";
 
   return (
     <Form noValidate validated={isValid} onSubmit={props.submitSurvey}>
@@ -69,7 +71,7 @@ export function ShortResponse(props) {
         </Form.Label>
         <Form.Control
           id={props.question._id}
-          onClick={(e) => e.target.select()} // Handle click event to select the text
+          onClick={(e) => e.target.select()}
           onChange={handleChange}
           onBlur={handleBlur}
           name="short response"
@@ -82,10 +84,11 @@ export function ShortResponse(props) {
             color: "#42a4c4",
             fontSize: 1.1 + "rem",
           }}
+          disabled={isLocationQuestion}
         />
         {!isFilled ? (
           <Form.Control.Feedback type="invalid">
-            Please provide a valid response.
+            Please input the response.
           </Form.Control.Feedback>
         ) : (
           <Form.Control.Feedback type="valid">Look Good</Form.Control.Feedback>
