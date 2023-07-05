@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, Button, FormControl } from "react-bootstrap";
 
 import uniqid from "uniqid";
@@ -173,70 +173,61 @@ export function TrueFalse(props) {
 }
 
 export function Paragraph(props) {
-  const [isValid, setIsValid] = useState(false); // Track validity of the input
-  const [isFilled, setIsFilled] = useState(false); // Track if the input is filled
+  const [isTouched, setIsTouched] = useState(false); // Track if the input field has been touched
+  const [isValid, setIsValid] = useState(true); // Track validity of the input
+
+  const handleBlur = () => {
+    setIsTouched(true);
+    setIsValid(props.question.response.response.trim() !== "");
+  };
 
   const handleChange = (e) => {
     props.onChange(e, props.responseId);
-    setIsFilled(e.target.value.length > 0);
-    setIsValid(e.target.value.length > 0); // Set validity based on input length
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   setIsValid(isTouched && !isFilled); // Set validity based on touched and filled
-
-  //   if (isTouched && isFilled) {
-  //     // Show the error message
-  //     return;
-  //   }
-
-  //   props.submitSurvey();
-  // };
+  useEffect(() => {
+    setIsValid(props.question.response.response.trim() !== "");
+  }, [props.question.response.response]);
 
   return (
-    <Form noValidate validated={isValid} onSubmit={props.submitSurvey}>
-      <Form.Group
-        className="mb-3"
+    <Form.Group
+      className="mb-3"
+      style={{
+        marginTop: 30,
+        backgroundColor: "#edf4f5",
+        padding: 20,
+        borderRadius: 7,
+        border: "3px dashed rgba(122, 192, 215, .6)",
+        color: "#0c66a9",
+        fontSize: "1.4rem",
+      }}
+    >
+      <Form.Label>
+        {props.index + 1}) {props.question.question}
+      </Form.Label>
+      <Form.Control
+        id={props.question._id}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        name="paragraph"
+        value={props.question.response.response}
+        type="text"
+        as="textarea"
+        rows={3}
+        className={isTouched && !isValid ? "is-invalid" : ""}
+        placeholder="Your answer"
         style={{
-          marginTop: 30,
-          backgroundColor: "#edf4f5",
-          padding: 20,
-          borderRadius: 7,
-          border: "3px dashed rgba(122, 192, 215, .6)",
-          color: "#0c66a9",
-          fontSize: "1.4rem",
+          borderRadius: 1,
+          color: "#42a4c4",
+          fontSize: "1.1rem",
         }}
-      >
-        <Form.Label>
-          {props.index + 1}) {props.question.question}
-        </Form.Label>
-        <Form.Control
-          id={props.question._id}
-          onChange={handleChange}
-          name="paragraph"
-          value={props.question.response.response}
-          type="text"
-          as="textarea"
-          rows={3}
-          className="custom-input"
-          placeholder="Your answer"
-          style={{
-            borderRadius: 1,
-            color: "#42a4c4",
-            fontSize: "1.1rem",
-          }}
-          isInvalid={!isValid} // Add the isInvalid prop to show the validation feedback
-        />
-        {!isFilled ? (
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid response.
-          </Form.Control.Feedback>
-        ) : (
-          <Form.Control.Feedback type="valid">Look Good</Form.Control.Feedback>
-        )}
-      </Form.Group>
-    </Form>
+      />
+      {isTouched && !isValid && (
+        <Form.Control.Feedback type="invalid">
+          Please input the response.
+        </Form.Control.Feedback>
+      )}
+    </Form.Group>
   );
 }
 
