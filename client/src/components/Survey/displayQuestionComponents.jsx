@@ -4,12 +4,23 @@ import { Form, Button, FormControl } from "react-bootstrap";
 import uniqid from "uniqid";
 
 export function ShortResponse(props) {
+  // form validation
+  const [isValid, setIsValid] = useState(false); // Track validity of the input
+  const [isFilled, setIsFilled] = useState(false); // Track if the input is filled
+
+  const handleChange = (e) => {
+    props.onChange(e, props.responseId, "short response");
+    setIsFilled(e.target.value.length > 2);
+    setIsValid(e.target.value.length > 2); // Set validity based on input length
+  };
+
   // get user location
   const [currLocation, setCurrLocation] = useState("ចុចប៊ូតុងយកទីតាំង");
   const [isLoading, setIsLoading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
 
   const getLocation = () => {
+    setIsValid(true);
     setIsLoading(true);
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords;
@@ -31,74 +42,80 @@ export function ShortResponse(props) {
 
   const getLocationButton = props.question.question.includes("ទីតាំង");
 
-  const handleInputChange = (e) => {
-    setIsInvalid(false);
-    props.onChange(e, props.responseId, "short response");
-  };
+  // const handleInputChange = (e) => {
+  //   setIsInvalid(false);
+  //   props.onChange(e, props.responseId, "short response");
+  // };
 
   return (
-    <Form.Group
-      className="mb-3"
-      style={{
-        marginTop: 30,
-        backgroundColor: "#edf4f5",
-        padding: 20,
-        borderRadius: 7,
-        border: "3px dashed rgba(122, 192, 215, .6)",
-        color: "#0c66a9",
-        fontSize: 1.4 + "rem",
-        position: "relative",
-      }}
-    >
-      <Form.Label>
-        {props.index + 1}) {props.question.question}
-      </Form.Label>
-      <Form.Control
-        id={props.question._id}
-        onClick={(e) => e.target.select()} // Handle click event to select the text
-        onChange={handleInputChange}
-        name="short response"
-        value={props.question.response.response}
-        type="text"
-        placeholder="Your answer"
-        isInvalid={isInvalid}
-        className="custom-input shadow-none"
+    <Form noValidate validated={isValid} onSubmit={props.submitSurvey}>
+      <Form.Group
+        className="mb-3"
         style={{
-          borderRadius: 1,
-          color: "#42a4c4",
-          fontSize: 1.1 + "rem",
+          marginTop: 30,
+          backgroundColor: "#edf4f5",
+          padding: 20,
+          borderRadius: 7,
+          border: "3px dashed rgba(122, 192, 215, .6)",
+          color: "#0c66a9",
+          fontSize: 1.4 + "rem",
+          position: "relative",
         }}
-      />
-      <FormControl.Feedback type="invalid">
-        Please provide a valid response.
-      </FormControl.Feedback>
-      {getLocationButton && (
-        <Button
-          variant="primary"
-          onClick={getLocation}
-          disabled={isLoading}
+      >
+        <Form.Label>
+          {props.index + 1}) {props.question.question}
+        </Form.Label>
+        <Form.Control
+          id={props.question._id}
+          onClick={(e) => e.target.select()} // Handle click event to select the text
+          onChange={handleChange}
+          name="short response"
+          value={props.question.response.response}
+          type="text"
+          placeholder="Your answer"
+          className="custom-input shadow-none"
+          isInvalid={!isValid} // Add the isInvalid prop to show the validation feedback
           style={{
-            marginLeft: "10px",
-            position: "absolute",
-            right: 20,
-            top: 10,
-            alignItems: "center",
-            backgroundColor: "#ffffff",
-            paddingTop: 2,
-            paddingBottom: 0,
-            paddingLeft: 20,
-            paddingRight: 20,
-            borderRadius: 50,
-            color: "#fff",
-            borderColor: "#0c66a9 ",
-            backgroundColor: "#0c66a9 ",
-            borderWidth: 2.9,
+            borderRadius: 1,
+            color: "#42a4c4",
+            fontSize: 1.1 + "rem",
           }}
-        >
-          {isLoading ? "Loading..." : "យកទីតំាង Auto"}
-        </Button>
-      )}
-    </Form.Group>
+        />
+        {!isFilled ? (
+          <Form.Control.Feedback type="invalid">
+            Please provide a valid response.
+          </Form.Control.Feedback>
+        ) : (
+          <Form.Control.Feedback type="valid">Look Good</Form.Control.Feedback>
+        )}
+        {getLocationButton && (
+          <Button
+            variant="primary"
+            onClick={getLocation}
+            disabled={isLoading}
+            style={{
+              marginLeft: "10px",
+              position: "absolute",
+              right: 20,
+              top: 10,
+              alignItems: "center",
+              backgroundColor: "#ffffff",
+              paddingTop: 2,
+              paddingBottom: 0,
+              paddingLeft: 20,
+              paddingRight: 20,
+              borderRadius: 50,
+              color: "#fff",
+              borderColor: "#0c66a9 ",
+              backgroundColor: "#0c66a9 ",
+              borderWidth: 2.9,
+            }}
+          >
+            {isLoading ? "Loading..." : "យកទីតំាង Auto"}
+          </Button>
+        )}
+      </Form.Group>
+    </Form>
   );
 }
 

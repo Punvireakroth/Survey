@@ -96,6 +96,7 @@ const DisplaySurvey = (props) => {
                 index={questionIndex}
                 onChange={handleChange}
                 responseId={question.response._id}
+                submitSurvey={submitSurvey}
               />
             );
           case "true/false":
@@ -143,9 +144,9 @@ const DisplaySurvey = (props) => {
     setSurvey(surveyObject);
 
     // Check if all inputs are valid
-    const allInputsValid = surveyObject.questions.every(
-      (question) => question.response.response.length > 0
-    );
+    const allInputsValid = surveyObject.questions
+      .filter((question) => question.type !== "new section")
+      .every((question) => question.response.response.length > 0);
     setIsFormValid(allInputsValid);
   };
 
