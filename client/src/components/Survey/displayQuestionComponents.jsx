@@ -1,6 +1,5 @@
-import { Form } from "react-bootstrap";
-import { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { useState } from "react";
+import { Form, Button, FormControl } from "react-bootstrap";
 
 import uniqid from "uniqid";
 
@@ -8,6 +7,7 @@ export function ShortResponse(props) {
   // get user location
   const [currLocation, setCurrLocation] = useState("ចុចប៊ូតុងយកទីតាំង");
   const [isLoading, setIsLoading] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
 
   const getLocation = () => {
     setIsLoading(true);
@@ -27,40 +27,13 @@ export function ShortResponse(props) {
     });
   };
 
-  // useEffect(() => {
-  //   const geolocationGet = () => {
-  //     navigator.geolocation.getCurrentPosition((position) => {
-  //       const { latitude, longitude } = position.coords;
-  //       setCurrLocation({ latitude, longitude });
-  //       console.log(currLocation);
-  //     });
-  //   };
-
-  //   const debounce = (fn, delay) => {
-  //     let timeoutId;
-  //     return (...args) => {
-  //       clearTimeout(timeoutId);
-  //       timeoutId = setTimeout(() => {
-  //         fn.apply(this, args);
-  //       }, delay);
-  //     };
-  //   };
-
-  //   const delayedGeolocationGet = debounce(geolocationGet, 1000);
-
-  //   delayedGeolocationGet();
-
-  //   return () => {
-  //     clearTimeout(delayedGeolocationGet);
-  //   };
-  // }, []);
-
   // If question about location is asked, set the default value to the user's location
 
   const getLocationButton = props.question.question.includes("ទីតាំង");
 
-  const handleInputClick = (e) => {
-    e.target.select(); // Select the text in the input field
+  const handleInputChange = (e) => {
+    setIsInvalid(false);
+    props.onChange(e, props.responseId, "short response");
   };
 
   return (
@@ -82,12 +55,13 @@ export function ShortResponse(props) {
       </Form.Label>
       <Form.Control
         id={props.question._id}
-        onClick={handleInputClick} // Handle click event to select the text
-        onChange={(e) => props.onChange(e, props.responseId, "short response")}
+        onClick={(e) => e.target.select()} // Handle click event to select the text
+        onChange={handleInputChange}
         name="short response"
         value={props.question.response.response}
         type="text"
         placeholder="Your answer"
+        isInvalid={isInvalid}
         className="custom-input shadow-none"
         style={{
           borderRadius: 1,
@@ -95,6 +69,9 @@ export function ShortResponse(props) {
           fontSize: 1.1 + "rem",
         }}
       />
+      <FormControl.Feedback type="invalid">
+        Please provide a valid response.
+      </FormControl.Feedback>
       {getLocationButton && (
         <Button
           variant="primary"
@@ -179,40 +156,70 @@ export function TrueFalse(props) {
 }
 
 export function Paragraph(props) {
+  const [isValid, setIsValid] = useState(false); // Track validity of the input
+  const [isFilled, setIsFilled] = useState(false); // Track if the input is filled
+
+  const handleChange = (e) => {
+    props.onChange(e, props.responseId);
+    setIsFilled(e.target.value.length > 0);
+    setIsValid(e.target.value.length > 0); // Set validity based on input length
+  };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setIsValid(isTouched && !isFilled); // Set validity based on touched and filled
+
+  //   if (isTouched && isFilled) {
+  //     // Show the error message
+  //     return;
+  //   }
+
+  //   props.submitSurvey();
+  // };
+
   return (
-    <Form.Group
-      className="mb-3"
-      style={{
-        marginTop: 30,
-        backgroundColor: "#edf4f5",
-        padding: 20,
-        borderRadius: 7,
-        border: "3px dashed rgba(122, 192, 215, .6)",
-        color: "#0c66a9",
-        fontSize: 1.4 + "rem",
-      }}
-    >
-      <Form.Label>
-        {props.index + 1}) {props.question.question}
-      </Form.Label>
-      <Form.Control
-        id={props.question._id}
-        onChange={(e) => props.onChange(e, props.responseId, "paragraph")}
-        name="paragraph"
-        value={props.question.response.response}
-        type="text"
-        as="textarea"
-        rows={3}
-        className="custom-input"
-        placeholder="Your answer"
+    <Form noValidate validated={isValid} onSubmit={props.submitSurvey}>
+      <Form.Group
+        className="mb-3"
         style={{
-          borderRadius: 1,
-          color: "#42a4c4",
-          fontSize: 1.1 + "rem",
-          borderColor: "#undefined",
+          marginTop: 30,
+          backgroundColor: "#edf4f5",
+          padding: 20,
+          borderRadius: 7,
+          border: "3px dashed rgba(122, 192, 215, .6)",
+          color: "#0c66a9",
+          fontSize: "1.4rem",
         }}
-      />
-    </Form.Group>
+      >
+        <Form.Label>
+          {props.index + 1}) {props.question.question}
+        </Form.Label>
+        <Form.Control
+          id={props.question._id}
+          onChange={handleChange}
+          name="paragraph"
+          value={props.question.response.response}
+          type="text"
+          as="textarea"
+          rows={3}
+          className="custom-input"
+          placeholder="Your answer"
+          style={{
+            borderRadius: 1,
+            color: "#42a4c4",
+            fontSize: "1.1rem",
+          }}
+          isInvalid={!isValid} // Add the isInvalid prop to show the validation feedback
+        />
+        {!isFilled ? (
+          <Form.Control.Feedback type="invalid">
+            Please provide a valid response.
+          </Form.Control.Feedback>
+        ) : (
+          <Form.Control.Feedback type="valid">Look Good</Form.Control.Feedback>
+        )}
+      </Form.Group>
+    </Form>
   );
 }
 

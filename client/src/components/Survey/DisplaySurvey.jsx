@@ -1,4 +1,4 @@
-import { Button, Spinner } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import uniqid from "uniqid";
@@ -13,6 +13,10 @@ import {
 const DisplaySurvey = (props) => {
   const [survey, setSurvey] = useState({});
   const [newForm, setNewForm] = useState(null);
+  // const [isValid, setIsValid] = useState(false);
+
+  const [isFormValid, setIsFormValid] = useState(false);
+
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -112,6 +116,7 @@ const DisplaySurvey = (props) => {
                 index={questionIndex}
                 onChange={handleChange}
                 responseId={question.response._id}
+                submitSurvey={submitSurvey} // Pass the submitSurvey function to the Paragraph component
               />
             );
 
@@ -136,6 +141,12 @@ const DisplaySurvey = (props) => {
       time: new Date(),
     };
     setSurvey(surveyObject);
+
+    // Check if all inputs are valid
+    const allInputsValid = surveyObject.questions.every(
+      (question) => question.response.response.length > 0
+    );
+    setIsFormValid(allInputsValid);
   };
 
   const submitSurvey = async (e) => {
@@ -175,6 +186,7 @@ const DisplaySurvey = (props) => {
       {newForm}
       <Button
         onClick={submitSurvey}
+        disabled={!isFormValid}
         style={{
           display: "flex",
           alignItems: "center",
