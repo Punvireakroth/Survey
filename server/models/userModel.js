@@ -48,7 +48,7 @@ userSchema.statics.signup = async function (email, password) {
 };
 
 // Create a login static method to use in middleware
-userSchema.static.login = async function (email, password) {
+userSchema.statics.login = async function (email, password) {
   if (!email || !password) {
     throw Error("Can't find this user");
   }
