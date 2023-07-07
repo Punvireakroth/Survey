@@ -17,7 +17,7 @@ import Welcome from "./pages/Welcome";
 
 import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Signup from "./pages/Signup";
 import Header from "./components/boilerplate/Header";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -104,7 +104,7 @@ function App() {
               <Route path="submit-survey/:id" element={<SurveySubmit />} />
             </Route>
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/signup" element={<Signup />} />
           </Routes>
         </div>
       </Router>
