@@ -15,13 +15,9 @@ import SurveySubmit from "./components/Survey/SurveySubmit";
 import NotFound from "./pages/NotFound";
 import Welcome from "./pages/Welcome";
 
-import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Header from "./components/boilerplate/Header";
-import "react-toastify/dist/ReactToastify.css";
-
-import { useSelector } from "react-redux";
 
 function BasicLayout() {
   const location = useLocation();
@@ -41,7 +37,6 @@ function DisplayResultLayout() {
 }
 
 function App() {
-  const { user } = useSelector((state) => state.auth);
   const [currentSurveyId, setCurrentSurveyId] = useState(null);
 
   const sendSurveyId = (id) => {
@@ -58,17 +53,14 @@ function App() {
               <Route
                 path="dashboard"
                 element={
-                  <DisplaySurveyList
-                    id={user !== null && user.id}
-                    sendSurveyId={sendSurveyId}
-                  />
+                  <DisplaySurveyList id={} sendSurveyId={sendSurveyId} />
                 }
               />
               <Route
                 path="create-survey/*"
                 element={
                   <CreateSurvey
-                    id={user !== null && user.id}
+                    id={}
                     surveyId={currentSurveyId}
                     sendSurveyId={sendSurveyId}
                   />
@@ -78,7 +70,7 @@ function App() {
                 path="create-survey/:id/*"
                 element={
                   <CreateSurvey
-                    id={user !== null && user._id}
+                    id={}
                     surveyId={currentSurveyId}
                     sendSurveyId={sendSurveyId}
                   />
@@ -95,7 +87,7 @@ function App() {
                 path=":id"
                 element={
                   <DisplaySurvey
-                    id={user !== null && user._id}
+                    id={}
                     surveyId={currentSurveyId}
                     sendSurveyId={sendSurveyId}
                   />
@@ -108,7 +100,6 @@ function App() {
           </Routes>
         </div>
       </Router>
-      <ToastContainer />
     </>
   );
 }
