@@ -4,11 +4,17 @@ import {
   BsFillPersonFill,
 } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { useLogout } from "../../hooks/useLogout";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 export default function Header() {
-  const onLogOut = () => {
-    console.log("You are logout");
+  const { logout } = useLogout();
+  const { user } = useAuthContext();
+
+  const handleClick = () => {
+    logout();
   };
+
   return (
     <div>
       <header className="header">
@@ -26,29 +32,34 @@ export default function Header() {
           </Link>
         </div>
         <ul>
-          <>
-            <li>
-              <button
-                className="btn"
-                onClick={onLogOut}
-                style={{ color: "#fff", fontSize: "1.2rem", fontWeight: 400 }}
-              >
-                <BsBoxArrowInLeft /> Logout
-              </button>
-            </li>
-          </>
-          <>
-            <li>
-              <Link to="/login">
-                <BsBoxArrowInRight /> Login
-              </Link>
-            </li>
-            <li>
-              <Link to="/register">
-                <BsFillPersonFill /> Register
-              </Link>
-            </li>
-          </>
+          {user && (
+            <>
+              <li>
+                <button
+                  className="btn"
+                  onClick={handleClick}
+                  style={{ color: "#fff", fontSize: "1.2rem", fontWeight: 400 }}
+                >
+                  <BsBoxArrowInLeft /> Logout
+                </button>
+              </li>
+            </>
+          )}
+
+          {!user && (
+            <>
+              <li>
+                <Link to="/login">
+                  <BsBoxArrowInRight /> Login
+                </Link>
+              </li>
+              <li>
+                <Link to="/register">
+                  <BsFillPersonFill /> Register
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </header>
     </div>
