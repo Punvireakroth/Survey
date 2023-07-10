@@ -54,7 +54,7 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <Link to="/register">
+                <Link to="/signup">
                   <BsFillPersonFill /> Register
                 </Link>
               </li>
