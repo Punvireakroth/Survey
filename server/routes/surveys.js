@@ -1,4 +1,5 @@
 const express = require("express");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -10,6 +11,9 @@ const {
   saveResponsesToSurvey,
   deleteSurvey,
 } = require("../controllers/surveyController");
+
+// require auth for all survey
+router.use(authMiddleware);
 
 // GET get survey
 // Authurized
