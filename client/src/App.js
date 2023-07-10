@@ -14,10 +14,12 @@ import DisplayResult from "./components/Survey/DisplayResult";
 import SurveySubmit from "./components/Survey/SurveySubmit";
 import NotFound from "./pages/NotFound";
 import Welcome from "./pages/Welcome";
-
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Header from "./components/boilerplate/Header";
+
+// React Global Context
+import { useAuthContext } from "./hooks/useAuthContext";
 
 function BasicLayout() {
   const location = useLocation();
@@ -37,6 +39,8 @@ function DisplayResultLayout() {
 }
 
 function App() {
+  const { user } = useAuthContext();
+
   const [currentSurveyId, setCurrentSurveyId] = useState(null);
 
   const sendSurveyId = (id) => {
@@ -53,14 +57,17 @@ function App() {
               <Route
                 path="dashboard"
                 element={
-                  <DisplaySurveyList id={} sendSurveyId={sendSurveyId} />
+                  <DisplaySurveyList
+                    id={user !== null && user.id}
+                    sendSurveyId={sendSurveyId}
+                  />
                 }
               />
               <Route
                 path="create-survey/*"
                 element={
                   <CreateSurvey
-                    id={}
+                    id={user !== null && user._id}
                     surveyId={currentSurveyId}
                     sendSurveyId={sendSurveyId}
                   />
@@ -70,7 +77,7 @@ function App() {
                 path="create-survey/:id/*"
                 element={
                   <CreateSurvey
-                    id={}
+                    id={user !== null && user._id}
                     surveyId={currentSurveyId}
                     sendSurveyId={sendSurveyId}
                   />
@@ -87,7 +94,7 @@ function App() {
                 path=":id"
                 element={
                   <DisplaySurvey
-                    id={}
+                    id={user !== null && user._id}
                     surveyId={currentSurveyId}
                     sendSurveyId={sendSurveyId}
                   />
