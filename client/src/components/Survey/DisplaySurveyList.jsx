@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuthContext";
+
 import {
   Container,
   Col,
@@ -10,8 +12,6 @@ import {
   Modal,
 } from "react-bootstrap";
 
-// Use to get currnet user information
-import { useSelector } from "react-redux";
 import { FaPlus, FaLink } from "react-icons/fa";
 
 const DisplaySurveyList = (props) => {
@@ -31,10 +31,13 @@ const DisplaySurveyList = (props) => {
     </tr>
   );
 
+  // Use to get currnet user information
+
+  const { user } = useAuthContext();
+
   let navigate = useNavigate();
 
   // get current user information
-  const { user } = useSelector((state) => state.auth);
 
   const callApi = useCallback(async (userId) => {
     try {
