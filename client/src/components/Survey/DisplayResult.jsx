@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import { ShortResponseResult, NewSection } from "./displayResultComponents";
 import { Container, Spinner } from "react-bootstrap";
 
 export default function DisplayResult() {
   const { id } = useParams();
+  const { user } = useAuthContext();
   const [survey, setSurvey] = useState(null);
   const [result, setResult] = useState(
     <div style={{ textAlign: "center", padding: 20 }}>
@@ -17,6 +19,7 @@ export default function DisplayResult() {
       const response = await fetch(`http://localhost:5000/${url}`, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
         ...fetchOptions,
       });

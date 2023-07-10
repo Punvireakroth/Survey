@@ -1,6 +1,8 @@
 import { Button, Form, Spinner } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuthContext";
+
 import uniqid from "uniqid";
 import {
   NewSection,
@@ -13,18 +15,19 @@ import {
 const DisplaySurvey = (props) => {
   const [survey, setSurvey] = useState({});
   const [newForm, setNewForm] = useState(null);
-  // const [isValid, setIsValid] = useState(false);
 
   const [isFormValid, setIsFormValid] = useState(false);
 
   const navigate = useNavigate();
   const { id } = useParams();
+  const { user } = useAuthContext();
 
   const callApi = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/surveys/${id}`, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
       });
 
@@ -161,6 +164,7 @@ const DisplaySurvey = (props) => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
           },
           body: JSON.stringify({
             questions: survey.questions,

@@ -44,6 +44,7 @@ const DisplaySurveyList = (props) => {
       const response = await fetch(`/api/surveys/surveys-by-user/${userId}`, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const responseData = await response.json();
@@ -247,6 +248,7 @@ const DisplaySurveyList = (props) => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
       });
 

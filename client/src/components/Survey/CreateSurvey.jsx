@@ -9,6 +9,7 @@ import {
 } from "./createQuestionComponents";
 
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const CreateSurvey = (props) => {
   const [survey, setSurvey] = useState({
@@ -22,6 +23,7 @@ const CreateSurvey = (props) => {
   const { id } = useParams();
 
   const Navigate = useNavigate();
+  const { user } = useAuthContext();
 
   // Get Survey
   const callApiToGetSurvey = useCallback(async (url, fetchOptions) => {
@@ -29,6 +31,7 @@ const CreateSurvey = (props) => {
       const response = await fetch(url, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
         ...fetchOptions,
       });
@@ -151,6 +154,7 @@ const CreateSurvey = (props) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({
           questions: questions,
@@ -196,18 +200,6 @@ const CreateSurvey = (props) => {
       questionIndex++;
 
       switch (question.type) {
-        // case "true/false":
-        //   return (
-        //     <TrueFalse
-        //       key={question._id}
-        //       question={question}
-        //       answerChoices={addMoreAnswerChoices}
-        //       onChange={(e) => handleQuestionChange(e, index)}
-        //       id={question._id}
-        //       removeQuestion={() => removeQuestion(index)}
-        //       index={questionIndex}
-        //     />
-        //   );
         case "short response":
           return (
             <ShortResponse
