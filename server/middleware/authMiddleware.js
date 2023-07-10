@@ -1,36 +1,21 @@
-const jwt = require("jsonwebtoken");
-const asyncHandler = require("express-async-handler");
-const User = require("../models/userModel");
+const authMiddleware = async (req, res, next) => {
+  // Verify Authentication
+  const { authorization } = req.headers;
 
-const protect = asyncHandler(async (req, res, next) => {
-  let token;
-
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startWith("Bearer")
-  ) {
-    try {
-      // Get token from the header
-      token = req.headers.authorization.split(" ")[1];
-
-      //Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Get user from token
-      req.user = await User.findById(decoded.id).select("-password");
-
-      next();
-    } catch (e) {
-      console.log(e);
-      res.status(401);
-      throw new Error("Not authorized");
-    }
+  if (!authorization) {
+    return res.status(401).json({ error: "Authorization token required" });
   }
 
-  if (!token) {
-    res.status(401);
-    throw new Error("Not authorized, no token");
-  }
-});
+  const token = authorization.split(" ")[1];
 
-module.exports = { protect };
+  try {
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findOne({ _id }).select(" _id ");
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({ error: "Request is not authorized" });
+  }
+};
+
+module.exports = authMiddleware;
