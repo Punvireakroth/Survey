@@ -5,7 +5,7 @@ import {
   Outlet,
   useLocation,
 } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import CreateSurvey from "./components/Survey/CreateSurvey";
 import DisplaySurvey from "./components/Survey/DisplaySurvey";
