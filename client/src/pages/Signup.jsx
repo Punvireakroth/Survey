@@ -84,7 +84,7 @@ const Signup = () => {
                       <p className="mb-0 text-center">
                         Don't have an account?{" "}
                         <a
-                          href="/signup"
+                          href="/login"
                           className="text-primary fw-bold"
                           style={{ textDecoration: "none" }}
                         >
