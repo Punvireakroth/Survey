@@ -4,6 +4,7 @@ import {
   Route,
   Outlet,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -20,6 +21,7 @@ import Header from "./components/boilerplate/Header";
 
 // React Global Context
 import { useAuthContext } from "./hooks/useAuthContext";
+import { Nav } from "react-bootstrap";
 
 function BasicLayout() {
   const location = useLocation();
@@ -57,10 +59,14 @@ function App() {
               <Route
                 path="dashboard"
                 element={
-                  <DisplaySurveyList
-                    id={user !== null && user.id}
-                    sendSurveyId={sendSurveyId}
-                  />
+                  user ? (
+                    <DisplaySurveyList
+                      id={user !== null && user.id}
+                      sendSurveyId={sendSurveyId}
+                    />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
                 }
               />
               <Route
@@ -102,8 +108,14 @@ function App() {
               />
               <Route path="submit-survey/:id" element={<SurveySubmit />} />
             </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route
+              path="/login"
+              element={!user ? <Login /> : <Navigate to="../dashboard" />}
+            />
+            <Route
+              path="/signup"
+              element={!user ? <Signup /> : <Navigate to="../dashboard" />}
+            />
           </Routes>
         </div>
       </Router>
