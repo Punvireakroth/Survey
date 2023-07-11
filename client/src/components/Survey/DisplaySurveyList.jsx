@@ -281,7 +281,7 @@ const DisplaySurveyList = (props) => {
   return (
     <>
       <main
-        className="main"
+        className="container"
         style={{
           borderRadius: 10,
           padding: 50,
