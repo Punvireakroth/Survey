@@ -21,7 +21,6 @@ import Header from "./components/boilerplate/Header";
 
 // React Global Context
 import { useAuthContext } from "./hooks/useAuthContext";
-import { Nav } from "react-bootstrap";
 
 function BasicLayout() {
   const location = useLocation();
@@ -50,96 +49,75 @@ function App() {
   };
 
   return (
-    <>
-      <Router>
-        <div className="container">
-          <Routes>
-            <Route path="/" element={<BasicLayout />}>
-              <Route path="/" element={<Welcome />} />
-              <Route
-                path="dashboard"
-                element={
-                  user ? (
-                    <DisplaySurveyList
-                      id={user !== null && user.id}
-                      sendSurveyId={sendSurveyId}
-                    />
-                  ) : (
-                    <Navigate to="/login" />
-                  )
-                }
-              />
-              <Route
-                path="create-survey/*"
-                element={
-                  user ? (
-                    <CreateSurvey
-                      id={user !== null && user._id}
-                      surveyId={currentSurveyId}
-                      sendSurveyId={sendSurveyId}
-                    />
-                  ) : (
-                    <Navigate to="/login" />
-                  )
-                }
-              />
-              <Route
-                path="create-survey/:id/*"
-                element={
-                  user ? (
-                    <CreateSurvey
-                      id={user !== null && user._id}
-                      surveyId={currentSurveyId}
-                      sendSurveyId={sendSurveyId}
-                    />
-                  ) : (
-                    <Navigate to="/login" />
-                  )
-                }
-              />
-              <Route
-                path="/display-results/:id/*"
-                element={user ? <DisplayResult /> : <Navigate to="/login" />}
-              />
-              <Route path="*" element={<NotFound />} />
-            </Route>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<BasicLayout />}>
+            <Route path="/" element={<Welcome />} />
             <Route
-              path="/display-survey/"
+              path="dashboard"
               element={
-                user ? <DisplayResultLayout /> : <Navigate to="/login" />
+                user ? (
+                  <DisplaySurveyList
+                    id={user !== null && user.id}
+                    sendSurveyId={sendSurveyId}
+                  />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
-            >
-              <Route
-                path=":id"
-                element={
-                  user ? (
-                    <DisplaySurvey
-                      id={user !== null && user._id}
-                      surveyId={currentSurveyId}
-                      sendSurveyId={sendSurveyId}
-                    />
-                  ) : (
-                    <Navigate to="/login" />
-                  )
-                }
-              />
-              <Route
-                path="submit-survey/:id"
-                element={user ? <SurveySubmit /> : <Navigate to="/login" />}
-              />
-            </Route>
-            <Route
-              path="/login"
-              element={!user ? <Login /> : <Navigate to="../dashboard" />}
             />
             <Route
-              path="/signup"
-              element={!user ? <Signup /> : <Navigate to="../dashboard" />}
+              path="create-survey/*"
+              element={
+                user ? (
+                  <CreateSurvey
+                    id={user !== null && user._id}
+                    surveyId={currentSurveyId}
+                    sendSurveyId={sendSurveyId}
+                  />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
             />
-          </Routes>
-        </div>
-      </Router>
-    </>
+            <Route
+              path="create-survey/:id/*"
+              element={
+                <CreateSurvey
+                  id={user !== null && user._id}
+                  surveyId={currentSurveyId}
+                  sendSurveyId={sendSurveyId}
+                />
+              }
+            />
+            <Route path="/display-results/:id/*" element={<DisplayResult />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+          <Route path="/display-survey/" element={<DisplayResultLayout />}>
+            <Route
+              path=":id"
+              element={
+                <DisplaySurvey
+                  id={user !== null && user._id}
+                  surveyId={currentSurveyId}
+                  sendSurveyId={sendSurveyId}
+                />
+              }
+            />
+            <Route path="submit-survey/:id" element={<SurveySubmit />} />
+          </Route>
+          <Route
+            path="/login"
+            element={!user ? <Login /> : <Navigate to="../dashboard" />}
+          />
+          <Route
+            path="/signup"
+            element={!user ? <Signup /> : <Navigate to="../dashboard" />}
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
