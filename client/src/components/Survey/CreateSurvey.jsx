@@ -49,7 +49,7 @@ const CreateSurvey = (props) => {
   }, []);
 
   const startSurvey = () => {
-    if (id) {
+    if (id && user) {
       callApiToGetSurvey(`/api/surveys/${id}`, { method: "GET" });
       setEditingPreviousSurvey(true);
     } else {
@@ -58,6 +58,9 @@ const CreateSurvey = (props) => {
   };
 
   useEffect(() => {
+    if (!user) {
+      return;
+    }
     startSurvey();
   }, [id]);
 
@@ -150,6 +153,9 @@ const CreateSurvey = (props) => {
     e.preventDefault();
 
     try {
+      if (!user) {
+        return;
+      }
       const response = await fetch("/api/surveys/create-update", {
         method: "POST",
         headers: {
