@@ -72,41 +72,61 @@ function App() {
               <Route
                 path="create-survey/*"
                 element={
-                  <CreateSurvey
-                    id={user !== null && user._id}
-                    surveyId={currentSurveyId}
-                    sendSurveyId={sendSurveyId}
-                  />
+                  user ? (
+                    <CreateSurvey
+                      id={user !== null && user._id}
+                      surveyId={currentSurveyId}
+                      sendSurveyId={sendSurveyId}
+                    />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
                 }
               />
               <Route
                 path="create-survey/:id/*"
                 element={
-                  <CreateSurvey
-                    id={user !== null && user._id}
-                    surveyId={currentSurveyId}
-                    sendSurveyId={sendSurveyId}
-                  />
+                  user ? (
+                    <CreateSurvey
+                      id={user !== null && user._id}
+                      surveyId={currentSurveyId}
+                      sendSurveyId={sendSurveyId}
+                    />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
                 }
               />
               <Route
                 path="/display-results/:id/*"
-                element={<DisplayResult />}
+                element={user ? <DisplayResult /> : <Navigate to="/login" />}
               />
               <Route path="*" element={<NotFound />} />
             </Route>
-            <Route path="/display-survey/" element={<DisplayResultLayout />}>
+            <Route
+              path="/display-survey/"
+              element={
+                user ? <DisplayResultLayout /> : <Navigate to="/login" />
+              }
+            >
               <Route
                 path=":id"
                 element={
-                  <DisplaySurvey
-                    id={user !== null && user._id}
-                    surveyId={currentSurveyId}
-                    sendSurveyId={sendSurveyId}
-                  />
+                  user ? (
+                    <DisplaySurvey
+                      id={user !== null && user._id}
+                      surveyId={currentSurveyId}
+                      sendSurveyId={sendSurveyId}
+                    />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
                 }
               />
-              <Route path="submit-survey/:id" element={<SurveySubmit />} />
+              <Route
+                path="submit-survey/:id"
+                element={user ? <SurveySubmit /> : <Navigate to="/login" />}
+              />
             </Route>
             <Route
               path="/login"
