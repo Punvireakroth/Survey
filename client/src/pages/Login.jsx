@@ -19,25 +19,39 @@ const Login = () => {
       <Container>
         <Row className="vh-100 d-flex justify-content-center align-items-center">
           <Col md={8} lg={6} xs={12}>
-            {/* <div className="border border-3 border-primary"></div> */}
-            <Card className="shadow" style={{ padding: 20 }}>
+            <Card
+              className="shadow"
+              style={{
+                padding: 20,
+                borderRadius: 15,
+                fontSize: 1.2 + "rem",
+                color: "#008cba",
+              }}
+            >
               <Card.Body>
                 <div className="mb-3 mt-md-4">
-                  <h2 className="fw-bold mb-2 text-uppercase">ISI Survey</h2>
-                  <p className="mb-5">Please enter your login and password</p>
+                  <h2
+                    className="fw-bold mb-2 text-uppercase"
+                    style={{ color: "#0c66a9" }}
+                  >
+                    ISI Survey
+                  </h2>
+                  <p className="mb-5">User Log in</p>
                   <div className="mb-3">
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label className="text-center">Email</Form.Label>
                         <Form.Control
                           type="email"
                           placeholder="Enter email"
-                          style={{ padding: 0.7 + "rem" }}
+                          style={{ padding: 0.7 + "rem", color: "#008cba" }}
+                          onChange={(e) => setEmail(e.target.value)}
+                          value={email}
                         />
                       </Form.Group>
 
                       <Form.Group
-                        className="mb-3"
+                        className="mb-4"
                         controlId="formBasicPassword"
                       >
                         <Form.Label className="text-center">
@@ -46,13 +60,24 @@ const Login = () => {
                         <Form.Control
                           type="password"
                           placeholder="Enter password"
-                          style={{ padding: 0.7 + "rem" }}
+                          style={{ padding: 0.7 + "rem", color: "#008cba" }}
+                          onChange={(e) => setPassword(e.target.value)}
+                          value={password}
                         />
                       </Form.Group>
 
                       <div className="d-grid">
-                        <Button variant="primary" type="submit">
-                          Login
+                        <Button
+                          disabled={isLoading}
+                          type="submit"
+                          style={{
+                            padding: 0.7 + "rem",
+                            fontSize: 1.3 + "rem",
+                            backgroundColor: "#0c66a9",
+                            borderColor: "#0c66a9",
+                          }}
+                        >
+                          LOGIN
                         </Button>
                       </div>
                     </Form>
@@ -68,6 +93,7 @@ const Login = () => {
                         </a>
                       </p>
                     </div>
+                    {error && <div className="error">{error}</div>}
                   </div>
                 </div>
               </Card.Body>
@@ -77,27 +103,6 @@ const Login = () => {
       </Container>
     </div>
   );
-  // return (
-  //   <form onSubmit={handleSubmit}>
-  //     <h3>Log in</h3>
-  //     <label>Email: </label>
-  //     <input
-  //       type="email"
-  //       onChange={(e) => setEmail(e.target.value)}
-  //       value={email}
-  //     />
-
-  //     <label>Password: </label>
-  //     <input
-  //       type="password"
-  //       onChange={(e) => setPassword(e.target.value)}
-  //       value={password}
-  //     />
-
-  //     <button disabled={isLoading}>Login</button>
-  //     {error && <div>{error}</div>}
-  //   </form>
-  // );
 };
 
 export default Login;
