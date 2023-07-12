@@ -190,7 +190,7 @@ const DisplaySurvey = (props) => {
 
   return (
     <div
-      className="displaySurvey pt-6"
+      className="displaySurvey pt-6 container"
       style={{ fontFamily: "Nokora", fontSize: "1.2rem", marginBottom: 50 }}
     >
       <SurveyTitle survey={survey} />

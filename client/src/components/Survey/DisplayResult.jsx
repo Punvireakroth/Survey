@@ -35,7 +35,7 @@ export default function DisplayResult() {
     callApi(`api/surveys/${id}`, {
       method: "GET",
     });
-  }, [id]);
+  }, [user, id]);
 
   useEffect(() => {
     let questionIndex = 0;
@@ -75,6 +75,7 @@ export default function DisplayResult() {
           paddingBottom: 20,
           borderRadius: 7,
         }}
+        className="container"
       >
         <h2
           style={{
