@@ -193,7 +193,7 @@ const DisplaySurvey = (props) => {
       className="displaySurvey pt-6 container"
       style={{ fontFamily: "Nokora", fontSize: "1.2rem", marginBottom: 50 }}
     >
-      <SurveyTitle survey={survey} />
+      <SurveyTitle survey={survey} style={{ marginTop: 20 }} />
       {newForm}
       <Button
         onClick={submitSurvey}
