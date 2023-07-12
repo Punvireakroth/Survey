@@ -16,6 +16,7 @@ const CreateSurvey = (props) => {
     title: "",
     description: "",
     questions: [],
+    user_id: "",
   });
   const [showAddQuestionButton, setShowAddQuestionButton] = useState(true);
   const [editingPreviousSurvey, setEditingPreviousSurvey] = useState(false);
@@ -49,11 +50,11 @@ const CreateSurvey = (props) => {
   }, []);
 
   const startSurvey = () => {
-    if (id && user) {
+    if (id) {
       callApiToGetSurvey(`/api/surveys/${id}`, { method: "GET" });
       setEditingPreviousSurvey(true);
     } else {
-      setSurvey({ ...survey, _id: uniqid("survey-") });
+      setSurvey({ ...survey, _id: uniqid("survey-"), user_id: user.token });
     }
   };
 
@@ -166,6 +167,7 @@ const CreateSurvey = (props) => {
           questions: questions,
           title: survey.title,
           description: survey.description,
+          user_id: survey.user_id,
           creationTime: new Date(),
           survey_id: survey._id,
         }),
