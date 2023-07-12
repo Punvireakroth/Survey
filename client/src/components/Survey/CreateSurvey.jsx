@@ -47,7 +47,7 @@ const CreateSurvey = (props) => {
     } catch (error) {
       console.log("An error occurred while fetching the survey:", error);
     }
-  }, []);
+  });
 
   const startSurvey = () => {
     if (id) {
@@ -59,11 +59,15 @@ const CreateSurvey = (props) => {
   };
 
   useEffect(() => {
-    if (!user) {
-      return;
+    if (user) {
+      let updatedSurvey = { ...survey, user_id: user.token };
+      setSurvey(updatedSurvey);
     }
+  }, [user]);
+
+  useEffect(() => {
     startSurvey();
-  }, [id]);
+  }, [user]);
 
   // Update data based on the user input
   const handleSurveyChange = (e) => {
@@ -270,7 +274,7 @@ const CreateSurvey = (props) => {
   const { form, chooseQuestionTypeForm } = makeSurvey();
 
   return (
-    <div className="mb-5">
+    <div className="mb-5 container">
       <SurveyTitle onChange={handleSurveyChange} survey={survey} />
       <hr
         style={{
