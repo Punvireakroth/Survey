@@ -1,5 +1,5 @@
 import { Button, Form, Spinner } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 
@@ -22,13 +22,14 @@ const DisplaySurvey = (props) => {
   const { id } = useParams();
   const { user } = useAuthContext();
 
-  const callApi = async () => {
+  const callApi = useCallback(async (url, fetchOptions) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/surveys/${id}`, {
+      const response = await fetch(`http://localhost:5000${url}`, {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
+          "Content-Type": "application/json",
         },
+        ...fetchOptions,
       });
 
       const responseData = await response.json();
@@ -60,11 +61,16 @@ const DisplaySurvey = (props) => {
     } catch (e) {
       console.log(e.error);
     }
-  };
+  });
 
   useEffect(() => {
-    callApi();
-  }, []);
+    setSurvey({ ...survey, _id: id });
+    //callApi to get survey information from the database
+
+    callApi(`/api/surveys/${id}`, {
+      method: "GET",
+    });
+  }, [user, id]);
 
   useEffect(() => {
     let questionIndex = -1;
