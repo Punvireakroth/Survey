@@ -14,6 +14,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  surveys: { type: [] },
 });
 
 // Create a signup static method to use in middleware
