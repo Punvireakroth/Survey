@@ -5,6 +5,8 @@ import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const { signup, error, isLoading } = useSignup();
 
   const handleSubmit = async (e) => {
@@ -39,6 +41,18 @@ const Signup = () => {
                   <div className="mb-3">
                     <Form onSubmit={handleSubmit}>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label className="text-center">
+                          Depot name
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter depot name"
+                          style={{ padding: 0.7 + "rem", color: "#008cba" }}
+                          onChange={(e) => setName(e.target.value)}
+                          value={name}
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label className="text-center">Email</Form.Label>
                         <Form.Control
                           type="email"
@@ -62,6 +76,22 @@ const Signup = () => {
                           style={{ padding: 0.7 + "rem", color: "#008cba" }}
                           onChange={(e) => setPassword(e.target.value)}
                           value={password}
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        className="mb-4"
+                        controlId="formBasicPassword"
+                      >
+                        <Form.Label className="text-center">
+                          Confirm Password
+                        </Form.Label>
+                        <Form.Control
+                          type="password"
+                          placeholder="Confirm password"
+                          style={{ padding: 0.7 + "rem", color: "#008cba" }}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          value={confirmPassword}
                         />
                       </Form.Group>
 
