@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useAuthContext } from "../../hooks/useAuthContext";
-import { ShortResponseResult, NewSection } from "./displayResultComponents";
+import { useAuthContext } from "../../../hooks/useAuthContext";
+import { ShortResponseResult, NewSection } from "./resultComponents";
 import { Container, Spinner } from "react-bootstrap";
 
 export default function DisplayResult() {

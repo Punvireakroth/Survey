@@ -1,7 +1,7 @@
 import { Button, Form, Spinner } from "react-bootstrap";
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { useAuthContext } from "../../../hooks/useAuthContext";
 
 import uniqid from "uniqid";
 import {
@@ -10,7 +10,7 @@ import {
   Paragraph,
   ShortResponse,
   TrueFalse,
-} from "./displayQuestionComponents";
+} from "./questionComponents";
 
 const DisplaySurvey = (props) => {
   const [survey, setSurvey] = useState({});

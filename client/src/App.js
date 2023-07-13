@@ -8,10 +8,10 @@ import {
 } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import CreateSurvey from "./components/Survey/CreateSurvey";
-import DisplaySurvey from "./components/Survey/DisplaySurvey";
+import CreateSurvey from "./components/Survey/CreateSurvey/CreateSurvey";
+import DisplaySurvey from "./components/Survey/DisplaySurvey/DisplaySurvey";
 import DisplaySurveyList from "./components/Survey/DisplaySurveyList";
-import DisplayResult from "./components/Survey/DisplayResult";
+import DisplayResult from "./components/Survey/SurveyResult/DisplayResult";
 import SurveySubmit from "./components/Survey/SurveySubmit";
 import NotFound from "./pages/NotFound";
 import Welcome from "./pages/Welcome";

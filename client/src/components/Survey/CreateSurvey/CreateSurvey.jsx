@@ -9,7 +9,7 @@ import {
 } from "./createQuestionComponents";
 
 import { useParams, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { useAuthContext } from "../../../hooks/useAuthContext";
 
 const CreateSurvey = (props) => {
   const [survey, setSurvey] = useState({
