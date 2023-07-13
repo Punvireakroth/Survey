@@ -15,6 +15,17 @@ const Signup = () => {
     await signup(email, password);
   };
 
+  // Check if the password and confirm password match
+  const doPasswordMatch = () => password === confirmPassword;
+
+  // Dynamically apply CSS class to confirm password input field
+  const getConfirmPasswordInputClass = () => {
+    if (confirmPassword && !doPasswordMatch()) {
+      return "border-red";
+    }
+    return "";
+  };
+
   return (
     <div id="login-background">
       <Container>
@@ -73,6 +84,7 @@ const Signup = () => {
                         <Form.Control
                           type="password"
                           placeholder="Enter password"
+                          className={getConfirmPasswordInputClass()}
                           style={{ padding: 0.7 + "rem", color: "#008cba" }}
                           onChange={(e) => setPassword(e.target.value)}
                           value={password}
@@ -91,13 +103,14 @@ const Signup = () => {
                           placeholder="Confirm password"
                           style={{ padding: 0.7 + "rem", color: "#008cba" }}
                           onChange={(e) => setConfirmPassword(e.target.value)}
+                          className={getConfirmPasswordInputClass()}
                           value={confirmPassword}
                         />
                       </Form.Group>
 
                       <div className="d-grid">
                         <Button
-                          disabled={isLoading}
+                          disabled={isLoading || !doPasswordMatch()}
                           type="submit"
                           style={{
                             padding: 0.7 + "rem",
