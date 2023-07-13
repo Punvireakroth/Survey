@@ -5,15 +5,15 @@ const surveySchema = mongoose.Schema({
     type: [{}],
     required: true,
   },
-  user_id: {
-    type: String,
-    required: true,
-  },
   title: {
     type: String,
   },
   descriptions: {
     type: String,
+  },
+  user_id: {
+    type: String,
+    required: true,
   },
   creationTime: {
     type: String,

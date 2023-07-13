@@ -73,6 +73,8 @@ const getSurveysByUser = asyncHandler(async (req, res) => {
 // @access private
 
 const createAndUpdateSurvey = asyncHandler(async (req, res) => {
+  // Save user id to assign user id to each user's survey
+  const user_id = req.user._id;
   //if not there, the survey must be created
   let findSurvey = await Survey.findById(req.body.survey_id);
   if (findSurvey) {
@@ -103,10 +105,9 @@ const createAndUpdateSurvey = asyncHandler(async (req, res) => {
     res.status(200).json(updatedSurvey);
   } else {
     // potetial delete later
-
     const survey = await Survey.create({
       questions: req.body.questions,
-      user_id: req.body.user_id,
+      user_id: user_id,
       title: req.body.title,
       description: req.body.description,
       creationTime: req.body.creationTime,
