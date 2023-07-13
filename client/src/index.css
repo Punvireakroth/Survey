@@ -16,6 +16,15 @@ body {
   background-color: #193c96;
 }
 
+.border-red {
+  border: 2px solid #d33c64 !important;
+}
+
+input:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
 div.error {
   padding: 7px;
   background: #ffefef;
