@@ -18,35 +18,10 @@ const getSurvey = asyncHandler(async (req, res) => {
 // @access private and public ------------------
 
 const getSurveysByUser = asyncHandler(async (req, res) => {
-  // //grab survey ids from database
-  // const user = await User.findById(req.params.id);
-  // const surveyIds = [...user.surveys];
-  // if (!user) {
-  //   res.status(400);
-  //   throw new Error("That user was not found.");
-  // } else if (surveyIds.length === 0) {
-  //   res.status(401).json("No surveys were found");
-  // }
-  // //grab surveys from database
-  // let surveyList = [];
-  // for (let i = 0; i < surveyIds.length; i++) {
-  //   const survey = await Survey.findById(surveyIds[i]);
-  //   if (!survey) {
-  //     console.log("no survey found");
-  //   } else {
-  //     const necessaryData = {
-  //       title: survey.title,
-  //       responseTotal: survey.questions[0].responses.length,
-  //       _id: survey._id,
-  //     };
-  //     surveyList.push(necessaryData);
-  //   }
-  // }
-  // //send surveys over
-  // res.status(200).json(surveyList);
+  // Find all surveys that have been created by specific user
+  const user_id = req.user._id;
 
-  // Find all surveys in the Survey collection
-  const surveys = await Survey.find();
+  const surveys = await Survey.find({ user_id }).sort({ createdAt: -1 });
 
   if (surveys.length === 0) {
     res.status(404).json("No surveys found");
