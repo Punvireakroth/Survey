@@ -319,7 +319,6 @@ const CreateSurvey = (props) => {
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                backgroundColor: "#ffffff",
                 paddingTop: 7,
                 paddingBottom: 7,
                 paddingLeft: 50,
