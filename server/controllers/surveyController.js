@@ -33,6 +33,7 @@ const getSurveysByUser = asyncHandler(async (req, res) => {
       return {
         title: survey.title,
         description: survey.description,
+        user_id,
         responseTotal,
         _id: survey._id,
       };
@@ -79,7 +80,6 @@ const createAndUpdateSurvey = asyncHandler(async (req, res) => {
     );
     res.status(200).json(updatedSurvey);
   } else {
-    // potetial delete later
     const survey = await Survey.create({
       questions: req.body.questions,
       user_id: user_id,
@@ -140,6 +140,9 @@ const saveResponsesToSurvey = asyncHandler(async (req, res) => {
       (submittedQuestion) => submittedQuestion._id === originalQuestion._id
     );
     //push responses onto responses array
+    if (!originalQuestion.responses) {
+      originalQuestion.responses = [];
+    }
     originalQuestion.responses.push(questions[index].response);
   });
 
