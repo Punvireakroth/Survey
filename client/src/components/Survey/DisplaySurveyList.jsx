@@ -280,96 +280,101 @@ const DisplaySurveyList = (props) => {
 
   return (
     <>
-      <main
-        className="container"
-        style={{
-          borderRadius: 10,
-          padding: 50,
-          position: "relative",
-          backgroundColor: "rgb(237, 244, 245)",
-        }}
-      >
-        <div
+      {user && user.role === "admin" && (
+        <main
+          className="container"
           style={{
-            position: "absolute",
-            top: 40,
-            right: 100,
-            width: 190,
-            height: 190,
-            background: "#008cba",
-            borderRadius: 40,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#fff",
-            padding: "20px 10px", // Adjust the padding values
-            margin: "0 -10px", // Adjust the margin values
+            borderRadius: 10,
+            padding: 50,
+            position: "relative",
+            backgroundColor: "rgb(237, 244, 245)",
           }}
         >
-          <p
+          <div
             style={{
-              fontWeight: "bold",
-              fontSize: 4 + "em",
-              textAlign: "center",
+              position: "absolute",
+              top: 40,
+              right: 100,
+              width: 190,
+              height: 190,
+              background: "#008cba",
+              borderRadius: 40,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#fff",
+              padding: "20px 10px", // Adjust the padding values
+              margin: "0 -10px", // Adjust the margin values
             }}
           >
-            {responseCount}
-            <br />
             <p
-              style={{ fontSize: 1.5 + "rem", fontWeight: "normal", margin: 0 }}
+              style={{
+                fontWeight: "bold",
+                fontSize: 4 + "em",
+                textAlign: "center",
+              }}
             >
-              Responses
+              {responseCount}
+              <br />
+              <p
+                style={{
+                  fontSize: 1.5 + "rem",
+                  fontWeight: "normal",
+                  margin: 0,
+                }}
+              >
+                Responses
+              </p>
             </p>
-          </p>
-        </div>
+          </div>
 
-        <Container className="dashboardbg p-0" fluid>
-          <Row
-            className={tableItems ? "dashboardTitle" : null}
-            style={{ paddingTop: 20 }}
-          >
-            <Col sm={12} lg={12}>
-              <h2
-                style={{
-                  textAlign: "left",
-                  fontWeight: "bold",
-                  color: "#193c96",
-                }}
-              >
-                Survey Dashboard
-              </h2>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={12} lg={12} style={{ padding: 15, textAlign: "left" }}>
-              <Button
-                onClick={onCreateSurveyClick}
-                variant="primary"
-                className="createSrvyBtn"
-                style={{
-                  borderRadius: 50,
-                  borderWidth: 1,
-                  backgroundColor: "#1e90ff",
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                  paddingLeft: 40,
-                  paddingRight: 40,
-                  fontSize: 20,
-                  backgroundColor: "#0c66a9",
-                  borderColor: "#0c66a9",
-                }}
-              >
-                <FaPlus /> Create a New Survey
-              </Button>
-              <br />
-              <br />
-            </Col>
-          </Row>
-        </Container>
-      </main>
+          <Container className="dashboardbg p-0" fluid>
+            <Row
+              className={tableItems ? "dashboardTitle" : null}
+              style={{ paddingTop: 20 }}
+            >
+              <Col sm={12} lg={12}>
+                <h2
+                  style={{
+                    textAlign: "left",
+                    fontWeight: "bold",
+                    color: "#193c96",
+                  }}
+                >
+                  Survey Dashboard
+                </h2>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12} lg={12} style={{ padding: 15, textAlign: "left" }}>
+                <Button
+                  onClick={onCreateSurveyClick}
+                  variant="primary"
+                  className="createSrvyBtn"
+                  style={{
+                    borderRadius: 50,
+                    borderWidth: 1,
+                    backgroundColor: "#1e90ff",
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                    paddingLeft: 40,
+                    paddingRight: 40,
+                    fontSize: 20,
+                    backgroundColor: "#0c66a9",
+                    borderColor: "#0c66a9",
+                  }}
+                >
+                  <FaPlus /> Create a New Survey
+                </Button>
+                <br />
+                <br />
+              </Col>
+            </Row>
+          </Container>
+        </main>
+      )}
 
       {/* Survey Section */}
-
       <section>
         <Container
           style={{
