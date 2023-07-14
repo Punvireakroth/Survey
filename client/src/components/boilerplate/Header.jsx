@@ -28,7 +28,7 @@ export default function Header() {
               color: "#fff",
             }}
           >
-            Admin
+            {user && user.role === "admin" ? "Admin" : "ISI survey"}
           </Link>
         </div>
         <ul>
