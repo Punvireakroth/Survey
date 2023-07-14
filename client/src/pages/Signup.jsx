@@ -7,12 +7,13 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState("");
   const { signup, error, isLoading } = useSignup();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await signup(email, password);
+    await signup(email, password, role);
   };
 
   // Check if the password and confirm password match
@@ -103,6 +104,27 @@ const Signup = () => {
                           onChange={(e) => setConfirmPassword(e.target.value)}
                           className={getConfirmPasswordInputClass()}
                           value={confirmPassword}
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-4">
+                        <Form.Label className="text-center">
+                          User Role
+                        </Form.Label>
+                        <Form.Check
+                          label="Normal User"
+                          name="user-role"
+                          type="radio"
+                          id="radio-normal"
+                          checked={role === "normal"} // Set checked state base on role
+                          onChange={() => setRole("normal")}
+                        />
+                        <Form.Check
+                          label="Admin Privileges"
+                          name="user-role"
+                          type="radio"
+                          id="radio-admin"
+                          checked={role === "admin"} // Set checked state base on role
+                          onChange={() => setRole("admin")}
                         />
                       </Form.Group>
 
