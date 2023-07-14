@@ -14,12 +14,16 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    required: true,
+  },
   surveys: { type: [] },
 });
 
 // Create a signup static method to use in middleware
 // Since we use "this" keyword we will not use => function
-userSchema.statics.signup = async function (email, password) {
+userSchema.statics.signup = async function (email, password, role) {
   // Validate email and strong password
 
   if (!email || !password) {
@@ -43,7 +47,7 @@ userSchema.statics.signup = async function (email, password) {
   // Salt is addtional string to existing password
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
-  const user = await this.create({ email, password: hash });
+  const user = await this.create({ email, password: hash, role });
 
   return user;
 };
