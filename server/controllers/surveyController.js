@@ -19,9 +19,10 @@ const getSurvey = asyncHandler(async (req, res) => {
 
 const getSurveysByUser = asyncHandler(async (req, res) => {
   // Find all surveys that have been created by specific user
-  const user_id = req.user._id;
+  // const user_id = req.user._id;
 
-  const surveys = await Survey.find({ user_id }).sort({ createdAt: -1 });
+  // const surveys = await Survey.find({ user_id }).sort({ createdAt: -1 });
+  const surveys = await Survey.find().sort({ createdAt: -1 });
 
   if (surveys.length === 0) {
     res.status(404).json("No surveys found");
@@ -33,7 +34,7 @@ const getSurveysByUser = asyncHandler(async (req, res) => {
       return {
         title: survey.title,
         description: survey.description,
-        user_id,
+        // user_id,
         responseTotal,
         _id: survey._id,
       };
@@ -50,7 +51,7 @@ const getSurveysByUser = asyncHandler(async (req, res) => {
 
 const createAndUpdateSurvey = asyncHandler(async (req, res) => {
   // Save user id to assign user id to each user's survey
-  const user_id = req.user._id;
+  // const user_id = req.user._id;
   //if not there, the survey must be created
   let findSurvey = await Survey.findById(req.body.survey_id);
   if (findSurvey) {
@@ -82,7 +83,7 @@ const createAndUpdateSurvey = asyncHandler(async (req, res) => {
   } else {
     const survey = await Survey.create({
       questions: req.body.questions,
-      user_id: user_id,
+      // user_id: user_id,
       title: req.body.title,
       description: req.body.description,
       creationTime: req.body.creationTime,
