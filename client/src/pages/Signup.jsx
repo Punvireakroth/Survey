@@ -52,12 +52,10 @@ const Signup = () => {
                   <div className="mb-3">
                     <Form onSubmit={handleSubmit}>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label className="text-center">
-                          Depot name
-                        </Form.Label>
+                        <Form.Label className="text-center">Name</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="Enter depot name"
+                          placeholder="Enter name"
                           style={{ padding: 0.7 + "rem", color: "#008cba" }}
                           onChange={(e) => setName(e.target.value)}
                           value={name}
