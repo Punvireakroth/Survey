@@ -6,6 +6,8 @@ import {
 import { Link } from "react-router-dom";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import Image from "react-bootstrap/Image";
+import isiLogo from "../../assets/ISI_NavBar.png";
 
 export default function Header() {
   const { logout } = useLogout();
@@ -28,7 +30,7 @@ export default function Header() {
               color: "#fff",
             }}
           >
-            {user && user.role === "admin" ? "Admin" : "ISI survey"}
+            {user && user.role === "admin" ? "Admin" : <Image src={isiLogo} />}
           </Link>
         </div>
         <ul>
