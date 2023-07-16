@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import { ShortResponseResult, NewSection } from "./resultComponents";
-import { Container, Spinner } from "react-bootstrap";
+import { Container, Spinner, Button } from "react-bootstrap";
 
 export default function DisplayResult() {
   const { id } = useParams();
@@ -71,26 +71,49 @@ export default function DisplayResult() {
         style={{
           backgroundColor: "#edf4f5",
           color: "#008cba",
-          paddingTop: 20,
-          paddingBottom: 20,
+          paddingTop: 40,
+          paddingBottom: 40,
+          paddingLeft: 40,
           borderRadius: 7,
+          position: "relative",
         }}
         className="container"
       >
         <h2
           style={{
-            textAlign: "center",
+            textAlign: "left",
             fontFamily: "Nokora",
             fontWeight: "bold",
           }}
         >
           {survey ? survey.title : null}
         </h2>
-        <h4 style={{ textAlign: "center", fontFamily: "Nokora" }}>
+        <h4 style={{ textAlign: "left", fontFamily: "Nokora" }}>
           លិទ្ធផលពីការឆ្លើយតប
         </h4>
+        <div>
+          <Button
+            style={{
+              position: "absolute",
+              top: 20,
+              right: 20,
+              alignItems: "center",
+              backgroundColor: "#edf4f5",
+              paddingTop: 7,
+              paddingBottom: 7,
+              paddingLeft: 20,
+              paddingRight: 20,
+              borderRadius: 50,
+              color: "#0c66a9",
+              borderColor: "#008cba",
+              borderWidth: 2.9,
+            }}
+          >
+            Export Excel
+          </Button>
+        </div>
       </div>
-      <Container>{result}</Container>
+      <Container> {result}</Container>
     </div>
   );
 }
