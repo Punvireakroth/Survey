@@ -135,3 +135,21 @@ h2 {
     font-size: 1.5rem;
   }
 }
+
+/* Displaysurveylist */
+
+.normal {
+  background-color: #edf4f5;
+  margin-top: 6%;
+  padding: 40px;
+  /* border-radius: 25px; */
+  display: "flex";
+  justify-content: center;
+  align-items: center;
+}
+
+.admin {
+  background-color: #edf4f5;
+  margin-top: 40px;
+  padding: 50px;
+}

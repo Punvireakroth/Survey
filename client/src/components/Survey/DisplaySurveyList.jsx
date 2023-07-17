@@ -21,6 +21,7 @@ const DisplaySurveyList = (props) => {
   const [surveyList, setSurveyList] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [surveyIdToDelete, setSurveyIdToDelete] = useState(null);
+  const [userRole, setUserRole] = useState("normal");
   const [tableItems, setTableItems] = useState(
     <tr>
       <th>
@@ -36,6 +37,12 @@ const DisplaySurveyList = (props) => {
   const { user } = useAuthContext();
 
   let navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && user.role === "admin") {
+      setUserRole("admin");
+    }
+  }, []);
 
   // get current user information
 
@@ -107,56 +114,58 @@ const DisplaySurveyList = (props) => {
               ទទួលបាន​ការឆ្លើយតបចំនួន {survey.responseTotal}
             </div>
 
-            <div style={{ display: "flex" }}>
-              <Button
-                onClick={() => handleDeleteSurvey(survey._id)}
-                style={{
-                  backgroundColor: "#d33c64",
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  borderRadius: 50,
-                  fontSize: 0.9 + "rem",
-                  color: "#fff",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  display: "flex",
-                  marginRight: 7,
-                  height: 28,
-                  width: 70,
-                  textDecoration: "none",
-                  borderColor: "#d33c64",
-                }}
-              >
-                Delete
-              </Button>
-              <Link to={`/create-survey/${survey._id}`} target="_blank">
+            {user && user.role === "admin" && (
+              <div style={{ display: "flex" }}>
                 <Button
-                  variant="primary"
+                  onClick={() => handleDeleteSurvey(survey._id)}
                   style={{
-                    backgroundColor: "#008cba",
+                    backgroundColor: "#d33c64",
                     paddingTop: 7,
                     paddingBottom: 7,
                     paddingLeft: 20,
                     paddingRight: 20,
                     borderRadius: 50,
+                    fontSize: 0.9 + "rem",
                     color: "#fff",
                     alignItems: "center",
                     justifyContent: "center",
                     display: "flex",
-                    margin: 0,
+                    marginRight: 7,
                     height: 28,
-                    width: 50,
-                    borderColor: "#008cba",
+                    width: 70,
                     textDecoration: "none",
-                    fontSize: 0.9 + "rem",
+                    borderColor: "#d33c64",
                   }}
                 >
-                  Edit
+                  Delete
                 </Button>
-              </Link>
-            </div>
+                <Link to={`/create-survey/${survey._id}`} target="_blank">
+                  <Button
+                    variant="primary"
+                    style={{
+                      backgroundColor: "#008cba",
+                      paddingTop: 7,
+                      paddingBottom: 7,
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                      borderRadius: 50,
+                      color: "#fff",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      display: "flex",
+                      margin: 0,
+                      height: 28,
+                      width: 50,
+                      borderColor: "#008cba",
+                      textDecoration: "none",
+                      fontSize: 0.9 + "rem",
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </Link>
+              </div>
+            )}
           </Card.Header>
           <Card.Body
             style={{
@@ -175,30 +184,32 @@ const DisplaySurveyList = (props) => {
                   }}
                 />
               </Card.Text>
-              <Link
-                to={`/display-results/${survey._id}`}
-                target="_blank"
-                style={{ textDecoration: "none" }}
-              >
-                <Button
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    backgroundColor: "#ffffff",
-                    paddingTop: 7,
-                    paddingBottom: 7,
-                    paddingLeft: 20,
-                    paddingRight: 20,
-                    borderRadius: 50,
-                    color: "#0c66a9",
-                    borderColor: "#008cba",
-                    borderWidth: 2.9,
-                    marginTop: 40,
-                  }}
+              {user && user.role === "admin" && (
+                <Link
+                  to={`/display-results/${survey._id}`}
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
                 >
-                  See all responses
-                </Button>
-              </Link>
+                  <Button
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      backgroundColor: "#ffffff",
+                      paddingTop: 7,
+                      paddingBottom: 7,
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                      borderRadius: 50,
+                      color: "#0c66a9",
+                      borderColor: "#008cba",
+                      borderWidth: 2.9,
+                      marginTop: 40,
+                    }}
+                  >
+                    See all responses
+                  </Button>
+                </Link>
+              )}
             </div>
 
             <div>
@@ -223,7 +234,10 @@ const DisplaySurveyList = (props) => {
                   right: 10,
                 }}
               >
-                Go to survey &nbsp;
+                {user && user.id === "admin"
+                  ? "Go to survey"
+                  : "ចូលទៅកាន់ការស្ទង់មតិ​​​​​"}{" "}
+                &nbsp;
                 <FaLink />
               </Link>
             </div>
@@ -377,11 +391,11 @@ const DisplaySurveyList = (props) => {
       {/* Survey Section */}
       <section>
         <Container
-          style={{
-            backgroundColor: "#edf4f5",
-            marginTop: 40,
-            padding: 50,
-          }}
+          // style={{
+          //   backgroundColor: "#edf4f5",
+          //   padding: 50,
+          // }}
+          className={userRole}
         >
           <h2
             style={{
@@ -390,9 +404,12 @@ const DisplaySurveyList = (props) => {
               color: "#193c96",
               marginLeft: 15,
               marginBottom: 25,
+              fontFamily: "Nokora",
             }}
           >
-            Your Surveys
+            {user && user.role === "admin"
+              ? "Your Surveys"
+              : "ការស្ទង់មតិរបស់អ្នក"}
           </h2>
           {tableItems && <Container>{tableItems}</Container>}
 

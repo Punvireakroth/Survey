@@ -11,10 +11,10 @@ const surveySchema = mongoose.Schema({
   descriptions: {
     type: String,
   },
-  user_id: {
-    type: String,
-    required: true,
-  },
+  // user_id: {
+  //   type: String,
+  //   required: true,
+  // },
   creationTime: {
     type: String,
   },
