@@ -140,7 +140,7 @@ h2 {
 
 .normal {
   background-color: #edf4f5;
-  margin-top: 6%;
+  margin-top: 1%;
   padding: 40px;
   /* border-radius: 25px; */
   display: "flex";
@@ -152,4 +152,14 @@ h2 {
   background-color: #edf4f5;
   margin-top: 40px;
   padding: 50px;
+}
+
+.userLineBreak {
+  border: none !important;
+}
+
+.userLineBreak:after {
+  content: "∿∿∿∿∿∿∿∿∿∿∿∿"; /* Ratio -> font-size/letter-spacing = 6.25 */
+  letter-spacing: -9.6px;
+  font-size: 60px;
 }

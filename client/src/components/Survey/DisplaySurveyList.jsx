@@ -388,15 +388,29 @@ const DisplaySurveyList = (props) => {
         </main>
       )}
 
+      {/* If the user role as a normal user display a welcome message  */}
+      {user && user.role === "normal" && (
+        <main>
+          <Container
+            style={{
+              backgroundColor: "#0c66a9",
+              color: "#fff",
+              fontFamily: "Nokora",
+              paddingTop: 40,
+              paddingLeft: 40,
+              paddingBottom: 20,
+              borderRadius: 10,
+            }}
+          >
+            <h1 style={{ fontSize: 4 + "rem" }}>ស្វាគមន៍មកកាន់ការស្ទង់មតិ</h1>
+            <hr className="userLineBreak" />
+          </Container>
+        </main>
+      )}
+
       {/* Survey Section */}
       <section>
-        <Container
-          // style={{
-          //   backgroundColor: "#edf4f5",
-          //   padding: 50,
-          // }}
-          className={userRole}
-        >
+        <Container className={userRole}>
           <h2
             style={{
               textAlign: "left",
