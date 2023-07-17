@@ -69,8 +69,8 @@ export default function DisplayResult() {
     <div>
       <div
         style={{
-          backgroundColor: "#edf4f5",
-          color: "#008cba",
+          backgroundColor: "#0c66a9",
+          color: "#fff",
           paddingTop: 40,
           paddingBottom: 40,
           paddingLeft: 40,
@@ -98,16 +98,17 @@ export default function DisplayResult() {
               top: 20,
               right: 20,
               alignItems: "center",
-              backgroundColor: "#edf4f5",
+              backgroundColor: "#0c66a9",
               paddingTop: 7,
               paddingBottom: 7,
               paddingLeft: 20,
               paddingRight: 20,
               borderRadius: 50,
-              color: "#0c66a9",
+              color: "#fff",
               borderColor: "#008cba",
               borderWidth: 2.9,
             }}
+            className="export-button"
           >
             Export Excel
           </Button>

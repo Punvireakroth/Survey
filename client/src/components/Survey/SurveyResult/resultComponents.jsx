@@ -50,7 +50,6 @@ export function NewSection(props) {
         backgroundColor: "#1193be",
         padding: 50,
         borderRadius: 7,
-        border: "3px none rgba(122, 192, 215, .6)",
         color: "#fff",
         fontSize: 1.4 + "rem",
       }}
@@ -59,6 +58,7 @@ export function NewSection(props) {
         style={{
           textAlign: "center",
           fontSize: 1.5 + "em",
+          fontFamily: "Nokora",
         }}
       >
         {props.question.question}
