@@ -10,20 +10,20 @@ const {
   updateSurvey,
   saveResponsesToSurvey,
   deleteSurvey,
+  getASurvey,
 } = require("../controllers/surveyController");
 
 // require auth for all survey
 router.use(authMiddleware);
 
-// GET get survey
-// Authurized
+// GET get surveys
+router.get("/", getSurvey);
 
-router.get("/:id", getSurvey); // WORK✅
+// GET get survey by id
+router.get("/:id", getASurvey);
 
 // GET get survey by user
 router.get("/surveys-by-user/:id", getSurveysByUser);
-
-router.get("/public", getSurvey);
 
 // POST create survey or update
 

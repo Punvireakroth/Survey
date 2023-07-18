@@ -9,8 +9,21 @@ const User = require("../models/userModel");
 // @access private and public ------------------
 
 const getSurvey = asyncHandler(async (req, res) => {
-  const survey = await Survey.findById(req.params.id);
+  const survey = await Survey.find({});
   res.status(200).json(survey);
+});
+
+// @desc Get specific the surveys
+// @route GET api/surveys/:id
+// @access private and public ------------------
+const getASurvey = asyncHandler(async (req, res) => {
+  const survey = await Survey.findById(req.params.id);
+  if (survey) {
+    res.status(200).json(survey);
+  } else {
+    res.status(404);
+    throw new Error("Survey not found");
+  }
 });
 
 // @desc Get all the surveys
@@ -177,4 +190,5 @@ module.exports = {
   updateSurvey,
   saveResponsesToSurvey,
   deleteSurvey,
+  getASurvey,
 };
