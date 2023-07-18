@@ -57,6 +57,7 @@ function App() {
     <Router>
       <div>
         <Routes>
+          {/* Dashboard | Create Survey | Display Survey Result */}
           <Route path="/" element={<BasicLayout />}>
             <Route path="/" element={<Welcome />} />
             <Route
@@ -99,6 +100,7 @@ function App() {
             <Route path="/display-results/:id/*" element={<DisplayResult />} />
             <Route path="*" element={<NotFound />} />
           </Route>
+          {/* Display Survey  */}
           <Route path="/display-survey/" element={<DisplayResultLayout />}>
             <Route
               path=":id"
@@ -112,9 +114,11 @@ function App() {
             />
             <Route path="submit-survey/:id" element={<SurveySubmit />} />
           </Route>
+          {/* Display DataGrid  */}
           <Route path="/display-data-grid/" element={<DisplayDataGridLayout />}>
             <Route path=":id" element={<DataGrid />} />
           </Route>
+          {/* Auth */}
           <Route
             path="/login"
             element={!user ? <Login /> : <Navigate to="../dashboard" />}
