@@ -40,10 +40,6 @@ function DisplayResultLayout() {
   return <Outlet />;
 }
 
-function DisplayDataGridLayout() {
-  return <Outlet />;
-}
-
 function App() {
   const { user } = useAuthContext();
 
@@ -98,6 +94,8 @@ function App() {
               }
             />
             <Route path="/display-results/:id/*" element={<DisplayResult />} />
+            {/* Display DataGrid  */}
+            <Route path="/display-data-grid/" element={<DataGrid />} />
             <Route path="*" element={<NotFound />} />
           </Route>
           {/* Display Survey  */}
@@ -114,10 +112,7 @@ function App() {
             />
             <Route path="submit-survey/:id" element={<SurveySubmit />} />
           </Route>
-          {/* Display DataGrid  */}
-          <Route path="/display-data-grid/" element={<DisplayDataGridLayout />}>
-            <Route path=":id" element={<DataGrid />} />
-          </Route>
+
           {/* Auth */}
           <Route
             path="/login"

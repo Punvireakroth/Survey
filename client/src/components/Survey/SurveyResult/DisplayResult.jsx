@@ -84,13 +84,6 @@ export default function DisplayResult() {
       data.push(row);
     }
 
-    // survey.questions.forEach((question, index) => {
-    //   const responses = question.responses.map((response) => response.response); // Get all responses of the question
-    //   const columnData = [question.question, ...responses]; // Data of the column
-
-    //   sheetData.push(columnData); // Push the column data to the sheet data
-    // });
-
     const worksheet = XLSX.utils.aoa_to_sheet(data); // Convert the sheet data to worksheet
     XLSX.utils.book_append_sheet(workbook, worksheet, sheetName); // Append the worksheet to the workbook
 

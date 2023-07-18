@@ -12,7 +12,7 @@ import {
   Modal,
 } from "react-bootstrap";
 
-import { FaPlus, FaLink } from "react-icons/fa";
+import { FaPlus, FaLink, FaDatabase } from "react-icons/fa";
 
 const DisplaySurveyList = (props) => {
   const [userData, setUserData] = useState(null);
@@ -360,7 +360,11 @@ const DisplaySurveyList = (props) => {
               </Col>
             </Row>
             <Row>
-              <Col sm={12} lg={12} style={{ padding: 15, textAlign: "left" }}>
+              <Col
+                sm={12}
+                lg={12}
+                style={{ padding: 15, textAlign: "left", marginBottom: 20 }}
+              >
                 <Button
                   onClick={onCreateSurveyClick}
                   variant="primary"
@@ -374,14 +378,42 @@ const DisplaySurveyList = (props) => {
                     paddingLeft: 40,
                     paddingRight: 40,
                     fontSize: 20,
+                    marginRight: 20,
                     backgroundColor: "#0c66a9",
                     borderColor: "#0c66a9",
                   }}
                 >
                   <FaPlus /> Create a New Survey
                 </Button>
-                <br />
-                <br />
+
+                {
+                  <Link
+                    to={"/display-data-grid/"}
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Button
+                      variant="primary"
+                      className="createSrvyBtn"
+                      style={{
+                        borderRadius: 50,
+                        borderWidth: 3,
+                        backgroundColor: "#1e90ff",
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        paddingLeft: 40,
+                        paddingRight: 40,
+                        fontSize: 20,
+                        backgroundColor: "#edf4f5",
+                        borderColor: "#0c66a9",
+                        color: "#0c66a9",
+                      }}
+                    >
+                      <FaDatabase />
+                      &nbsp; Survey Data
+                    </Button>
+                  </Link>
+                }
               </Col>
             </Row>
           </Container>
