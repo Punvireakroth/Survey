@@ -71,17 +71,27 @@ export default function DisplayResult() {
   const exportAsXLSX = () => {
     const workbook = XLSX.utils.book_new(); // Create a new workbook
     const sheetName = "Survey Result"; // Name of the sheet
-    const sheetData = []; // Data of the sheet
+
+    // const sheetData = []; // Data of the sheet
+    const data = [[...survey.questions.map((q) => q.question)]]; // Data of the sheet
 
     // Iterate through each question in the survey
-    survey.questions.forEach((question, index) => {
-      const responses = question.responses.map((response) => response.response); // Get all responses of the question
-      const columnData = [question.question, ...responses]; // Data of the column
+    for (let i = 0; i < survey.questions[0].responses.length; i++) {
+      const row = [];
+      survey.questions.forEach((question) => {
+        row.push(question.responses[i]?.response || "");
+      });
+      data.push(row);
+    }
 
-      sheetData.push(columnData); // Push the column data to the sheet data
-    });
+    // survey.questions.forEach((question, index) => {
+    //   const responses = question.responses.map((response) => response.response); // Get all responses of the question
+    //   const columnData = [question.question, ...responses]; // Data of the column
 
-    const worksheet = XLSX.utils.aoa_to_sheet(sheetData); // Convert the sheet data to worksheet
+    //   sheetData.push(columnData); // Push the column data to the sheet data
+    // });
+
+    const worksheet = XLSX.utils.aoa_to_sheet(data); // Convert the sheet data to worksheet
     XLSX.utils.book_append_sheet(workbook, worksheet, sheetName); // Append the worksheet to the workbook
 
     const fileBuffer = XLSX.write(workbook, {
