@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import { ShortResponseResult, NewSection } from "./resultComponents";
 import { Container, Spinner, Button } from "react-bootstrap";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 export default function DisplayResult() {
   const { id } = useParams();
@@ -65,6 +67,32 @@ export default function DisplayResult() {
     }
   }, [survey]);
 
+  // Function to export the survey result as an excel file
+  const exportAsXLSX = () => {
+    const workbook = XLSX.utils.book_new(); // Create a new workbook
+    const sheetName = "Survey Result"; // Name of the sheet
+    const sheetData = []; // Data of the sheet
+
+    // Iterate through each question in the survey
+    survey.questions.forEach((question, index) => {
+      const responses = question.responses.map((response) => response.response); // Get all responses of the question
+      const columnData = [question.question, ...responses]; // Data of the column
+
+      sheetData.push(columnData); // Push the column data to the sheet data
+    });
+
+    const worksheet = XLSX.utils.aoa_to_sheet(sheetData); // Convert the sheet data to worksheet
+    XLSX.utils.book_append_sheet(workbook, worksheet, sheetName); // Append the worksheet to the workbook
+
+    const fileBuffer = XLSX.write(workbook, {
+      type: "array",
+      bookType: "xlsx",
+    }); // Write the workbook to a buffer
+
+    const blob = new Blob([fileBuffer], { type: "application/octet-stream" }); // Create a blob from the buffer
+    saveAs(blob, `${survey.title}.xlsx`); // Save the blob as an excel file
+  };
+
   return (
     <div>
       <div
@@ -93,6 +121,7 @@ export default function DisplayResult() {
         </h4>
         <div>
           <Button
+            onClick={exportAsXLSX}
             style={{
               position: "absolute",
               top: 20,
