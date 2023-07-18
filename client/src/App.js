@@ -12,6 +12,7 @@ import CreateSurvey from "./components/Survey/CreateSurvey/CreateSurvey";
 import DisplaySurvey from "./components/Survey/DisplaySurvey/DisplaySurvey";
 import DisplaySurveyList from "./components/Survey/DisplaySurveyList";
 import DisplayResult from "./components/Survey/SurveyResult/DisplayResult";
+import DataGrid from "./components/Grid/DataGrid";
 import SurveySubmit from "./components/Survey/SurveySubmit";
 import NotFound from "./pages/NotFound";
 import Welcome from "./pages/Welcome";
@@ -36,6 +37,10 @@ function BasicLayout() {
 }
 
 function DisplayResultLayout() {
+  return <Outlet />;
+}
+
+function DisplayDataGridLayout() {
   return <Outlet />;
 }
 
@@ -106,6 +111,9 @@ function App() {
               }
             />
             <Route path="submit-survey/:id" element={<SurveySubmit />} />
+          </Route>
+          <Route path="/display-data-grid/" element={<DisplayDataGridLayout />}>
+            <Route path=":id" element={<DataGrid />} />
           </Route>
           <Route
             path="/login"
