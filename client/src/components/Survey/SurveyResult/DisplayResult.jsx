@@ -28,7 +28,6 @@ export default function DisplayResult() {
 
       const responseData = await response.json();
       setSurvey(responseData);
-      console.log(survey);
     } catch (e) {
       console.log(e.error);
     }

@@ -4,12 +4,16 @@ import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { FaFileExcel } from "react-icons/fa";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 function DataGridComponent() {
   const { user } = useAuthContext();
   const [tableData, setTableData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [surveys, setSurveys] = useState(null);
+  const [survey, setSurvey] = useState(null);
   const [selectedSurvey, setSelectedSurvey] = useState("");
 
   useEffect(() => {
@@ -94,6 +98,34 @@ function DataGridComponent() {
     }
   }, [selectedSurvey]);
 
+  // Function to export the survey result as an excel file
+  const exportAsXLSX = () => {
+    const workbook = XLSX.utils.book_new(); // Create a new workbook
+    const sheetName = "Survey Result"; // Name of the sheet
+    // const sheetData = []; // Data of the sheet
+    const data = [[...selectedSurvey.questions.map((q) => q.question)]]; // Data of the sheet
+
+    // Iterate through each question in the survey
+    for (let i = 0; i < selectedSurvey.questions[0].responses.length; i++) {
+      const row = [];
+      selectedSurvey.questions.forEach((question) => {
+        row.push(question.responses[i]?.response || "");
+      });
+      data.push(row);
+    }
+
+    const worksheet = XLSX.utils.aoa_to_sheet(data); // Convert the sheet data to worksheet
+    XLSX.utils.book_append_sheet(workbook, worksheet, sheetName); // Append the worksheet to the workbook
+
+    const fileBuffer = XLSX.write(workbook, {
+      type: "array",
+      bookType: "xlsx",
+    }); // Write the workbook to a buffer
+
+    const blob = new Blob([fileBuffer], { type: "application/octet-stream" }); // Create a blob from the buffer
+    saveAs(blob, `${selectedSurvey.title}.xlsx`); // Save the blob as an excel file
+  };
+
   return (
     <div
       style={{
@@ -102,7 +134,13 @@ function DataGridComponent() {
         marginRight: 50,
       }}
     >
-      <div style={{ marginBottom: 40 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: 40,
+        }}
+      >
         <Dropdown as={ButtonGroup}>
           <Button
             style={{
@@ -141,6 +179,23 @@ function DataGridComponent() {
               ))}
           </Dropdown.Menu>
         </Dropdown>
+        <Button
+          onClick={exportAsXLSX}
+          style={{
+            backgroundColor: "#008cba",
+            paddingRight: 20,
+            paddingLeft: 20,
+            paddingTop: 10,
+            paddingBottom: 10,
+            borderRadius: 10,
+            color: "#fff",
+            fontSize: 1.3 + "rem",
+            borderColor: "#008cba",
+            borderWidth: 3,
+          }}
+        >
+          <FaFileExcel /> Export Excel
+        </Button>
       </div>
 
       <div>
@@ -148,12 +203,11 @@ function DataGridComponent() {
           rows={tableData}
           columns={columns}
           pageSize={5}
-          style={{ borderRadius: 10 }}
-          sx={{
-            "& .MuiDataGrid-cell": {
-              borderColor: "#1f9ac2",
-            },
-            borderWidth: 3,
+          style={{
+            borderRadius: 10,
+            fontFamily: "Nokora",
+            fontSize: "1.1rem",
+            padding: 20,
           }}
         />
       </div>
