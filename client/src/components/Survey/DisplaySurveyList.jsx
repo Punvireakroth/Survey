@@ -141,7 +141,6 @@ const DisplaySurveyList = (props) => {
                 </Button>
                 <Link to={`/create-survey/${survey._id}`} target="_blank">
                   <Button
-                    variant="primary"
                     style={{
                       backgroundColor: "#008cba",
                       paddingTop: 7,
@@ -157,8 +156,8 @@ const DisplaySurveyList = (props) => {
                       height: 28,
                       width: 50,
                       borderColor: "#008cba",
-                      textDecoration: "none",
                       fontSize: 0.9 + "rem",
+                      textDecoration: "none",
                     }}
                   >
                     Edit

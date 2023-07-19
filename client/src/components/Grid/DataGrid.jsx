@@ -4,65 +4,95 @@ import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { useParams } from "react-router-dom";
 
 function DataGridComponent() {
   const { user } = useAuthContext();
-  const { id } = useParams();
   const [tableData, setTableData] = useState([]);
   const [columns, setColumns] = useState([]);
-  const [survey, setSurvey] = useState(null);
+  const [surveys, setSurveys] = useState(null);
+  const [selectedSurvey, setSelectedSurvey] = useState("");
 
   useEffect(() => {
-    fetchSurveyData();
-  }, []);
+    fetchAllSurveyData();
+  }, [user]);
 
-  // Fetch survey information using callApi function
-  const callApi = async (url, fetchOptions) => {
+  // Fetch all the survey
+
+  const fetchAllSurveyData = async (fetchOptions) => {
     try {
-      const response = await fetch(`http://localhost:5000/${url}`, {
+      const response = await fetch("http://localhost:5000/api/surveys/", {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
         ...fetchOptions,
       });
-
       const responseData = await response.json();
-      setSurvey(responseData);
+      console.log(responseData);
+      setSurveys(responseData);
+
+      // Check if a default survey is not selected yet
+      if (!selectedSurvey && responseData.length > 0) {
+        setSelectedSurvey(responseData[0]); // Set the first survey as default
+      }
     } catch (e) {
       console.log(e.error);
     }
   };
 
-  const fetchSurveyData = async () => {
-    callApi(`api/surveys/survey-lk27bpwj`, {
-      method: "GET",
-    });
+  // Fetch the survey data by ID
+  const fetchSurveyDataById = async (surveyId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/surveys/${surveyId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      const responseData = await response.json();
+      console.log(responseData);
+      setSelectedSurvey(responseData);
+    } catch (e) {
+      console.log(e.error);
+    }
+  };
+
+  const handleSurveyChange = async (surveyId) => {
+    // Call fetchSurveyDataById with the selected survey ID
+    fetchSurveyDataById(surveyId);
   };
 
   useEffect(() => {
-    // Update DataGrid columns and rows
-    if (survey) {
-      const surveyColumns = survey.questions.map((question, index) => ({
+    // Update DataGrid columns and rows when a survey is selected
+    if (selectedSurvey) {
+      const surveyColumns = selectedSurvey.questions.map((question, index) => ({
         field: `question_${index + 1}`,
         headerName: question.question,
-        width: 300,
+        width: 200,
       }));
 
-      const dataRows = survey.questions[0].responses.map((_, index) =>
-        survey.questions.reduce((rowData, question, questionIndex) => {
-          rowData["id"] = index + 1;
-          rowData[`question_${questionIndex + 1}`] =
-            question.responses[index]?.response || "";
-          return rowData;
-        }, {})
+      const dataRows = selectedSurvey.questions[0].responses.map(
+        (response, index) =>
+          selectedSurvey.questions.reduce(
+            (rowData, question, questionIndex) => {
+              rowData["id"] = index + 1;
+              rowData[`question_${questionIndex + 1}`] =
+                question.responses[index]?.response || "";
+              return rowData;
+            },
+            {}
+          )
       );
 
       setTableData(dataRows);
       setColumns(surveyColumns);
     }
-  }, [survey]);
+  }, [selectedSurvey]);
 
   return (
     <div
@@ -99,9 +129,16 @@ function DataGridComponent() {
           />
 
           <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+            {surveys &&
+              surveys.map((survey) => (
+                <Dropdown.Item
+                  key={survey._id}
+                  value={survey._id}
+                  onClick={() => handleSurveyChange(survey._id)}
+                >
+                  {survey.title}
+                </Dropdown.Item>
+              ))}
           </Dropdown.Menu>
         </Dropdown>
       </div>
@@ -113,7 +150,6 @@ function DataGridComponent() {
           pageSize={5}
           style={{ borderRadius: 10 }}
           sx={{
-            borderColor: "#0c66a9",
             "& .MuiDataGrid-cell": {
               borderColor: "#1f9ac2",
             },
