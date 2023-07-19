@@ -3,22 +3,66 @@ import { DataGrid } from "@mui/x-data-grid";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
-
-const columns = [
-  { field: "id", headerName: "ID" },
-  { field: "title", headerName: "Title", width: 300 },
-  { field: "body", headerName: "Body", width: 600 },
-];
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useParams } from "react-router-dom";
 
 function DataGridComponent() {
+  const { user } = useAuthContext();
+  const { id } = useParams();
   const [tableData, setTableData] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [survey, setSurvey] = useState(null);
+
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((response) => response.json())
-      .then((data) => {
-        setTableData(data);
-      });
+    fetchSurveyData();
   }, []);
+
+  // Fetch survey information using callApi function
+  const callApi = async (url, fetchOptions) => {
+    try {
+      const response = await fetch(`http://localhost:5000/${url}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        ...fetchOptions,
+      });
+
+      const responseData = await response.json();
+      setSurvey(responseData);
+    } catch (e) {
+      console.log(e.error);
+    }
+  };
+
+  const fetchSurveyData = async () => {
+    callApi(`api/surveys/survey-lk27bpwj`, {
+      method: "GET",
+    });
+  };
+
+  useEffect(() => {
+    // Update DataGrid columns and rows
+    if (survey) {
+      const surveyColumns = survey.questions.map((question, index) => ({
+        field: `question_${index + 1}`,
+        headerName: question.question,
+        width: 300,
+      }));
+
+      const dataRows = survey.questions[0].responses.map((_, index) =>
+        survey.questions.reduce((rowData, question, questionIndex) => {
+          rowData["id"] = index + 1;
+          rowData[`question_${questionIndex + 1}`] =
+            question.responses[index]?.response || "";
+          return rowData;
+        }, {})
+      );
+
+      setTableData(dataRows);
+      setColumns(surveyColumns);
+    }
+  }, [survey]);
 
   return (
     <div
@@ -67,12 +111,11 @@ function DataGridComponent() {
           rows={tableData}
           columns={columns}
           pageSize={5}
-          headerClassName="red-header"
+          style={{ borderRadius: 10 }}
           sx={{
             borderColor: "#0c66a9",
             "& .MuiDataGrid-cell": {
               borderColor: "#1f9ac2",
-              borderWidth: 2,
             },
             borderWidth: 3,
           }}
