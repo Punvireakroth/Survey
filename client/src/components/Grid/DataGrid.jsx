@@ -1,5 +1,11 @@
 import { useState, useEffect, React } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbar,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarFilterButton,
+} from "@mui/x-data-grid";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -7,13 +13,21 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { FaFileExcel } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { ExportButton } from "../Excel-Export/ExportButton.tsx";
+
+function CustomToolbar(props) {
+  return (
+    <GridToolbarContainer {...props}>
+      <ExportButton />
+    </GridToolbarContainer>
+  );
+}
 
 function DataGridComponent() {
   const { user } = useAuthContext();
   const [tableData, setTableData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [surveys, setSurveys] = useState(null);
-  const [survey, setSurvey] = useState(null);
   const [selectedSurvey, setSelectedSurvey] = useState("");
 
   useEffect(() => {
@@ -199,17 +213,45 @@ function DataGridComponent() {
       </div>
 
       <div>
-        <DataGrid
+        {
+          /* <DataGrid
           rows={tableData}
           columns={columns}
           pageSize={5}
+          disableGridExport
+          disableColumnSelector
+          disableDensitySelector
           style={{
             borderRadius: 10,
             fontFamily: "Nokora",
             fontSize: "1.1rem",
             padding: 20,
           }}
-        />
+          slots={{ toolbar: GridToolbar }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+            },
+          }}
+        /> */
+          <DataGrid
+            rows={tableData}
+            columns={columns}
+            pageSize={5}
+            disableGridExport
+            disableColumnSelector
+            disableDensitySelector
+            style={{
+              borderRadius: 10,
+              fontFamily: "Nokora",
+              fontSize: "1.1rem",
+              padding: 20,
+            }}
+            components={{
+              Toolbar: CustomToolbar,
+            }}
+          />
+        }
       </div>
     </div>
   );
