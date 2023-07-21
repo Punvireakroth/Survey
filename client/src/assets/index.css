@@ -163,3 +163,10 @@ h2 {
   letter-spacing: -9.6px;
   font-size: 60px;
 }
+
+.super-app-theme--header {
+  background-color: #0c66a9;
+  color: #ffffff;
+  text-align: center;
+  width: 1000px;
+}
