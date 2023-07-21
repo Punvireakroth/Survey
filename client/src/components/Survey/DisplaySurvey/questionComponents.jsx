@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
-
 import uniqid from "uniqid";
 
 export function ShortResponse(props) {
@@ -24,16 +23,14 @@ export function ShortResponse(props) {
 
   // get user location
   const [currLocation, setCurrLocation] = useState("ចុចប៊ូតុងយកទីតាំង");
-  const [isLoading, setIsLoading] = useState(false);
 
+  // Get location without button
   const getLocation = () => {
     setIsValid(true);
-    setIsLoading(true);
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords;
       setCurrLocation({ latitude, longitude });
       console.log(currLocation);
-      setIsLoading(false);
 
       if (props.question.question.includes("ទីតាំង")) {
         props.onChange(
@@ -45,11 +42,15 @@ export function ShortResponse(props) {
     });
   };
 
-  // If question about location is asked, set the default value to the user's location
+  useEffect(() => {
+    // Derive the values of the required variables
+    const getLocationButton = props.question.question.includes("ទីតាំង");
 
-  const getLocationButton = props.question.question.includes("ទីតាំង");
-  const isLocationQuestion =
-    getLocationButton && currLocation !== "ចុចប៊ូតុងយកទីតាំង";
+    // Update the state variables
+    if (getLocationButton && currLocation === "ចុចប៊ូតុងយកទីតាំង") {
+      getLocation();
+    }
+  }, []);
 
   return (
     <Form noValidate validated={isValid} onSubmit={props.submitSurvey}>
@@ -84,40 +85,10 @@ export function ShortResponse(props) {
             color: "#42a4c4",
             fontSize: 1.1 + "rem",
           }}
-          disabled={isLocationQuestion}
+          disabled={props.question.question.includes("ទីតាំង")}
         />
-        {!isFilled ? (
-          <Form.Control.Feedback type="invalid">
-            Please input the response.
-          </Form.Control.Feedback>
-        ) : (
+        {isTouched && isValid && (
           <Form.Control.Feedback type="valid">Look Good</Form.Control.Feedback>
-        )}
-        {getLocationButton && (
-          <Button
-            variant="primary"
-            onClick={getLocation}
-            disabled={isLoading}
-            style={{
-              marginLeft: "10px",
-              position: "absolute",
-              right: 20,
-              top: 10,
-              alignItems: "center",
-              backgroundColor: "#ffffff",
-              paddingTop: 2,
-              paddingBottom: 0,
-              paddingLeft: 20,
-              paddingRight: 20,
-              borderRadius: 50,
-              color: "#fff",
-              borderColor: "#0c66a9 ",
-              backgroundColor: "#0c66a9 ",
-              borderWidth: 2.9,
-            }}
-          >
-            {isLoading ? "Loading..." : "យកទីតំាង Auto"}
-          </Button>
         )}
       </Form.Group>
     </Form>
