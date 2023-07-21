@@ -4,9 +4,6 @@ import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { FaFileExcel } from "react-icons/fa";
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
 
 function DataGridComponent() {
   const { user } = useAuthContext();
@@ -63,12 +60,12 @@ function DataGridComponent() {
     }
   };
 
-  console.log(selectedSurvey);
   const handleSurveyChange = async (surveyId) => {
     // Call fetchSurveyDataById with the selected survey ID
     fetchSurveyDataById(surveyId);
   };
 
+  console.log(selectedSurvey);
   useEffect(() => {
     // Update DataGrid columns and rows when a survey is selected
     if (selectedSurvey) {
@@ -77,6 +74,8 @@ function DataGridComponent() {
         ...selectedSurvey.questions.map((question, index) => ({
           field: `question_${index + 1}`,
           headerName: question.question,
+          headerClassName:
+            question.type == "new section" ? "super-app-theme--header" : "",
           width: 300,
         })),
       ];
