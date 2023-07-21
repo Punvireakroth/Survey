@@ -86,7 +86,9 @@ function DataGridComponent() {
           selectedSurvey.questions.reduce(
             (rowData, question, questionIndex) => {
               rowData["id"] = index + 1;
-              rowData["submission_date"] = response.time;
+              rowData["submission_date"] = new Date(
+                response.time
+              ).toLocaleDateString();
               rowData[`question_${questionIndex + 1}`] =
                 question.responses[index]?.response || "";
               return rowData;
