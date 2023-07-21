@@ -74,6 +74,7 @@ function DataGridComponent() {
         ...selectedSurvey.questions.map((question, index) => ({
           field: `question_${index + 1}`,
           headerName: question.question,
+
           headerClassName:
             question.type == "new section" ? "super-app-theme--header" : "",
           width: 300,
@@ -102,89 +103,101 @@ function DataGridComponent() {
   }, [selectedSurvey]);
 
   return (
-    <div
-      style={{
-        height: "100%",
-        marginLeft: 50,
-        marginRight: 50,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: 40,
-        }}
-      >
-        <Dropdown as={ButtonGroup}>
-          <Button
+    <>
+      {user && user.role === "admin" ? (
+        <div
+          style={{
+            height: "100%",
+            marginLeft: 50,
+            marginRight: 50,
+          }}
+        >
+          <div
             style={{
-              paddingLeft: 30,
-              border: "3px solid #0c66a9",
-              backgroundColor: "#ffffff",
-              color: "#0c66a9",
-              fontSize: 1.3 + "rem",
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: 40,
             }}
           >
-            Choose the Survey Data{" "}
-          </Button>
-          <Dropdown.Toggle
-            split
-            id="dropdown-split-basic"
-            style={{
-              padding: 15,
-              paddingRight: 20,
-              paddingLeft: 20,
-              backgroundColor: "#0c66a9",
-              borderColor: "#0c66a9",
-              color: "#ffffff",
-            }}
-          />
+            <Dropdown as={ButtonGroup}>
+              <Button
+                style={{
+                  paddingLeft: 30,
+                  border: "3px solid #0c66a9",
+                  backgroundColor: "#ffffff",
+                  color: "#0c66a9",
+                  fontSize: 1.3 + "rem",
+                }}
+              >
+                Choose the Survey Data{" "}
+              </Button>
+              <Dropdown.Toggle
+                split
+                id="dropdown-split-basic"
+                style={{
+                  padding: 15,
+                  paddingRight: 20,
+                  paddingLeft: 20,
+                  backgroundColor: "#0c66a9",
+                  borderColor: "#0c66a9",
+                  color: "#ffffff",
+                }}
+              />
 
-          <Dropdown.Menu>
-            {surveys &&
-              surveys.map((survey) => (
-                <Dropdown.Item
-                  key={survey._id}
-                  value={survey._id}
-                  onClick={() => handleSurveyChange(survey._id)}
-                >
-                  {survey.title}
-                </Dropdown.Item>
-              ))}
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
+              <Dropdown.Menu>
+                {surveys &&
+                  surveys.map((survey) => (
+                    <Dropdown.Item
+                      key={survey._id}
+                      value={survey._id}
+                      onClick={() => handleSurveyChange(survey._id)}
+                    >
+                      {survey.title}
+                    </Dropdown.Item>
+                  ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
 
-      <div>
-        <DataGrid
-          rows={tableData}
-          columns={columns}
-          disableColumnSelector
-          disableDensitySelector
+          <div>
+            <DataGrid
+              rows={tableData}
+              columns={columns}
+              disableColumnSelector
+              disableDensitySelector
+              style={{
+                borderRadius: 10,
+                fontFamily: "Nokora",
+                fontSize: "1.1rem",
+                padding: 20,
+              }}
+              slots={{ toolbar: GridToolbar }}
+              slotProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                  isableToolbarButton: true,
+                  printOptions: { disableToolbarButton: true },
+                },
+              }}
+              initialState={{
+                pagination: {
+                  paginationModel: { pageSize: 25, page: 0 },
+                },
+              }}
+              pageSizeOptions={[5, 10, 25]}
+            />
+          </div>
+        </div>
+      ) : (
+        <h1
           style={{
-            borderRadius: 10,
-            fontFamily: "Nokora",
-            fontSize: "1.1rem",
-            padding: 20,
+            textAlign: "center",
           }}
-          slots={{ toolbar: GridToolbar }}
-          slotProps={{
-            toolbar: {
-              showQuickFilter: true,
-              isableToolbarButton: true,
-              printOptions: { disableToolbarButton: true },
-            },
-          }}
-          initialState={{
-            pagination: {
-              paginationModel: { pageSize: 25, page: 0 },
-            },
-          }}
-          pageSizeOptions={[5, 10, 25]}
-        />
-      </div>
-    </div>
+        >
+          You are not authorized to view this page
+        </h1>
+      )}
+    </>
   );
 }
 
