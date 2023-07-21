@@ -72,17 +72,21 @@ function DataGridComponent() {
   useEffect(() => {
     // Update DataGrid columns and rows when a survey is selected
     if (selectedSurvey) {
-      const surveyColumns = selectedSurvey.questions.map((question, index) => ({
-        field: `question_${index + 1}`,
-        headerName: question.question,
-        width: 200,
-      }));
+      const surveyColumns = [
+        { field: "submission_date", headerName: "Submission Date", width: 350 },
+        ...selectedSurvey.questions.map((question, index) => ({
+          field: `question_${index + 1}`,
+          headerName: question.question,
+          width: 300,
+        })),
+      ];
 
       const dataRows = selectedSurvey.questions[0].responses.map(
         (response, index) =>
           selectedSurvey.questions.reduce(
             (rowData, question, questionIndex) => {
               rowData["id"] = index + 1;
+              rowData["submission_date"] = response.time;
               rowData[`question_${questionIndex + 1}`] =
                 question.responses[index]?.response || "";
               return rowData;
@@ -95,34 +99,6 @@ function DataGridComponent() {
       setColumns(surveyColumns);
     }
   }, [selectedSurvey]);
-
-  // // Function to export the survey result as an excel file
-  // const exportAsXLSX = () => {
-  //   const workbook = XLSX.utils.book_new(); // Create a new workbook
-  //   const sheetName = "Survey Result"; // Name of the sheet
-  //   // const sheetData = []; // Data of the sheet
-  //   const data = [[...selectedSurvey.questions.map((q) => q.question)]]; // Data of the sheet
-
-  //   // Iterate through each question in the survey
-  //   for (let i = 0; i < selectedSurvey.questions[0].responses.length; i++) {
-  //     const row = [];
-  //     selectedSurvey.questions.forEach((question) => {
-  //       row.push(question.responses[i]?.response || "");
-  //     });
-  //     data.push(row);
-  //   }
-
-  //   const worksheet = XLSX.utils.aoa_to_sheet(data); // Convert the sheet data to worksheet
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, sheetName); // Append the worksheet to the workbook
-
-  //   const fileBuffer = XLSX.write(workbook, {
-  //     type: "array",
-  //     bookType: "xlsx",
-  //   }); // Write the workbook to a buffer
-
-  //   const blob = new Blob([fileBuffer], { type: "application/octet-stream" }); // Create a blob from the buffer
-  //   saveAs(blob, `${selectedSurvey.title}.xlsx`); // Save the blob as an excel file
-  // };
 
   return (
     <div
@@ -177,23 +153,6 @@ function DataGridComponent() {
               ))}
           </Dropdown.Menu>
         </Dropdown>
-        {/* <Button
-          onClick={exportAsXLSX}
-          style={{
-            backgroundColor: "#008cba",
-            paddingRight: 20,
-            paddingLeft: 20,
-            paddingTop: 10,
-            paddingBottom: 10,
-            borderRadius: 10,
-            color: "#fff",
-            fontSize: 1.3 + "rem",
-            borderColor: "#008cba",
-            borderWidth: 3,
-          }}
-        >
-          <FaFileExcel /> Export Excel
-        </Button> */}
       </div>
 
       <div>
