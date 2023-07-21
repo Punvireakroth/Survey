@@ -1,7 +1,5 @@
 import { useState, useEffect, React } from "react";
-import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -9,26 +7,6 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { FaFileExcel } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-
-function CustomToolbar(props) {
-  return (
-    <div className="ag-grid-toolbar">
-      <div className="ag-toolbar-row">
-        <div className="ag-toolbar-column">
-          <div className="ag-filter-toolbar">
-            <div className="ag-toolbar-filter-input">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={(e) => props.api.setQuickFilter(e.target.value)}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function DataGridComponent() {
   const { user } = useAuthContext();
@@ -54,7 +32,6 @@ function DataGridComponent() {
         ...fetchOptions,
       });
       const responseData = await response.json();
-      console.log(responseData);
       setSurveys(responseData);
 
       // Check if a default survey is not selected yet
@@ -80,13 +57,13 @@ function DataGridComponent() {
       );
 
       const responseData = await response.json();
-      console.log(responseData);
       setSelectedSurvey(responseData);
     } catch (e) {
       console.log(e.error);
     }
   };
 
+  console.log(selectedSurvey);
   const handleSurveyChange = async (surveyId) => {
     // Call fetchSurveyDataById with the selected survey ID
     fetchSurveyDataById(surveyId);
@@ -96,8 +73,8 @@ function DataGridComponent() {
     // Update DataGrid columns and rows when a survey is selected
     if (selectedSurvey) {
       const surveyColumns = selectedSurvey.questions.map((question, index) => ({
-        headerName: question.question,
         field: `question_${index + 1}`,
+        headerName: question.question,
         width: 200,
       }));
 
@@ -118,6 +95,34 @@ function DataGridComponent() {
       setColumns(surveyColumns);
     }
   }, [selectedSurvey]);
+
+  // // Function to export the survey result as an excel file
+  // const exportAsXLSX = () => {
+  //   const workbook = XLSX.utils.book_new(); // Create a new workbook
+  //   const sheetName = "Survey Result"; // Name of the sheet
+  //   // const sheetData = []; // Data of the sheet
+  //   const data = [[...selectedSurvey.questions.map((q) => q.question)]]; // Data of the sheet
+
+  //   // Iterate through each question in the survey
+  //   for (let i = 0; i < selectedSurvey.questions[0].responses.length; i++) {
+  //     const row = [];
+  //     selectedSurvey.questions.forEach((question) => {
+  //       row.push(question.responses[i]?.response || "");
+  //     });
+  //     data.push(row);
+  //   }
+
+  //   const worksheet = XLSX.utils.aoa_to_sheet(data); // Convert the sheet data to worksheet
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, sheetName); // Append the worksheet to the workbook
+
+  //   const fileBuffer = XLSX.write(workbook, {
+  //     type: "array",
+  //     bookType: "xlsx",
+  //   }); // Write the workbook to a buffer
+
+  //   const blob = new Blob([fileBuffer], { type: "application/octet-stream" }); // Create a blob from the buffer
+  //   saveAs(blob, `${selectedSurvey.title}.xlsx`); // Save the blob as an excel file
+  // };
 
   return (
     <div
@@ -172,17 +177,45 @@ function DataGridComponent() {
               ))}
           </Dropdown.Menu>
         </Dropdown>
+        {/* <Button
+          onClick={exportAsXLSX}
+          style={{
+            backgroundColor: "#008cba",
+            paddingRight: 20,
+            paddingLeft: 20,
+            paddingTop: 10,
+            paddingBottom: 10,
+            borderRadius: 10,
+            color: "#fff",
+            fontSize: 1.3 + "rem",
+            borderColor: "#008cba",
+            borderWidth: 3,
+          }}
+        >
+          <FaFileExcel /> Export Excel
+        </Button> */}
       </div>
 
-      <div className="ag-theme-alpine" style={{ height: 400, width: "100%" }}>
-        <AgGridReact
-          rowData={tableData}
-          columnDefs={columns}
-          domLayout="autoHeight"
-          defaultColDef={{
-            resizable: true,
-            sortable: true,
-            filter: true,
+      <div>
+        <DataGrid
+          rows={tableData}
+          columns={columns}
+          pageSize={5}
+          disableGridExport
+          disableColumnSelector
+          disableDensitySelector
+          style={{
+            borderRadius: 10,
+            fontFamily: "Nokora",
+            fontSize: "1.1rem",
+            padding: 20,
+          }}
+          slots={{ toolbar: GridToolbar }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+              isableToolbarButton: true,
+            },
           }}
         />
       </div>
