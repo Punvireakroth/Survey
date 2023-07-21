@@ -8,7 +8,7 @@ const surveySchema = mongoose.Schema({
   title: {
     type: String,
   },
-  descriptions: {
+  description: {
     type: String,
   },
   // user_id: {

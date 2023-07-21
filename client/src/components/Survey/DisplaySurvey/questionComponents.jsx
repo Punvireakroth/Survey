@@ -274,7 +274,14 @@ export function SurveyTitle(props) {
       }}
     >
       <h1 style={{ textAlign: "center" }}>{props.survey.title}</h1>
-      <h4 style={{ textAlign: "center" }} className="text-muted">
+      <h4
+        style={{
+          textAlign: "center",
+          paddingTop: 20,
+          color: "#fff",
+          opacity: "70%",
+        }}
+      >
         {props.survey.description}
       </h4>
     </div>
