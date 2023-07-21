@@ -161,8 +161,6 @@ function DataGridComponent() {
         <DataGrid
           rows={tableData}
           columns={columns}
-          pageSize={5}
-          disableGridExport
           disableColumnSelector
           disableDensitySelector
           style={{
@@ -176,8 +174,15 @@ function DataGridComponent() {
             toolbar: {
               showQuickFilter: true,
               isableToolbarButton: true,
+              printOptions: { disableToolbarButton: true },
             },
           }}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 25, page: 0 },
+            },
+          }}
+          pageSizeOptions={[5, 10, 25]}
         />
       </div>
     </div>
