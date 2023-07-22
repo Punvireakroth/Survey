@@ -12,7 +12,16 @@ const authMiddleware = async (req, res, next) => {
   const token = authorization.split(" ")[1];
 
   try {
-    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET, (err, res) => {
+      if (err) {
+        return "token expired";
+      }
+      return res;
+    });
+    if (_id == "token expired") {
+      return res.send({ status: "error", data: "token expired" });
+    }
+
     req.user = await User.findOne({ _id }).select(" _id ");
     next();
   } catch (error) {
