@@ -1,7 +1,7 @@
 import { Form } from "react-bootstrap";
 import CloseButton from "react-bootstrap/CloseButton";
 
-// Component for adding a new Section
+// ----------------------------Component for adding a new Section--------------------
 export function NewSection(props) {
   return (
     <Form.Group
@@ -45,6 +45,7 @@ export function NewSection(props) {
   );
 }
 
+// ----------------------------Short Response Compoent--------------------
 export function ShortResponse(props) {
   return (
     <Form.Group
@@ -94,58 +95,56 @@ export function ShortResponse(props) {
   );
 }
 
+//-------------------------------------True/False Component---------------------------
 export function TrueFalse(props) {
-  const answerChoices = props.question.answer_choices.map((answer, index) => (
+  const answerChoices = props.question.answer_choices.map((answer, index) => {
     <div key={index}>
       <Form.Control
         id={props.question._id}
         answernum={index}
-        type="text"
-        answer="yes"
-        onChange={props.onChange}
+        onChange={(e) => props.onChange(e)}
         name="answerChoice"
         value={answer}
-        placeholder={answer}
+        placeholder="Add Your Answer Choice"
+        answer="yes"
+        type="text"
       />
-      <br />
-    </div>
-  ));
+    </div>;
+  });
 
   return (
-    <Form.Group className="mb-3">
+    <Form.Group className="mb-3" style={{ marginTop: 30 }}>
       <CloseButton
-        className="closeBtn"
-        onClick={(e) => props.removeQuestion(e, props.question._id)}
+        onClick={(e) => props.removeQuestion(e, props.question.id)}
       />
 
       <h4>
-        Question {props.index + 1}:
+        Question {props.index + 1}
         <medium
           className="text-muted"
           style={{ color: "gray", fontSize: 1.2 + "rem" }}
         >
           {" "}
-          True/False Question
+          True or False Question
         </medium>
       </h4>
-      <Form.Label>Add Your Question:</Form.Label>
       <Form.Control
         id={props.question._id}
         answer="no"
-        onChange={props.onChange}
-        name="true/false"
+        onChange={(e) => props.onChange(e)}
+        name="truefalse"
         value={props.question.question}
         type="text"
-        placeholder={props.question.question}
+        placeholder="Add Your Question"
       />
       <br />
-      <br />
-      <Form.Label>Edit Your Answer Choices:</Form.Label>
+      <Form.Label>You can edit your answer choice</Form.Label>
       {answerChoices}
     </Form.Group>
   );
 }
 
+// ----------------------------Paragraph Component--------------------
 export function Paragraph(props) {
   return (
     <Form.Group
@@ -202,6 +201,7 @@ export function Paragraph(props) {
   );
 }
 
+// ----------------------------Survey Title Component--------------------
 export function SurveyTitle(props) {
   return (
     <Form.Group
