@@ -4,6 +4,7 @@ import uniqid from "uniqid";
 import {
   Paragraph,
   ShortResponse,
+  TrueFalse,
   NewSection,
   SurveyTitle,
 } from "./createQuestionComponents";
@@ -88,18 +89,18 @@ const CreateSurvey = (props) => {
     });
   };
 
-  // Add more answer for multiple choice questions
-  const addMoreAnswerChoices = (e, questionIndex) => {
-    setQuestions((prevQuestions) => {
-      const updatedQuestions = [...prevQuestions];
-      const answerChoices = updatedQuestions[questionIndex].answer_choices;
-      answerChoices.push("");
-      updatedQuestions[questionIndex] = {
-        ...updatedQuestions[questionIndex],
-        answer_choices: answerChoices,
-      };
-      return updatedQuestions;
-    });
+  const addMoreAnswerChoices = (e, id) => {
+    let questionArray = [...questions];
+    let questionIndex = questionArray.findIndex(
+      (question) => id === question._id
+    );
+    let answerChoices = questionArray[questionIndex].answer_choices;
+    answerChoices.push("");
+    questionArray[questionIndex] = {
+      ...questionArray[questionIndex],
+      answer_choices: answerChoices,
+    };
+    setQuestions(questionArray);
   };
 
   // Add question to survey
@@ -234,6 +235,17 @@ const CreateSurvey = (props) => {
               index={questionIndex}
             />
           );
+        case "true/false":
+          return (
+            <TrueFalse
+              key={question._id}
+              question={question}
+              id={question._id}
+              addAnswerChoice={addMoreAnswerChoices}
+              removeQuestion={() => removeQuestion(index)}
+              index={questionIndex}
+            />
+          );
         default:
           return null;
       }
@@ -260,7 +272,7 @@ const CreateSurvey = (props) => {
               Choose one below
             </option>
             <option value="1">Short Response (Question type)</option>
-            {/* <option value="2">True/False (Question type)</option> */}
+            <option value="2">True/False (Question type)</option>
             <option value="3">Paragraph (Question type)</option>
             <option value="4">New Section</option>
           </Form.Select>
