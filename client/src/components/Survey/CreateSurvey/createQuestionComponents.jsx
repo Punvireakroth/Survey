@@ -97,20 +97,15 @@ export function ShortResponse(props) {
 
 //-------------------------------------True/False Component---------------------------
 export function TrueFalse(props) {
-  const answerChoices = props.question.answer_choices.map((answer, index) => {
-    <div key={index}>
-      <Form.Control
-        id={props.question._id}
-        answernum={index}
-        onChange={(e) => props.onChange(e)}
-        name="answerChoice"
-        value={answer}
-        placeholder="Add Your Answer Choice"
-        answer="yes"
-        type="text"
-      />
-    </div>;
-  });
+  const answerChoices = props.question.answer_choices.map((answer, index) => (
+    <AnswerChoice
+      key={index}
+      id={props.question._id}
+      answernum={index}
+      onChange={(e) => props.onChange(e)}
+      value={answer}
+    />
+  ));
 
   return (
     <Form.Group className="mb-3" style={{ marginTop: 30 }}>
@@ -132,7 +127,7 @@ export function TrueFalse(props) {
         id={props.question._id}
         answer="no"
         onChange={(e) => props.onChange(e)}
-        name="truefalse"
+        name="true/false"
         value={props.question.question}
         type="text"
         placeholder="Add Your Question"
@@ -141,6 +136,21 @@ export function TrueFalse(props) {
       <Form.Label>You can edit your answer choice</Form.Label>
       {answerChoices}
     </Form.Group>
+  );
+}
+
+function AnswerChoice(props) {
+  return (
+    <Form.Control
+      id={props.id}
+      answer="yes"
+      answernum={props.answernum}
+      onChange={(e) => props.onChange(e)}
+      name="answerChoice"
+      value={props.value}
+      type="text"
+      placeholder="Add Your Answer Choice"
+    />
   );
 }
 
