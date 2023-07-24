@@ -89,20 +89,6 @@ const CreateSurvey = (props) => {
     });
   };
 
-  const addMoreAnswerChoices = (e, id) => {
-    let questionArray = [...questions];
-    let questionIndex = questionArray.findIndex(
-      (question) => id === question._id
-    );
-    let answerChoices = questionArray[questionIndex].answer_choices;
-    answerChoices.push("");
-    questionArray[questionIndex] = {
-      ...questionArray[questionIndex],
-      answer_choices: answerChoices,
-    };
-    setQuestions(questionArray);
-  };
-
   // Add question to survey
   const addQuestion = (e) => {
     setShowAddQuestionButton(true);
@@ -242,7 +228,6 @@ const CreateSurvey = (props) => {
               question={question}
               id={question._id}
               onChange={(e) => handleQuestionChange(e, index)}
-              addAnswerChoice={addMoreAnswerChoices}
               removeQuestion={() => removeQuestion(index)}
               index={questionIndex}
             />
