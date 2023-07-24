@@ -241,6 +241,7 @@ const CreateSurvey = (props) => {
               key={question._id}
               question={question}
               id={question._id}
+              onChange={(e) => handleQuestionChange(e, index)}
               addAnswerChoice={addMoreAnswerChoices}
               removeQuestion={() => removeQuestion(index)}
               index={questionIndex}

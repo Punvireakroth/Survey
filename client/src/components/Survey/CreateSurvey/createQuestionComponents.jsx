@@ -102,15 +102,27 @@ export function TrueFalse(props) {
       key={index}
       id={props.question._id}
       answernum={index}
-      onChange={(e) => props.onChange(e)}
       value={answer}
     />
   ));
 
   return (
-    <Form.Group className="mb-3" style={{ marginTop: 30 }}>
+    <Form.Group
+      className="mb-3"
+      style={{
+        marginTop: 30,
+        backgroundColor: "#edf4f5",
+        padding: 20,
+        borderRadius: 7,
+        border: "3px dashed rgba(122, 192, 215, .6)",
+        color: "#0c66a9",
+        fontSize: 1.4 + "rem",
+        position: "relative",
+      }}
+    >
       <CloseButton
         onClick={(e) => props.removeQuestion(e, props.question.id)}
+        style={{ position: "absolute", top: 10, right: 10 }}
       />
 
       <h4>
@@ -123,6 +135,7 @@ export function TrueFalse(props) {
           True or False Question
         </medium>
       </h4>
+      <Form.Label>Add Your Question:</Form.Label>
       <Form.Control
         id={props.question._id}
         answer="no"
@@ -131,9 +144,15 @@ export function TrueFalse(props) {
         value={props.question.question}
         type="text"
         placeholder="Add Your Question"
+        style={{
+          borderRadius: 1,
+          color: "#42a4c4",
+          fontSize: 1.1 + "rem",
+          borderColor: "#008cba",
+        }}
       />
       <br />
-      <Form.Label>You can edit your answer choice</Form.Label>
+      {/* <Form.Label>You can edit your answer choice</Form.Label> */}
       {answerChoices}
     </Form.Group>
   );
@@ -145,11 +164,18 @@ function AnswerChoice(props) {
       id={props.id}
       answer="yes"
       answernum={props.answernum}
-      onChange={(e) => props.onChange(e)}
+      disabled
       name="answerChoice"
       value={props.value}
       type="text"
       placeholder="Add Your Answer Choice"
+      style={{
+        borderRadius: 1,
+        color: "#42a4c4",
+        fontSize: 1.1 + "rem",
+        borderColor: "#008cba",
+        marginBottom: 10,
+      }}
     />
   );
 }
