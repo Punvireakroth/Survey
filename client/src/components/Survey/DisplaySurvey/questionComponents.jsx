@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import uniqid from "uniqid";
 
+// -------------------------Short Response Component--------------------------
 export function ShortResponse(props) {
   // form validation
   const [isValid, setIsValid] = useState(false); // Track validity of the input
@@ -95,6 +96,52 @@ export function ShortResponse(props) {
   );
 }
 
+// ---------------------------------Checkbox Component---------------------------------
+export function Checkbox(props) {
+  const [isChecked, setIsChecked] = useState(() =>
+    props.question.answer_choices
+      ? props.question.answer_choices.map((answer) => ({
+          answer_choice: answer,
+          value: false,
+        }))
+      : []
+  );
+
+  const onChangeChecked = (e, index) => {
+    let updatedIsChecked = [...isChecked];
+    updatedIsChecked[index].value = !updatedIsChecked[index].value;
+    setIsChecked(updatedIsChecked);
+  };
+
+  const answerChoices = props.question.answer_choices
+    ? props.question.answer_choices.map((answer, index) => (
+        <Form.Check
+          key={uniqid()}
+          label={answer}
+          value={answer}
+          name={props.question._id}
+          type="checkbox"
+          checked={isChecked[index]?.value}
+          onChange={(e) => {
+            onChangeChecked(e, index);
+            props.onChange(e, props.responseId, "checkbox");
+          }}
+        />
+      ))
+    : null;
+
+  return (
+    <Form.Group className="mb-3">
+      <Form.Label>
+        {props.index + 1}) {props.question.question}
+      </Form.Label>
+
+      {answerChoices}
+    </Form.Group>
+  );
+}
+
+// -------------------------True False Component--------------------------
 export function TrueFalse(props) {
   const [answerValue, setAnswerValue] = useState(null);
   const [isChecked, setIsChecked] = useState(() =>
@@ -148,6 +195,7 @@ export function TrueFalse(props) {
   );
 }
 
+// -------------------------Paragraph Component--------------------------
 export function Paragraph(props) {
   const [isTouched, setIsTouched] = useState(false); // Track if the input field has been touched
   const [isValid, setIsValid] = useState(true); // Track validity of the input
@@ -207,6 +255,7 @@ export function Paragraph(props) {
   );
 }
 
+// -------------------------New Section Component--------------------------
 export function NewSection(props) {
   return (
     <Form.Group
@@ -233,6 +282,7 @@ export function NewSection(props) {
   );
 }
 
+// -------------------------Survey Title Component--------------------------
 export function SurveyTitle(props) {
   return (
     <div
