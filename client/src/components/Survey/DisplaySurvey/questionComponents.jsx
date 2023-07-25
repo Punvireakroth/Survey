@@ -144,6 +144,7 @@ export function Checkbox(props) {
 // -------------------------True False Component--------------------------
 export function TrueFalse(props) {
   const [answerValue, setAnswerValue] = useState(null);
+  const [isSelect, setIsSelect] = useState(false);
   const [isChecked, setIsChecked] = useState(() =>
     props.question.answer_choices
       ? props.question.answer_choices.map((answer) => ({
@@ -169,23 +170,56 @@ export function TrueFalse(props) {
 
   const answerChoices = props.question.answer_choices
     ? props.question.answer_choices.map((answer, index) => (
-        <Form.Check
-          key={uniqid()}
-          label={answer}
-          value={answer}
-          name={props.question._id}
-          type="radio"
-          checked={isChecked[index]?.value}
-          onChange={(e) => {
-            onChangeChecked(e, index);
-            props.onChange(e, props.responseId, "true/false");
+        <Form.Group
+          style={{
+            display: "flex",
+            alignItems: "center",
+            padding: 10,
+            backgroundColor: isChecked[index]?.value
+              ? "#D6E6F2"
+              : "transparent",
           }}
-        />
+        >
+          <Form.Check
+            key={uniqid()}
+            id={`radio-${index}`}
+            // label={answer}
+            value={answer}
+            name={props.question._id}
+            type="radio"
+            checked={isChecked[index]?.value}
+            onChange={(e) => {
+              onChangeChecked(e, index);
+              props.onChange(e, props.responseId, "true/false");
+            }}
+            // style={{ fontSize: 1.3 + "rem" }}
+          />
+          <Form.Label
+            htmlFor={`radio-${index}`}
+            style={{
+              cursor: "pointer",
+              marginLeft: 10,
+              marginTop: 12,
+            }}
+          >
+            {answer}
+          </Form.Label>
+        </Form.Group>
       ))
     : null;
 
   return (
-    <Form.Group className="mb-3">
+    <Form.Group
+      style={{
+        marginTop: 30,
+        backgroundColor: "#edf4f5",
+        padding: 20,
+        borderRadius: 7,
+        border: "3px dashed rgba(122, 192, 215, .6)",
+        color: "#0c66a9",
+        fontSize: "1.4rem",
+      }}
+    >
       <Form.Label>
         {props.index + 1}) {props.question.question}
       </Form.Label>

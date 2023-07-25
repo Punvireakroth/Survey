@@ -10,6 +10,7 @@ import {
   Paragraph,
   ShortResponse,
   TrueFalse,
+  Checkbox,
 } from "./questionComponents";
 
 const DisplaySurvey = (props) => {
@@ -106,6 +107,16 @@ const DisplaySurvey = (props) => {
                 onChange={handleChange}
                 responseId={question.response._id}
                 submitSurvey={submitSurvey}
+              />
+            );
+          case "checkbox":
+            return (
+              <Checkbox
+                key={question._id}
+                question={question}
+                index={questionIndex}
+                onChange={handleChange}
+                responseId={question.response._id}
               />
             );
           case "true/false":
