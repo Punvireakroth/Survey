@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAuthContext } from "../../../hooks/useAuthContext";
-import { ShortResponseResult, NewSection } from "./resultComponents";
+import {
+  ShortResponseResult,
+  NewSection,
+  TrueOrFalseResult,
+} from "./resultComponents";
 import { Container, Spinner, Button } from "react-bootstrap";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
@@ -53,6 +57,14 @@ export default function DisplayResult() {
         ) {
           return (
             <ShortResponseResult
+              key={id}
+              question={question}
+              index={questionIndex}
+            />
+          );
+        } else if (question.type === "true/false") {
+          return (
+            <TrueOrFalseResult
               key={id}
               question={question}
               index={questionIndex}

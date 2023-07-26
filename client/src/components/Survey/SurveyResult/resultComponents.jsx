@@ -1,18 +1,29 @@
-import { Table, Row, Col, Form } from "react-bootstrap";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
+import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
+import { Container, Form } from "react-bootstrap";
 
 export function ShortResponseResult(props) {
   const responses = props.question.responses.map((response, index) => {
     return (
-      <tr key={index}>
-        <th style={{ fontWeight: "normal" }}>
+      <TableRow key={index}>
+        <TableCell style={{ fontWeight: "normal" }}>
           {index + 1}) {response.response}
-        </th>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   });
 
   return (
-    <Row
+    <TableContainer
+      component={Paper}
       style={{
         backgroundColor: "#edf4f5",
         paddingTop: 20,
@@ -20,24 +31,107 @@ export function ShortResponseResult(props) {
         color: "#008cba",
       }}
     >
-      <Col lg={3} sm={12} style={{ flexGrow: 6, margin: 10 }}>
+      <div>
         <h4
-          style={{ textAlign: "left", fontWeight: 500, fontFamily: "Nokora" }}
+          style={{
+            textAlign: "left",
+            fontWeight: 500,
+            fontFamily: "Nokora",
+            margin: "10px",
+          }}
         >
           សំណួរទី {props.index}: {props.question.question}
         </h4>
-        <div style={{ overflowY: "scroll", height: 300 }}>
-          <Table striped bordered hover style={{ fontFamily: "Nokora" }}>
-            <thead>
-              <tr>
-                <th style={{ color: "#008cba" }}>ការឆ្លើយតប</th>
-              </tr>
-            </thead>
-            <tbody style={{ color: "#008cba" }}>{responses}</tbody>
-          </Table>
-        </div>
-      </Col>
-    </Row>
+      </div>
+      <div style={{ overflowY: "scroll", height: 300 }}>
+        <Table striped bordered hover style={{ fontFamily: "Nokora" }}>
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ color: "#008cba", fontFamily: "Nokora" }}>
+                ការឆ្លើយតប
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody style={{ color: "#008cba" }}>{responses}</TableBody>
+        </Table>
+      </div>
+    </TableContainer>
+  );
+}
+
+// --------------------------------- True or False ---------------------------------
+const COLORS = ["#0088FE", "#00C49F"];
+
+export function TrueOrFalseResult(props) {
+  const { responses } = props.question;
+  let trueCount = 0;
+  let falseCount = 0;
+
+  responses.forEach((response) => {
+    if (response.response === "True") {
+      trueCount++;
+    } else {
+      falseCount++;
+    }
+  });
+
+  const data = [
+    { name: "True", value: trueCount },
+    { name: "False", value: falseCount },
+  ];
+
+  return (
+    <Form.Group
+      className="mb-3"
+      style={{
+        marginTop: 30,
+        backgroundColor: "#edf4f5",
+        padding: 20,
+        borderRadius: 7,
+      }}
+    >
+      <h4
+        style={{
+          textAlign: "left",
+          fontWeight: 500,
+          fontFamily: "Nokora",
+          color: "#008cba",
+        }}
+      >
+        សំណួរទី {props.index}: {props.question.question}
+      </h4>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <ResponsiveContainer width="80%" height={400}>
+          <PieChart>
+            <Pie
+              dataKey="value"
+              data={data}
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              fill="#8884d8"
+              label
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Legend verticalAlign="bottom" height={40} />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    </Form.Group>
   );
 }
 
@@ -69,9 +163,10 @@ export function NewSection(props) {
 
 export function SurveyTitle(props) {
   return (
-    <div>
+    <Container>
+      {" "}
       <h2>{props.survey.title}</h2>
       <br />
-    </div>
+    </Container>
   );
 }

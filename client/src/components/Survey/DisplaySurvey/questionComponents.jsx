@@ -144,7 +144,6 @@ export function Checkbox(props) {
 // -------------------------True False Component--------------------------
 export function TrueFalse(props) {
   const [answerValue, setAnswerValue] = useState(null);
-  const [isSelect, setIsSelect] = useState(false);
   const [isChecked, setIsChecked] = useState(() =>
     props.question.answer_choices
       ? props.question.answer_choices.map((answer) => ({
