@@ -109,8 +109,8 @@ export function TrueOrFalseResult(props) {
           height: "100%",
         }}
       >
-        <ResponsiveContainer width="80%" height={400}>
-          <PieChart>
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart width={500} height={500}>
             <Pie
               dataKey="value"
               data={data}
@@ -143,9 +143,9 @@ export function NewSection(props) {
         marginTop: 30,
         backgroundColor: "#1193be",
         padding: 50,
-        borderRadius: 7,
         color: "#fff",
         fontSize: 1.4 + "rem",
+        boxShadow: "10px 10px #0c66a9",
       }}
     >
       <h4
