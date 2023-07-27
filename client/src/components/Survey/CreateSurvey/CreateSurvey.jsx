@@ -273,7 +273,12 @@ const CreateSurvey = (props) => {
 
   return (
     <div className="mb-5 container">
-      <SurveyTitle onChange={handleSurveyChange} survey={survey} />
+      <SurveyTitle
+        onChange={(e) => handleQuestionChange(e)}
+        survey={survey}
+        title={survey.title}
+        description={survey.description}
+      />
       <hr
         style={{
           marginTop: 30,
