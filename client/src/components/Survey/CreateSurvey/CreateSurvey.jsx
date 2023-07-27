@@ -274,7 +274,7 @@ const CreateSurvey = (props) => {
   return (
     <div className="mb-5 container">
       <SurveyTitle
-        onChange={(e) => handleQuestionChange(e)}
+        onChange={(e) => handleSurveyChange(e)}
         survey={survey}
         title={survey.title}
         description={survey.description}
