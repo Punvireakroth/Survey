@@ -143,7 +143,11 @@ export function Checkbox(props) {
 
 // -------------------------True False Component--------------------------
 export function TrueFalse(props) {
-  const [answerValue, setAnswerValue] = useState(null);
+  const [response, setResponse] = useState({
+    answerValue: null,
+    subQuestionResponse: "",
+  });
+
   const [isChecked, setIsChecked] = useState(() =>
     props.question.answer_choices
       ? props.question.answer_choices.map((answer) => ({
@@ -152,6 +156,8 @@ export function TrueFalse(props) {
         }))
       : []
   );
+
+  const [showSubQuestion, setShowSubQuestion] = useState(false);
 
   const onChangeChecked = (e, index) => {
     let updatedIsChecked = [...isChecked];
@@ -164,7 +170,24 @@ export function TrueFalse(props) {
       }
     }
     setIsChecked(updatedIsChecked);
-    setAnswerValue(e.target.value);
+
+    const answerValue = e.target.value;
+    setResponse((prevResponse) => ({ ...prevResponse, answerValue }));
+
+    const showSubQuestion = props.question.question.includes(
+      "លក់ទៅឱ្យដេប៉ូផេ្សងដែរឬទេ"
+    );
+    if (showSubQuestion && e.target.value === "True") {
+      setShowSubQuestion(true);
+    } else {
+      setShowSubQuestion(false);
+    }
+    setIsChecked(updatedIsChecked);
+  };
+
+  const handleSubQuestionResponseChange = (e) => {
+    const subQuestionResponse = e.target.value;
+    setResponse((prevResponse) => ({ ...prevResponse, subQuestionResponse }));
   };
 
   const answerChoices = props.question.answer_choices
@@ -182,7 +205,6 @@ export function TrueFalse(props) {
           <Form.Check
             key={uniqid()}
             id={`radio-${index}`}
-            // label={answer}
             value={answer}
             name={props.question._id}
             type="radio"
@@ -191,7 +213,6 @@ export function TrueFalse(props) {
               onChangeChecked(e, index);
               props.onChange(e, props.responseId, "true/false");
             }}
-            // style={{ fontSize: 1.3 + "rem" }}
           />
           <Form.Label
             htmlFor={`radio-${index}`}
@@ -206,6 +227,13 @@ export function TrueFalse(props) {
         </Form.Group>
       ))
     : null;
+
+  const subQuestion = showSubQuestion ? (
+    <Form.Group style={{ marginTop: 10 }}>
+      <Form.Label>ចំនួនប៉ុន្មានដេប៉ូ?</Form.Label>
+      <Form.Control type="text" placeholder="Enter your answer" value />
+    </Form.Group>
+  ) : null;
 
   return (
     <Form.Group
@@ -224,6 +252,7 @@ export function TrueFalse(props) {
       </Form.Label>
 
       {answerChoices}
+      {subQuestion}
     </Form.Group>
   );
 }
