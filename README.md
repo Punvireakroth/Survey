@@ -44,7 +44,7 @@ Admin users can also perform CRUD (create, read, update, delete) operations on s
 
 ## Contents
 
-- [Getting Start](#getting-started)
+- [Application Screens](#application-screens)
 - [What's included in ISI-Survey](#whats-included-in-isi-survey)
   - [Directory structure](#directory-structure)
   - [Package contents](#package-contents)
@@ -66,13 +66,30 @@ Admin users can also perform CRUD (create, read, update, delete) operations on s
 - [Licenses and attribution](#licenses-and-attribution)
 - [Contributing](#contributing)
 
-## Getting started
+## Application Screens
 
-We’re glad you’d like to use the design system — here’s how you can get started:
-
-- **Designers:** Check out our [Getting started for designers information](https://designsystem.digital.gov/documentation/getting-started-for-designers/).
-- **Developers:** Check out our [Getting started for developers information](https://designsystem.digital.gov/documentation/getting-started-for-developers/). If your project doesn't use npm for package management, follow the instructions in this README to [install the design system without npm.](#installing-the-design-system)
-- **Anyone:** Take a look at our new [USWDS Tutorial](https://github.com/uswds/uswds-tutorial). Follow the instructions in this GitHub repo to clone a sample project, install USWDS, customize it, and add USWDS components. It should take about an hour, and is a good introduction to USWDS concepts.
+Login page
+<img src='readme-assets\login_page.png'>
+Register page
+<img src='readme-assets\register_page.png'>
+Admin dashboard page
+<img src='readme-assets\admin_dashboard_page.png'>
+User Dashboard page
+<img src='readme-assets\user_dashboard_page.png'>
+Survey page
+<img src='readme-assets\survey_page.png'>
+Thank you page
+<img src='readme-assets\thank_you_page.png'>
+Create survey page (for Admin only)
+<img src='readme-assets\create_survey_page.png'>
+Data grid page (Visible for Admin only)
+<img src='readme-assets\data_page.png'>
+Delete Survey Modal
+<img src='readme-assets\delete_survey_screen.png'>
+Edit Survey
+<img src='readme-assets\edit_survey_page.png'>
+Survey responses page
+<img src='readme-assets\survey_response_page.png'>
 
 ## What's included in ISI-Survey
 
