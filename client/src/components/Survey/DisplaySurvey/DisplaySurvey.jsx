@@ -163,6 +163,30 @@ const DisplaySurvey = (props) => {
     };
     setSurvey(surveyObject);
 
+    // Check if the selected question has the specific conditions and the user answered "True"
+    const selectedQuestion = surveyObject.questions[index];
+    const isSpecificConditionTrue = selectedQuestion.question.includes(
+      "លក់ទៅឱ្យដេប៉ូផេ្សងដែរឬទេ"
+    );
+    const isUserAnswerTrue = e.target.value === "True";
+
+    if (isSpecificConditionTrue && isUserAnswerTrue) {
+      // Create a new short response question and insert it at the next index
+      const newShortResponseQuestion = {
+        _id: uniqid("question-"),
+        type: "short response",
+        question: "ប៉ុន្មានដេប៉ូ",
+        answer_choices: [],
+        response: {
+          response: "",
+          time: "",
+          _id: uniqid("response-"),
+        },
+      };
+      surveyObject.questions.splice(index + 1, 0, newShortResponseQuestion);
+      setSurvey(surveyObject);
+    }
+
     // Check if all inputs are valid
     const allInputsValid = surveyObject.questions
       .filter((question) => question.type !== "new section")

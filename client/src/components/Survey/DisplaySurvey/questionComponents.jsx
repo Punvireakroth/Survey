@@ -6,7 +6,6 @@ import uniqid from "uniqid";
 export function ShortResponse(props) {
   // form validation
   const [isValid, setIsValid] = useState(false); // Track validity of the input
-  const [isFilled, setIsFilled] = useState(false); // Track if the input is filled
   const [isTouched, setIsTouched] = useState(false); // Track if the input field has been touched
 
   const handleBlur = () => {
@@ -165,8 +164,6 @@ export function TrueFalse(props) {
       }
     }
     setIsChecked(updatedIsChecked);
-
-    const answerValue = e.target.value;
 
     const showSubQuestion = props.question.question.includes(
       "លក់ទៅឱ្យដេប៉ូផេ្សងដែរឬទេ"
