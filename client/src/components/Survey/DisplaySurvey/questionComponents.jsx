@@ -143,11 +143,6 @@ export function Checkbox(props) {
 
 // -------------------------True False Component--------------------------
 export function TrueFalse(props) {
-  const [response, setResponse] = useState({
-    answerValue: null,
-    subQuestionResponse: "",
-  });
-
   const [isChecked, setIsChecked] = useState(() =>
     props.question.answer_choices
       ? props.question.answer_choices.map((answer) => ({
@@ -172,7 +167,6 @@ export function TrueFalse(props) {
     setIsChecked(updatedIsChecked);
 
     const answerValue = e.target.value;
-    setResponse((prevResponse) => ({ ...prevResponse, answerValue }));
 
     const showSubQuestion = props.question.question.includes(
       "លក់ទៅឱ្យដេប៉ូផេ្សងដែរឬទេ"
@@ -183,11 +177,6 @@ export function TrueFalse(props) {
       setShowSubQuestion(false);
     }
     setIsChecked(updatedIsChecked);
-  };
-
-  const handleSubQuestionResponseChange = (e) => {
-    const subQuestionResponse = e.target.value;
-    setResponse((prevResponse) => ({ ...prevResponse, subQuestionResponse }));
   };
 
   const answerChoices = props.question.answer_choices
@@ -231,7 +220,7 @@ export function TrueFalse(props) {
   const subQuestion = showSubQuestion ? (
     <Form.Group style={{ marginTop: 10 }}>
       <Form.Label>ចំនួនប៉ុន្មានដេប៉ូ?</Form.Label>
-      <Form.Control type="text" placeholder="Enter your answer" value />
+      <Form.Control type="text" placeholder="Enter your answer" />
     </Form.Group>
   ) : null;
 
