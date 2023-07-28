@@ -149,7 +149,6 @@ const DisplaySurvey = (props) => {
       setNewForm(form);
     }
   }, [survey]);
-
   const handleChange = (e, responseId) => {
     let surveyObject = { ...survey };
     let index = surveyObject.questions.findIndex(
@@ -163,28 +162,40 @@ const DisplaySurvey = (props) => {
     };
     setSurvey(surveyObject);
 
-    // Check if the selected question has the specific conditions and the user answered "True"
+    // Check if the selected question has the specific condition and the user answered "True"
     const selectedQuestion = surveyObject.questions[index];
     const isSpecificConditionTrue = selectedQuestion.question.includes(
       "លក់ទៅឱ្យដេប៉ូផេ្សងដែរឬទេ"
     );
     const isUserAnswerTrue = e.target.value === "True";
 
-    if (isSpecificConditionTrue && isUserAnswerTrue) {
-      // Create a new short response question and insert it at the next index
-      const newShortResponseQuestion = {
-        _id: uniqid("question-"),
-        type: "short response",
-        question: "ប៉ុន្មានដេប៉ូ",
-        answer_choices: [],
-        response: {
-          response: "",
-          time: "",
-          _id: uniqid("response-"),
-        },
-      };
-      surveyObject.questions.splice(index + 1, 0, newShortResponseQuestion);
-      setSurvey(surveyObject);
+    if (isSpecificConditionTrue) {
+      if (isUserAnswerTrue) {
+        // Create a new short response question only if there's no dynamically created question at the next index
+        const nextQuestion = surveyObject.questions[index + 1];
+        if (!nextQuestion || nextQuestion.type !== "short response") {
+          const newShortResponseQuestion = {
+            _id: uniqid("question-"),
+            type: "short response",
+            question: "ប៉ុន្មានដេប៉ូ?",
+            answer_choices: [],
+            response: {
+              response: "",
+              time: "",
+              _id: uniqid("response-"),
+            },
+          };
+          surveyObject.questions.splice(index + 1, 0, newShortResponseQuestion);
+          setSurvey(surveyObject);
+        }
+      } else {
+        // Remove the dynamically created question if the user toggles back to "False"
+        const nextQuestion = surveyObject.questions[index + 1];
+        if (nextQuestion && nextQuestion.type === "short response") {
+          surveyObject.questions.splice(index + 1, 1);
+          setSurvey(surveyObject);
+        }
+      }
     }
 
     // Check if all inputs are valid
