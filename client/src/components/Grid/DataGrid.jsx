@@ -69,34 +69,48 @@ function DataGridComponent() {
   useEffect(() => {
     // Update DataGrid columns and rows when a survey is selected
     if (selectedSurvey) {
+      const firstQuestionResponses = selectedSurvey.questions[0].responses;
+      const firstQuestionLength = firstQuestionResponses.length;
+
+      selectedSurvey.questions.forEach((question) => {
+        const questionResponses = question.responses;
+        const padding = firstQuestionLength - questionResponses.length;
+        if (padding > 0) {
+          // Pad the responses with empty strings
+          const paddedResponses = Array(padding)
+            .fill("")
+            .concat(questionResponses);
+          question.responses = paddedResponses;
+        }
+      });
+
       const surveyColumns = [
         { field: "submission_date", headerName: "Submission Date", width: 350 },
         ...selectedSurvey.questions.map((question, index) => ({
           field: `question_${index + 1}`,
           headerName: question.question,
-
           headerClassName:
-            question.type == "new section" ? "super-app-theme--header" : "",
+            question.type === "new section" ? "super-app-theme--header" : "",
           width: 300,
         })),
       ];
 
-      const dataRows = selectedSurvey.questions[0].responses.map(
-        (response, index) =>
-          selectedSurvey.questions.reduce(
-            (rowData, question, questionIndex) => {
-              rowData["id"] = index + 1;
-              rowData["submission_date"] = new Date(
-                response.time
-              ).toLocaleDateString();
-              rowData[`question_${questionIndex + 1}`] =
-                question.responses[index]?.response || "";
-              return rowData;
-            },
-            {}
-          )
-      );
+      const dataRows = firstQuestionResponses.map((response, index) => {
+        const rowData = {
+          id: index + 1,
+          submission_date: new Date(response.time).toLocaleDateString(),
+        };
 
+        selectedSurvey.questions.forEach((question, questionIndex) => {
+          // Pad the responses for each question to match the maxResponseLength
+          const questionResponses = question.responses;
+          rowData[`question_${questionIndex + 1}`] =
+            questionResponses[index]?.response || "";
+        });
+
+        return rowData;
+      });
+      console.log(selectedSurvey);
       setTableData(dataRows);
       setColumns(surveyColumns);
     }
