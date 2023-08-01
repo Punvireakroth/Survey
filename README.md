@@ -48,6 +48,7 @@ Admin users can also perform CRUD (create, read, update, delete) operations on s
 - [What's included in ISI-Survey](#whats-included-in-isi-survey)
   - [Directory structure](#directory-structure)
   - [Package contents](#package-contents)
+- [ISI Survey API](#isi-survey-api)
 - [Installing the design system](#installing-the-design-system)
 - [Using USWDS CSS and JavaScript in your project](#using-uswds-css-and-javascript-in-your-project)
 - [Compiling USWDS Sass into CSS](#compiling-uswds-sass-into-css)
@@ -102,12 +103,6 @@ As of USWDS 3.0.0, our codebase is centered around functional packages, typicall
 - **JavaScript** for components is located in `packages/[package]/src/index.js`. General JavaScript utilities and polyfills are located in the `uswds-core` package: `packages/uswds-core/src/js`
 - **Sass** component-specific stylesheets are located in: `packages/[package]/src/styles`. Many components also have a component entry point at `packages/[package]/_index.scss` that includes references to all a component's dependencies as well. **Compiled CSS** is located in `dist/css`.
 - **Template** markup for the components is located in: `packages/[package]/src/[package.twig]` in the site root. These, however, are written in the templating language Twig. It's best to get HTML source markup directly from [designsystem.digital.gov/components](https://designsystem.digital.gov/components)
-
-### API
-
-- API for survey results
-  - This api need token authorization
-    `localhost:5000/api/surveys`
 
 ### Directory structure
 
@@ -220,6 +215,12 @@ Here's what you can expect to find in each of the directories and files in the U
 - `/packages/uswds-[bundle]`: Other non-component functionality is included in `uswds-`-prefixed packages. These bundles might collect common component packages (`uswds-form-controls`) or important internal functionality (`uswds-core`).
 - `/src`: Placeholders included for backwards compatibility. Most projects should avoid using the contents of this directory.
 - `/tasks`: Internal build process files (not used in USWDS projects)
+
+## ISI Survey API
+
+- API for survey results
+  - This api need token authorization
+    `localhost:5000/api/surveys`
 
 ## Installing the design system
 
