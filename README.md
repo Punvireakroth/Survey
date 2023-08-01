@@ -184,37 +184,17 @@ Here's what you can expect to find inside the ISI survey.
 
 Here's what you can expect to find in each of the directories and files in the ISI Survey project:
 
-- `/.storybook`: Storybook configuration files (not used in USWDS projects)
-- `/dist`: Compiled or collected files
-- `/dist/css`: Precompiled CSS files with USWDS defaults
-- `/dist/fonts`: Default fonts available to the design system
-- `/dist/img`: All USWDS images collected into a single directory
-- `/dist/img/usa-icons`: All icons collected into the USWDS icon sprite (`sprite.svg`)
-- `/dist/img/material-icons`: All Material Icons
-- `/dist/img/uswds-icons`: All icons created by USWDS
-- `/dist/img/sprite.svg`: Precompiled icon sprite with default icon set
-- `/dist/js`: Precompiled JavaScript files
-- `/dist/scss/stylesheets/uswds.scss`: Backwards compatible USWDS Sass entry point
-- `/dist/scss/theme`: Example theme files
-- `/dist/scss/theme/_uswds-theme.scss`: Example theme settings file
-- `/dist/scss/theme/_uswds-theme-custom-styles.scss`: Example custom settings file
-- `/dist/scss/theme/styles.scss`: Example project Sass entry point
-- `/packages`: Source files for USWDS components and other functionality.
-- `/packages/usa-[component]`: Each package has a name like `usa-[component]` that matches its class name in the design system, like `usa-accordion`.
-- `/packages/usa-[component]/_index.scss`: Sass entry point for the package.
-- `/packages/usa-[component]/src`: Package source files
-- `/packages/usa-[component]/src/index.js`: Package javascript
-- `/packages/usa-[component]/src/usa-component.stories.js`: Storybook setup
-- `/packages/usa-[component]/src/usa-component.twig`: Component template
-- `/packages/usa-[component]/src/index.js`: Package javascript
-- `/packages/usa-[component]/src/content`: Package template content
-- `/packages/usa-[component]/src/test`: Package unit tests
-- `/packages/usa-[component]/src/styles`: Package source Sass
+---
 
-- `/packages/uswds`: The package most projects include by default. This bundle includes all USWDS components and functionality.
-- `/packages/uswds-[bundle]`: Other non-component functionality is included in `uswds-`-prefixed packages. These bundles might collect common component packages (`uswds-form-controls`) or important internal functionality (`uswds-core`).
-- `/src`: Placeholders included for backwards compatibility. Most projects should avoid using the contents of this directory.
-- `/tasks`: Internal build process files (not used in USWDS projects)
+- `/client`: contain the required directories and files for the user.
+- `/client/public`: You can find the favicon and SPA `index.html`
+- `/client/src`: contain the app page, components, hooks, boilerplate, context, utils directories, as well as other necessary files for front-end.
+- `/client/README.md`: Front-End documents
+
+---
+
+- `/server` : contain the required directories and file for API and database interactions.
+- `/server/controller` handling the incoming requests from the client.
 
 ## ISI Survey API
 
