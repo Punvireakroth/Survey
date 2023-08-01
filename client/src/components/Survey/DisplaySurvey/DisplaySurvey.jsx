@@ -172,29 +172,31 @@ const DisplaySurvey = (props) => {
     if (isSpecificConditionTrue) {
       if (isUserAnswerTrue) {
         // Create a new short response question only if there's no dynamically created question at the next index
-        const nextQuestion = surveyObject.questions[index + 1];
-        if (!nextQuestion || nextQuestion.type !== "short response") {
-          const newShortResponseQuestion = {
-            _id: uniqid("question-"),
-            type: "short response",
-            question: "ប៉ុន្មានដេប៉ូ?",
-            answer_choices: [],
-            response: {
-              response: "",
-              time: "",
-              _id: uniqid("response-"),
-            },
-          };
-          surveyObject.questions.splice(index + 1, 0, newShortResponseQuestion);
-          setSurvey(surveyObject);
-        }
+
+        const newShortResponseQuestion = {
+          _id: uniqid("question-"),
+          type: "short response",
+          question: "ប៉ុន្មានដេប៉ូ?",
+          answer_choices: [],
+          response: {
+            response: "",
+            time: "",
+            _id: uniqid("response-"),
+          },
+        };
+        surveyObject.questions.splice(index + 1, 0, newShortResponseQuestion);
+        setSurvey(surveyObject);
       } else {
         // Remove the dynamically created question if the user toggles back to "False"
         const nextQuestion = surveyObject.questions[index + 1];
-        if (nextQuestion && nextQuestion.type === "short response") {
-          surveyObject.questions.splice(index + 1, 1);
-          setSurvey(surveyObject);
+        if (nextQuestion) {
+          const nextQuestionIncludesTarget =
+            nextQuestion.question.includes("ប៉ុន្មានដេប៉ូ?");
+          if (nextQuestionIncludesTarget) {
+            surveyObject.questions.splice(index + 1, 1);
+          }
         }
+        setSurvey(surveyObject);
       }
     }
 

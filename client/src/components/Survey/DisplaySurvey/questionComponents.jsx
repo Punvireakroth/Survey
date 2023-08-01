@@ -151,8 +151,6 @@ export function TrueFalse(props) {
       : []
   );
 
-  const [showSubQuestion, setShowSubQuestion] = useState(false);
-
   const onChangeChecked = (e, index) => {
     let updatedIsChecked = [...isChecked];
 
@@ -162,16 +160,6 @@ export function TrueFalse(props) {
       } else {
         updatedIsChecked[i].value = false;
       }
-    }
-    setIsChecked(updatedIsChecked);
-
-    const showSubQuestion = props.question.question.includes(
-      "លក់ទៅឱ្យដេប៉ូផេ្សងដែរឬទេ"
-    );
-    if (showSubQuestion && e.target.value === "True") {
-      setShowSubQuestion(true);
-    } else {
-      setShowSubQuestion(false);
     }
     setIsChecked(updatedIsChecked);
   };
@@ -214,13 +202,6 @@ export function TrueFalse(props) {
       ))
     : null;
 
-  const subQuestion = showSubQuestion ? (
-    <Form.Group style={{ marginTop: 10 }}>
-      <Form.Label>ចំនួនប៉ុន្មានដេប៉ូ?</Form.Label>
-      <Form.Control type="text" placeholder="Enter your answer" />
-    </Form.Group>
-  ) : null;
-
   return (
     <Form.Group
       style={{
@@ -238,7 +219,6 @@ export function TrueFalse(props) {
       </Form.Label>
 
       {answerChoices}
-      {subQuestion}
     </Form.Group>
   );
 }
