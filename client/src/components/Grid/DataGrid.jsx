@@ -110,7 +110,6 @@ function DataGridComponent() {
 
         return rowData;
       });
-      console.log(selectedSurvey);
       setTableData(dataRows);
       setColumns(surveyColumns);
     }
