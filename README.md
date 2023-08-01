@@ -94,15 +94,15 @@ Survey responses page
 
 ## What's included in ISI-Survey
 
-The USWDS package includes compiled assets in a `dist` directory and component source files in a `packages` directory.
+The ISI Survey includes two main folders, `client` and `server`. The directories that live in the the `client` is those responsible for what the user see and interact with. Conversely the diectories that live in the `server` are api and logic that interact with database.
 
-As of USWDS 3.0.0, our codebase is centered around functional packages, typically components. For more about how we organize packages, [see our Packages documentation](https://designsystem.digital.gov/components/packages). In each of the following examples, we use `[package]` to represent a specific package. For example, component Sass is located in `packages/[package]/src/styles` for an accordion, this would be `packages/usa-accordion/src/styles`.
+- **package.json** : Since this project is uses node package manager (`npm`) we will see package.json file in client and server directory that contains metadata such as name, version, dependencies, scripts (used to build and run the project).
 
-- **Fonts** are located in both `dist/fonts` and `packages/uswds-core/src/assets/fonts`. The fonts in `dist` are simply a copy of the files in `uswds-core`.
-- **Images** and icons are located in: `dist/img`. The source for component-specific images can be found in a package's `src/img` directory.
-- **JavaScript** for components is located in `packages/[package]/src/index.js`. General JavaScript utilities and polyfills are located in the `uswds-core` package: `packages/uswds-core/src/js`
-- **Sass** component-specific stylesheets are located in: `packages/[package]/src/styles`. Many components also have a component entry point at `packages/[package]/_index.scss` that includes references to all a component's dependencies as well. **Compiled CSS** is located in `dist/css`.
-- **Template** markup for the components is located in: `packages/[package]/src/[package.twig]` in the site root. These, however, are written in the templating language Twig. It's best to get HTML source markup directly from [designsystem.digital.gov/components](https://designsystem.digital.gov/components)
+- **Fonts** In this project we used Google font. There are two fonts we are using those are `open sans` for English text and `nokora` for Khmer font.
+
+- **Images** and icons are located in: `client/src/assets`.
+
+- **Icons** for icons we are using [bootstrap-icons](https://react-icons.github.io/react-icons/icons?name=bs) icons for the components. For favicons is located in `client/public/favicon.ico`.
 
 ### Directory structure
 
@@ -182,7 +182,7 @@ Here's what you can expect to find inside the ISI survey.
 
 ### Package contents
 
-Here's what you can expect to find in each of the directories and files in the USWDS package:
+Here's what you can expect to find in each of the directories and files in the ISI Survey project:
 
 - `/.storybook`: Storybook configuration files (not used in USWDS projects)
 - `/dist`: Compiled or collected files
