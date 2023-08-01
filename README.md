@@ -202,14 +202,9 @@ Here's what you can expect to find in each of the directories and files in the I
   - This api need token authorization
     `localhost:5000/api/surveys`
 
-## Installing the design system
+## Installing the project
 
-There are two ways to install the design system on a project:
-
-- Installing it as a project dependency using Node and npm
-- Installing the package directly from GitHub
-
-**We recommend using npm to make it as straightforward as possible to install the design system and update it as we release new versions.**
+Project can be install using `git commands`, `Node` and `npm`
 
 ### Install using Node and npm
 
