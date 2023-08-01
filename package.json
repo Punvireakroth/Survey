@@ -1,0 +1,12 @@
+{
+  "name": "isi-survey",
+  "version": "1.0.0",
+  "description": "<!-- # To Set up ISI-Survey App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
