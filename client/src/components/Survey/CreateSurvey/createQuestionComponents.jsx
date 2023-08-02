@@ -152,7 +152,6 @@ export function TrueFalse(props) {
         }}
       />
       <br />
-      {/* <Form.Label>You can edit your answer choice</Form.Label> */}
       {answerChoices}
     </Form.Group>
   );

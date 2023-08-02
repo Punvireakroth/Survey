@@ -23,46 +23,49 @@ const DisplaySurvey = (props) => {
   const { id } = useParams();
   const { user } = useAuthContext();
 
-  const callApi = useCallback(async (url, fetchOptions) => {
-    try {
-      const response = await fetch(`http://localhost:5000${url}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-          "Content-Type": "application/json",
-        },
-        ...fetchOptions,
-      });
-
-      const responseData = await response.json();
-
-      let questions = [];
-
-      responseData.questions.forEach((question) => {
-        const newQuestion = {
-          _id: question._id,
-          type: question.type,
-          question: question.question,
-          answer_choices: question.answer_choices,
-          response: {
-            response: "",
-            time: "",
-            _id: uniqid("response-"),
+  const callApi = useCallback(
+    async (url, fetchOptions) => {
+      try {
+        const response = await fetch(`http://localhost:5000${url}`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "application/json",
           },
+          ...fetchOptions,
+        });
+
+        const responseData = await response.json();
+
+        let questions = [];
+
+        responseData.questions.forEach((question) => {
+          const newQuestion = {
+            _id: question._id,
+            type: question.type,
+            question: question.question,
+            answer_choices: question.answer_choices,
+            response: {
+              response: "",
+              time: "",
+              _id: uniqid("response-"),
+            },
+          };
+          questions.push(newQuestion);
+        });
+        let updatedSurvey = {
+          _id: responseData._id,
+          questions: questions,
+          title: responseData.title,
+          description: responseData.description,
+          creationTime: responseData.creationTime,
         };
-        questions.push(newQuestion);
-      });
-      let updatedSurvey = {
-        _id: responseData._id,
-        questions: questions,
-        title: responseData.title,
-        description: responseData.description,
-        creationTime: responseData.creationTime,
-      };
-      setSurvey(updatedSurvey);
-    } catch (e) {
-      console.log(e.error);
-    }
-  });
+        setSurvey(updatedSurvey);
+      } catch (e) {
+        console.log(e.error);
+      }
+    },
+    [user]
+  );
 
   useEffect(() => {
     setSurvey({ ...survey, _id: id });
@@ -151,84 +154,65 @@ const DisplaySurvey = (props) => {
   }, [survey]);
 
   const handleChange = (e, responseId) => {
-    let surveyObject = { ...survey };
-    let index = surveyObject.questions.findIndex(
-      (question) => question.response._id === responseId
-    );
+    setSurvey((prevSurvey) => {
+      const surveyObject = { ...prevSurvey };
+      const index = surveyObject.questions.findIndex(
+        (question) => question.response._id === responseId
+      );
 
-    surveyObject.questions[index].response = {
-      ...surveyObject.questions[index].response,
-      response: e.target.value,
-      time: new Date(),
-    };
-    setSurvey(surveyObject);
+      surveyObject.questions[index].response = {
+        ...surveyObject.questions[index].response,
+        response: e.target.value,
+        time: new Date(),
+      };
 
-    // Check if the selected question has the specific condition and the user answered "True"
-    const selectedQuestion = surveyObject.questions[index];
-    const isSpecificConditionTrue = selectedQuestion.question.includes(
-      "លក់ទៅឱ្យដេប៉ូផេ្សងដែរឬទេ"
-    );
-    const isUserAnswerTrue = e.target.value === "True";
+      // Check if the selected question has the specific condition and the user answered "True"
+      const selectedQuestion = surveyObject.questions[index];
+      const isSpecificConditionTrue = selectedQuestion.question.includes(
+        "លក់ទៅឱ្យដេប៉ូផេ្សងដែរឬទេ"
+      );
+      const isUserAnswerTrue = e.target.value === "True";
 
-    if (isSpecificConditionTrue) {
-      if (isUserAnswerTrue) {
-        // Create a new short response question only if there's no dynamically created question at the next index
-        const newShortResponseQuestion = {
-          _id: uniqid("question-"),
-          type: "short response",
-          question: "ប៉ុន្មានដេប៉ូ?",
-          answer_choices: [],
-          response: {
-            response: "",
-            time: "",
-            _id: uniqid("response-"),
-          },
-        };
-        surveyObject.questions.splice(index + 1, 0, newShortResponseQuestion);
-        setSurvey(surveyObject);
-      } else {
-        // Remove the dynamically created question if the user toggles back to "False"
-        const nextQuestion = surveyObject.questions[index + 1];
-        if (nextQuestion) {
-          const nextQuestionIncludesTarget =
-            nextQuestion.question.includes("ប៉ុន្មានដេប៉ូ?");
-          if (nextQuestionIncludesTarget) {
-            surveyObject.questions.splice(index + 1, 1);
+      if (isSpecificConditionTrue) {
+        if (isUserAnswerTrue) {
+          // Create a new short response question only if there's no dynamically created question at the next index
+          const newShortResponseQuestion = {
+            _id: uniqid("question-"),
+            type: "short response",
+            question: "ប៉ុន្មានដេប៉ូ?",
+            answer_choices: [],
+            response: {
+              response: "",
+              time: "",
+              _id: uniqid("response-"),
+            },
+          };
+          surveyObject.questions.splice(index + 1, 0, newShortResponseQuestion);
+        } else {
+          // Remove the dynamically created question if the user toggles back to "False"
+          const nextQuestion = surveyObject.questions[index + 1];
+          if (nextQuestion) {
+            const nextQuestionIncludesTarget =
+              nextQuestion.question.includes("ប៉ុន្មានដេប៉ូ?");
+            if (nextQuestionIncludesTarget) {
+              surveyObject.questions.splice(index + 1, 1);
+            }
           }
         }
-        setSurvey(surveyObject);
       }
 
-      if (isUserAnswerTrue) {
-        // Find the sub-question in the survey questions array
-        const subQuestionId = responseId.replace("response", "question");
-        const subQuestionIndex = surveyObject.questions.findIndex(
-          (question) => question._id === subQuestionId
-        );
-        console.log(subQuestionIndex);
+      // Check if all inputs are valid
+      const allInputsValid = surveyObject.questions
+        .filter((question) => question.type !== "new section")
+        .every((question) => question.response.response.length > 0);
+      setIsFormValid(allInputsValid);
 
-        if (subQuestionIndex !== -1) {
-          // Append or concatenate the sub-question response to the True or False response
-          const subQuestionResponse =
-            surveyObject.questions[subQuestionIndex].response.response;
-          surveyObject.questions[
-            index
-          ].response.response += ` - ${subQuestionResponse}`;
-          setSubQuestionResponse(""); // Clear the sub-question input field
-        }
-      }
-    }
-
-    // Check if all inputs are valid
-    const allInputsValid = surveyObject.questions
-      .filter((question) => question.type !== "new section")
-      .every((question) => question.response.response.length > 0);
-    setIsFormValid(allInputsValid);
+      return surveyObject;
+    });
   };
 
   const submitSurvey = async (e) => {
     e.preventDefault();
-
     // Save response to database
     try {
       const response = await fetch(
