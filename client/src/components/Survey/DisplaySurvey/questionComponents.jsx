@@ -150,6 +150,7 @@ export function TrueFalse(props) {
         }))
       : []
   );
+  const [subQuestionResponse, setSubQuestionResponse] = useState("");
 
   const onChangeChecked = (e, index) => {
     let updatedIsChecked = [...isChecked];
@@ -162,6 +163,23 @@ export function TrueFalse(props) {
       }
     }
     setIsChecked(updatedIsChecked);
+  };
+
+  // Render the sub-question if the user selects "True"
+  const renderSubQuestionInput = () => {
+    if (isChecked.some((item) => item.value)) {
+      return (
+        <Form.Group controlId={`subQuestion-${props.responseId}`}>
+          <Form.Label>Sub-Question</Form.Label>
+          <Form.Control
+            type="text"
+            value={subQuestionResponse}
+            onChange={(e) => setSubQuestionResponse(e.target.value)}
+          />
+        </Form.Group>
+      );
+    }
+    return null;
   };
 
   const answerChoices = props.question.answer_choices
@@ -219,6 +237,7 @@ export function TrueFalse(props) {
       </Form.Label>
 
       {answerChoices}
+      {renderSubQuestionInput()}
     </Form.Group>
   );
 }

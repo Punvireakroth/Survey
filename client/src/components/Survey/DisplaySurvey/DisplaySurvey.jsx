@@ -16,8 +16,8 @@ import {
 const DisplaySurvey = (props) => {
   const [survey, setSurvey] = useState({});
   const [newForm, setNewForm] = useState(null);
-
   const [isFormValid, setIsFormValid] = useState(false);
+  const [subQuestionResponse, setSubQuestionResponse] = useState("");
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -149,6 +149,7 @@ const DisplaySurvey = (props) => {
       setNewForm(form);
     }
   }, [survey]);
+
   const handleChange = (e, responseId) => {
     let surveyObject = { ...survey };
     let index = surveyObject.questions.findIndex(
@@ -172,7 +173,6 @@ const DisplaySurvey = (props) => {
     if (isSpecificConditionTrue) {
       if (isUserAnswerTrue) {
         // Create a new short response question only if there's no dynamically created question at the next index
-
         const newShortResponseQuestion = {
           _id: uniqid("question-"),
           type: "short response",
@@ -197,6 +197,25 @@ const DisplaySurvey = (props) => {
           }
         }
         setSurvey(surveyObject);
+      }
+
+      if (isUserAnswerTrue) {
+        // Find the sub-question in the survey questions array
+        const subQuestionId = responseId.replace("response", "question");
+        const subQuestionIndex = surveyObject.questions.findIndex(
+          (question) => question._id === subQuestionId
+        );
+        console.log(subQuestionIndex);
+
+        if (subQuestionIndex !== -1) {
+          // Append or concatenate the sub-question response to the True or False response
+          const subQuestionResponse =
+            surveyObject.questions[subQuestionIndex].response.response;
+          surveyObject.questions[
+            index
+          ].response.response += ` - ${subQuestionResponse}`;
+          setSubQuestionResponse(""); // Clear the sub-question input field
+        }
       }
     }
 
