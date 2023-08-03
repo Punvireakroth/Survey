@@ -13,24 +13,10 @@ import {
   Checkbox,
 } from "./questionComponents";
 
-// Custom deboune function
-const debounce = (fn, delay) => {
-  let timeoutId;
-  return function (...args) {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setTimeout(() => {
-      fn(...args);
-    }, delay);
-  };
-};
-
 const DisplaySurvey = (props) => {
   const [survey, setSurvey] = useState({});
   const [newForm, setNewForm] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
-  const [subQuestionResponse, setSubQuestionResponse] = useState("");
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -166,7 +152,7 @@ const DisplaySurvey = (props) => {
     }
   }, [survey]);
 
-  const handleChange = debounce((e, responseId) => {
+  const handleChange = (e, responseId) => {
     setSurvey((prevSurvey) => {
       const surveyObject = { ...prevSurvey };
       const index = surveyObject.questions.findIndex(
@@ -186,9 +172,12 @@ const DisplaySurvey = (props) => {
       );
       const isUserAnswerTrue = e.target.value === "True";
 
-      if (isSpecificConditionTrue) {
-        if (isUserAnswerTrue) {
-          // Create a new short response question only if there's no dynamically created question at the next index
+      // Function to add the dynamic short response question
+      const addDynamicShortResponseQuestion = () => {
+        const nextQuestion = surveyObject.questions[index + 1];
+        const nextQuestionIncludesTarget =
+          nextQuestion && nextQuestion.question.includes("ប៉ុន្មានដេប៉ូ?");
+        if (!nextQuestionIncludesTarget) {
           const newShortResponseQuestion = {
             _id: uniqid("question-"),
             type: "short response",
@@ -201,16 +190,26 @@ const DisplaySurvey = (props) => {
             },
           };
           surveyObject.questions.splice(index + 1, 0, newShortResponseQuestion);
-        } else {
-          // Remove the dynamically created question if the user toggles back to "False"
-          const nextQuestion = surveyObject.questions[index + 1];
-          if (nextQuestion) {
-            const nextQuestionIncludesTarget =
-              nextQuestion.question.includes("ប៉ុន្មានដេប៉ូ?");
-            if (nextQuestionIncludesTarget) {
-              surveyObject.questions.splice(index + 1, 1);
-            }
+        }
+      };
+
+      // Function to remove the dynamic short response question
+      const removeDynamicShortResponseQuestion = () => {
+        const nextQuestion = surveyObject.questions[index + 1];
+        if (nextQuestion) {
+          const nextQuestionIncludesTarget =
+            nextQuestion.question.includes("ប៉ុន្មានដេប៉ូ?");
+          if (nextQuestionIncludesTarget) {
+            surveyObject.questions.splice(index + 1, 1);
           }
+        }
+      };
+
+      if (isSpecificConditionTrue) {
+        if (isUserAnswerTrue) {
+          addDynamicShortResponseQuestion();
+        } else {
+          removeDynamicShortResponseQuestion();
         }
       }
 
@@ -222,7 +221,7 @@ const DisplaySurvey = (props) => {
 
       return surveyObject;
     });
-  }, 100);
+  };
 
   const submitSurvey = async (e) => {
     e.preventDefault();
