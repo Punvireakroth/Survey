@@ -7,6 +7,7 @@ import {
   TrueFalse,
   NewSection,
   SurveyTitle,
+  ConditionalQuestion,
 } from "./createQuestionComponents";
 
 import { useParams, useNavigate } from "react-router-dom";
@@ -126,8 +127,15 @@ const CreateSurvey = (props) => {
           type: "new section",
           question: "",
         });
+      } else if (questionType === "5") {
+        updatedQuestions.push({
+          type: "conditional",
+          question: "",
+          answer_choices: ["True", "False"],
+          _id: uniqid("question-"),
+          responses: [],
+        });
       }
-
       return updatedQuestions;
     });
   };
@@ -232,6 +240,17 @@ const CreateSurvey = (props) => {
               index={questionIndex}
             />
           );
+        case "conditional":
+          return (
+            <ConditionalQuestion
+              key={question._id}
+              question={question}
+              id={question._id}
+              onChange={(e) => handleQuestionChange(e, index)}
+              removeQuestion={() => removeQuestion(index)}
+              index={questionIndex}
+            />
+          );
         default:
           return null;
       }
@@ -261,6 +280,7 @@ const CreateSurvey = (props) => {
             <option value="2">True/False (Question type)</option>
             <option value="3">Paragraph (Question type)</option>
             <option value="4">New Section</option>
+            <option value="5">Conditional Question(Question type)</option>
           </Form.Select>
         </div>
       </>

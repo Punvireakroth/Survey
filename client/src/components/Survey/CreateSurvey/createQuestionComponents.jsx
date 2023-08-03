@@ -1,5 +1,6 @@
 import { Form } from "react-bootstrap";
 import CloseButton from "react-bootstrap/CloseButton";
+import { useState } from "react";
 
 // ----------------------------Component for adding a new Section--------------------
 export function NewSection(props) {
@@ -176,6 +177,110 @@ function AnswerChoice(props) {
         marginBottom: 10,
       }}
     />
+  );
+}
+
+// ----------------Conditional Component--------------------
+export function ConditionalQuestion(props) {
+  const [showSubquestion, setShowSubquestion] = useState(false);
+  const [subquestionAnswer, setSubquestionAnswer] = useState("");
+
+  const handleTrueFalseChange = (e) => {
+    const answer = e.target.value;
+    if (answer === "true") {
+      setShowSubquestion(true);
+    } else {
+      setShowSubquestion(false);
+    }
+    props.onChange(e);
+  };
+  const handleSubquestionChange = (e) => {
+    const answer = e.target.value;
+    setSubquestionAnswer(answer);
+    // Call the parent function to update the state
+    props.onChange(e);
+  };
+
+  const answerChoices = props.question.answer_choices.map((answer, index) => (
+    <Form.Check
+      key={index}
+      type="radio"
+      id={`answerChoice-${index}`}
+      name={`answerChoice-${props.question._id}`}
+      value={answer}
+      label={answer}
+      onChange={handleTrueFalseChange}
+    />
+  ));
+
+  return (
+    <Form.Group
+      className="mb-3"
+      style={{
+        marginTop: 30,
+        backgroundColor: "#edf4f5",
+        padding: 20,
+        borderRadius: 7,
+        border: "3px dashed rgba(122, 192, 215, .6)",
+        color: "#0c66a9",
+        fontSize: 1.4 + "rem",
+        position: "relative",
+      }}
+    >
+      <CloseButton
+        onClick={(e) => props.removeQuestion(e, props.question.id)}
+        style={{ position: "absolute", top: 10, right: 10 }}
+      />
+
+      <h4>
+        Question {props.index + 1}
+        <medium
+          className="text-muted"
+          style={{ color: "gray", fontSize: 1.2 + "rem" }}
+        >
+          {" "}
+          True or False Question
+        </medium>
+      </h4>
+      <Form.Label>Add Your Question:</Form.Label>
+      <Form.Control
+        id={props.question._id}
+        answer="no"
+        onChange={handleTrueFalseChange}
+        name="true/false"
+        value={props.question.question}
+        type="text"
+        placeholder="Add Your Question"
+        style={{
+          borderRadius: 1,
+          color: "#42a4c4",
+          fontSize: 1.1 + "rem",
+          borderColor: "#008cba",
+        }}
+      />
+      <br />
+      {answerChoices}
+      {showSubquestion && (
+        <div style={{ marginTop: 20 }}>
+          <Form.Label>Add Subquestion:</Form.Label>
+          <Form.Control
+            id={`subquestion-${props.question._id}`}
+            answer="no"
+            onChange={handleSubquestionChange}
+            name="subquestion"
+            value={subquestionAnswer}
+            type="text"
+            placeholder="Add Your Subquestion"
+            style={{
+              borderRadius: 1,
+              color: "#42a4c4",
+              fontSize: 1.1 + "rem",
+              borderColor: "#008cba",
+            }}
+          />
+        </div>
+      )}
+    </Form.Group>
   );
 }
 
