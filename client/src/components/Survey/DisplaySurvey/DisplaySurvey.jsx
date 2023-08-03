@@ -205,10 +205,14 @@ const DisplaySurvey = (props) => {
         }
       };
 
+      console.log(isSpecificConditionTrue, isUserAnswerTrue);
+
       if (isSpecificConditionTrue) {
         if (isUserAnswerTrue) {
+          // Add the dynamic short response question
           addDynamicShortResponseQuestion();
         } else {
+          // Remove the dynamic short response question
           removeDynamicShortResponseQuestion();
         }
       }
