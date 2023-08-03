@@ -139,7 +139,7 @@ const DisplaySurvey = (props) => {
                 index={questionIndex}
                 onChange={handleChange}
                 responseId={question.response._id}
-                submitSurvey={submitSurvey} // Pass the submitSurvey function to the Paragraph component
+                submitSurvey={submitSurvey}
               />
             );
 
@@ -164,58 +164,6 @@ const DisplaySurvey = (props) => {
         response: e.target.value,
         time: new Date(),
       };
-
-      // Check if the selected question has the specific condition and the user answered "True"
-      const selectedQuestion = surveyObject.questions[index];
-      const isSpecificConditionTrue = selectedQuestion.question.includes(
-        "លក់ទៅឱ្យដេប៉ូផេ្សងដែរឬទេ"
-      );
-      const isUserAnswerTrue = e.target.value === "True";
-
-      // Function to add the dynamic short response question
-      const addDynamicShortResponseQuestion = () => {
-        const nextQuestion = surveyObject.questions[index + 1];
-        const nextQuestionIncludesTarget =
-          nextQuestion && nextQuestion.question.includes("ប៉ុន្មានដេប៉ូ?");
-        if (!nextQuestionIncludesTarget) {
-          const newShortResponseQuestion = {
-            _id: uniqid("question-"),
-            type: "short response",
-            question: "ប៉ុន្មានដេប៉ូ?",
-            answer_choices: [],
-            response: {
-              response: "",
-              time: "",
-              _id: uniqid("response-"),
-            },
-          };
-          surveyObject.questions.splice(index + 1, 0, newShortResponseQuestion);
-        }
-      };
-
-      // Function to remove the dynamic short response question
-      const removeDynamicShortResponseQuestion = () => {
-        const nextQuestion = surveyObject.questions[index + 1];
-        if (nextQuestion) {
-          const nextQuestionIncludesTarget =
-            nextQuestion.question.includes("ប៉ុន្មានដេប៉ូ?");
-          if (nextQuestionIncludesTarget) {
-            surveyObject.questions.splice(index + 1, 1);
-          }
-        }
-      };
-
-      console.log(isSpecificConditionTrue, isUserAnswerTrue);
-
-      if (isSpecificConditionTrue) {
-        if (isUserAnswerTrue) {
-          // Add the dynamic short response question
-          addDynamicShortResponseQuestion();
-        } else {
-          // Remove the dynamic short response question
-          removeDynamicShortResponseQuestion();
-        }
-      }
 
       // Check if all inputs are valid
       const allInputsValid = surveyObject.questions
