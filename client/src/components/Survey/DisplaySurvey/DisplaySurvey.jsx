@@ -13,6 +13,19 @@ import {
   Checkbox,
 } from "./questionComponents";
 
+// Custom deboune function
+const debounce = (fn, delay) => {
+  let timeoutId;
+  return function (...args) {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+};
+
 const DisplaySurvey = (props) => {
   const [survey, setSurvey] = useState({});
   const [newForm, setNewForm] = useState(null);
@@ -153,7 +166,7 @@ const DisplaySurvey = (props) => {
     }
   }, [survey]);
 
-  const handleChange = (e, responseId) => {
+  const handleChange = debounce((e, responseId) => {
     setSurvey((prevSurvey) => {
       const surveyObject = { ...prevSurvey };
       const index = surveyObject.questions.findIndex(
@@ -209,7 +222,7 @@ const DisplaySurvey = (props) => {
 
       return surveyObject;
     });
-  };
+  }, 100);
 
   const submitSurvey = async (e) => {
     e.preventDefault();
