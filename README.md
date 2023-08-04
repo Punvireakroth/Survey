@@ -193,7 +193,13 @@ Here's what you can expect to find in each of the directories and files in the I
 
 ## Installing the project
 
+### Requirement
+
 Project can be install using `git commands`, `Node` and `npm`
+
+- `git` and `github`:
+  - You will need to register `SSH` key with your github account.
+  - One more method is to simply signin to your github account during the project cloning.
 
 ### Install using Node and npm
 
