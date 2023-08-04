@@ -217,6 +217,10 @@ Project can be install using `git commands`, `Node` and `npm`
 - `git` and `github`:
   - You will need to register `SSH` key with your github account.
   - One more method is to simply signin to your github account during the project cloning.
+- `node js`:
+  - During the current development my node version is `v18.12.1`
+- `npm`
+  - You'll need `npm`, It will be come out of the box
 
 ### Install using Node and npm
 
