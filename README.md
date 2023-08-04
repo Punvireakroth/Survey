@@ -257,3 +257,29 @@ Project can be install using `git commands`, `Node` and `npm`
 This application allows users to create surveys, answer surveys, and view survey results. **Admin** users have additional features like managing surveys and tracking survey results.
 
 This user documentation will guide you through the process of, logging in, creating surveys, answering surveys, and viewing survey results.
+
+## Contents
+
+- [User Roles](#user-roles)
+- [Register and Logging In](#register-and-logging-in)
+- [Creating Surveys](#creating-surveys)
+- [Answering Surveys](#answering-surveys)
+- [Viewing Survey Results](#viewing-surveys-results)
+
+### User Roles
+
+There are two roles in this project **User Admin** and **Normal User**
+
+- **User Admin** Be able to create, delete, update, Taking surveys and see user responses.
+  <img src='readme-assets\admin_dashboard_page.png'>
+
+- **Normal User** Be able to taking survey that created by admin.
+  <img src='readme-assets\user_dashboard_page.png'>
+
+### Register and Logging In
+
+1. Open your web browser and enter the URL of the ISI-Survey App.
+2. On the login page, enter your username and password.
+3. Click on the "Login" button to log in.
+
+   <img src='readme-assets\login_page.png'>
