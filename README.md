@@ -93,6 +93,23 @@ The ISI Survey includes two main folders, `client` and `server`. The directories
 
 - **Icons** for icons we are using [bootstrap-icons](https://react-icons.github.io/react-icons/icons?name=bs) icons for the components. For favicons is located in `client/public/favicon.ico`.
 
+### Technologies
+
+#### Frontend
+
+- React
+- ReactGlobalContext
+- JavaScript
+- React-Bootstrap
+- MUI datagrid
+
+#### Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+
 ### Directory structure
 
 Here's what you can expect to find inside the ISI survey.
