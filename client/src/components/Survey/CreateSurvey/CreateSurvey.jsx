@@ -280,7 +280,7 @@ const CreateSurvey = (props) => {
             <option value="2">True/False (Question type)</option>
             <option value="3">Paragraph (Question type)</option>
             <option value="4">New Section</option>
-            <option value="5">Conditional Question(Question type)</option>
+            {/* <option value="5">Conditional Question(Question type)</option> */}
           </Form.Select>
         </div>
       </>
