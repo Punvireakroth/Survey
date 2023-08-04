@@ -283,3 +283,45 @@ There are two roles in this project **User Admin** and **Normal User**
 3. Click on the "Login" button to log in.
 
    <img src='readme-assets\login_page.png'>
+
+### Creating Surveys
+
+If you are an admin user, you can create surveys using the ISI-Survey App. Follow these steps to create a survey:
+
+1. Log in to the ISI-Survey App using your credentials
+2. Once logged in, you will be redirected to the admin dashboard.
+3. On the admin dashboard, click on the "Create Survey" button.
+4. Enter a title for the survey in the provided field.
+5. Add questions to the survey by clicking on the "add question" button.
+6. Choose the type of each question (e.g short response, paragraph, true/false) also in that options there a `new section` for creating a new section for the survey.
+7. Repeat step 5 and 6 to add more questions to the survey.
+8. Click on the `Save and Finish Survey` to save the survey.
+   <img src='readme-assets\create_survey_page.png'>
+
+### Answering Surveys
+
+To answer a survey using the ISI-Survey App, follow these steps:
+
+1. Log in to the ISI-Survey App using your credentials.
+2. Once logged in, you will be redirected to the user dashboard.
+3. On the user dashboard, you will see a list of available surveys.
+4. Click on the survey you want to answer.
+5. Read the instructions and qustions carefully.
+6. Select the appropriate answers or provide text inputs as required.
+7. Click on the "Submit" button to submit your survey responses.
+   <img src='readme-assets\survey_page.png'>
+
+Viewing Survey Results
+
+Admin users can view the results of the surveys using the ISI-Survey App. To view survey results, follow these steps:
+
+1. Log in to the ISI-Survey App using your admin credentials.
+2. Once logged in, you will be redirected to the admin dashboard.
+3. On the admin dashboard, you will `Survey data` button to show responses as data-grid and `See all respones` to show data as table and pie chart for True/False question.
+4. The survey results will be displayed, showing the responses for each question.
+   <img src='readme-assets\survey_response_page.png'>
+   <img src='readme-assets\data_page.png'>
+
+### Conclusion
+
+Congratulations!🎈🥳 You have successfully set up the ISI-Survey App, logged in, created surveys, answered surveys, and viewed survey results. If you have any further questions or issues, please contact the me for assistance. Enjoy using the ISI-Survey App!
