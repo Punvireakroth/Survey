@@ -249,3 +249,11 @@ Project can be install using `git commands`, `Node` and `npm`
 ## Licenses and attribution
 
 ## Contributing
+
+# ISI-Survey App User Documentation
+
+## Introduction
+
+This application allows users to create surveys, answer surveys, and view survey results. **Admin** users have additional features like managing surveys and tracking survey results.
+
+This user documentation will guide you through the process of, logging in, creating surveys, answering surveys, and viewing survey results.
