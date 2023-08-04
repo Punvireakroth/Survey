@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import uniqid from "uniqid";
 
 // -------------------------Short Response Component--------------------------
@@ -94,49 +94,73 @@ export function ShortResponse(props) {
     </Form>
   );
 }
+// -------------------------ConditionQuestion Component--------------------------
+export function ConditionalQuestion(props) {
+  const [selectedOption, setSelectedOption] = useState("");
+  const [inputValue, setInputValue] = useState(""); // Store the input field value
 
-// ---------------------------------Checkbox Component---------------------------------
-export function Checkbox(props) {
-  const [isChecked, setIsChecked] = useState(() =>
-    props.question.answer_choices
-      ? props.question.answer_choices.map((answer) => ({
-          answer_choice: answer,
-          value: false,
-        }))
-      : []
-  );
-
-  const onChangeChecked = (e, index) => {
-    let updatedIsChecked = [...isChecked];
-    updatedIsChecked[index].value = !updatedIsChecked[index].value;
-    setIsChecked(updatedIsChecked);
+  const handleRadioChange = (e) => {
+    setSelectedOption(e.target.value);
   };
 
-  const answerChoices = props.question.answer_choices
-    ? props.question.answer_choices.map((answer, index) => (
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  if (selectedOption === "True") {
+    return (
+      <>
         <Form.Check
-          key={uniqid()}
-          label={answer}
-          value={answer}
-          name={props.question._id}
-          type="checkbox"
-          checked={isChecked[index]?.value}
-          onChange={(e) => {
-            onChangeChecked(e, index);
-            props.onChange(e, props.responseId, "checkbox");
-          }}
+          inline
+          type="radio"
+          label="True"
+          value="True"
+          checked={selectedOption === "True"}
+          onChange={handleRadioChange}
         />
-      ))
-    : null;
+        <Form.Check
+          inline
+          type="radio"
+          label="False"
+          value="False"
+          checked={selectedOption === "False"}
+          onChange={handleRadioChange}
+        />
+        {props.question && (
+          <div>
+            <h4>{props.question.question}</h4>
+            <Form.Control
+              id={props.question._id}
+              onChange={handleInputChange} // Use the separate handleInputChange
+              value={inputValue} // Use the inputValue state to control the input value
+              type="text"
+              placeholder="Your answer"
+            />
+          </div>
+        )}
+      </>
+    );
+  }
 
   return (
-    <Form.Group className="mb-3">
-      <Form.Label>
-        {props.index + 1}) {props.question.question}
-      </Form.Label>
-
-      {answerChoices}
-    </Form.Group>
+    <>
+      <Form.Check
+        inline
+        type="radio"
+        label="True"
+        value="True"
+        checked={selectedOption === "True"}
+        onChange={handleRadioChange}
+      />
+      <Form.Check
+        inline
+        type="radio"
+        label="False"
+        value="False"
+        checked={selectedOption === "False"}
+        onChange={handleRadioChange}
+      />
+    </>
   );
 }
 
@@ -150,7 +174,6 @@ export function TrueFalse(props) {
         }))
       : []
   );
-  const [subQuestionResponse, setSubQuestionResponse] = useState("");
 
   const onChangeChecked = (e, index) => {
     let updatedIsChecked = [...isChecked];

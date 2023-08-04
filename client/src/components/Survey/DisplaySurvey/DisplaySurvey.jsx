@@ -10,7 +10,7 @@ import {
   Paragraph,
   ShortResponse,
   TrueFalse,
-  Checkbox,
+  ConditionalQuestion,
 } from "./questionComponents";
 
 const DisplaySurvey = (props) => {
@@ -111,16 +111,6 @@ const DisplaySurvey = (props) => {
                 submitSurvey={submitSurvey}
               />
             );
-          case "checkbox":
-            return (
-              <Checkbox
-                key={question._id}
-                question={question}
-                index={questionIndex}
-                onChange={handleChange}
-                responseId={question.response._id}
-              />
-            );
           case "true/false":
             return (
               <TrueFalse
@@ -142,7 +132,16 @@ const DisplaySurvey = (props) => {
                 submitSurvey={submitSurvey}
               />
             );
-
+          case "conditional":
+            return (
+              <ConditionalQuestion
+                key={question._id}
+                question={question}
+                index={questionIndex}
+                onChange={handleChange}
+                responseId={question.response._id}
+              />
+            );
           default:
             return null;
         }
@@ -212,7 +211,7 @@ const DisplaySurvey = (props) => {
       {newForm}
       <Button
         onClick={submitSurvey}
-        disabled={!isFormValid}
+        // disabled={!isFormValid}
         style={{
           display: "flex",
           alignItems: "center",
