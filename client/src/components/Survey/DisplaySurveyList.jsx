@@ -48,7 +48,7 @@ const DisplaySurveyList = (props) => {
 
   const callApi = useCallback(async (userId) => {
     try {
-      const response = await fetch(`/api/surveys/surveys-by-user/${userId}`, {
+      const response = await fetch(`https://survey-api-dj9k.onrender.com/api/surveys/surveys-by-user/${userId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
@@ -257,7 +257,7 @@ const DisplaySurveyList = (props) => {
   // Confirm delete survey modal
   const handleConfirmDelete = async () => {
     try {
-      const reponse = await fetch(`/api/surveys/delete/${surveyIdToDelete}`, {
+      const reponse = await fetch(`https://survey-api-dj9k.onrender.com/api/surveys/delete/${surveyIdToDelete}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
