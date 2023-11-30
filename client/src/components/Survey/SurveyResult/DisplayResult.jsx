@@ -22,7 +22,7 @@ export default function DisplayResult() {
 
   const callApi = async (url, fetchOptions) => {
     try {
-      const response = await fetch(`http://localhost:5000/${url}`, {
+      const response = await fetch(`https://survey-api-dj9k.onrender.com/${url}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
