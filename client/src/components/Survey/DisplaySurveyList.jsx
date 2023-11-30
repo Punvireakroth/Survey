@@ -259,6 +259,7 @@ const DisplaySurveyList = (props) => {
     try {
       const reponse = await fetch(`https://survey-api-dj9k.onrender.com/api/surveys/delete/${surveyIdToDelete}`, {
         method: "DELETE",
+        mode: 'no-cors',
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,

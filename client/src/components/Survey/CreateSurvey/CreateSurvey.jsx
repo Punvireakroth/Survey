@@ -53,7 +53,7 @@ const CreateSurvey = (props) => {
 
   const startSurvey = () => {
     if (id) {
-      callApiToGetSurvey(`https://survey-api-dj9k.onrender.com/api/surveys/${id}`, { method: "GET" });
+      callApiToGetSurvey(`https://survey-api-dj9k.onrender.com/api/surveys/${id}`, { method: "GET", mode: 'no-cors', });
       setEditingPreviousSurvey(true);
     } else {
       setSurvey({ ...survey, _id: uniqid("survey-"), user_id: user.token });
@@ -158,6 +158,7 @@ const CreateSurvey = (props) => {
       }
       const response = await fetch("https://survey-api-dj9k.onrender.com/api/surveys/create-update", {
         method: "POST",
+        mode: 'no-cors',
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,

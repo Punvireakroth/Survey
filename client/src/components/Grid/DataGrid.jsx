@@ -22,6 +22,7 @@ function DataGridComponent() {
     try {
       const response = await fetch("https://survey-api-dj9k.onrender.com/api/surveys/", {
         method: "GET",
+        mode: 'no-cors',
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,

@@ -39,6 +39,7 @@ export default function DisplayResult() {
   useEffect(() => {
     callApi(`api/surveys/${id}`, {
       method: "GET",
+      mode: 'no-cors',
     });
   }, [user, id]);
 

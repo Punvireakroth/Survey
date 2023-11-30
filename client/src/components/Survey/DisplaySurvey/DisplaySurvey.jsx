@@ -72,6 +72,7 @@ const DisplaySurvey = (props) => {
 
     callApi(`/api/surveys/${id}`, {
       method: "GET",
+      mode: 'no-cors',
     });
   }, [user, id]);
 
@@ -182,6 +183,7 @@ const DisplaySurvey = (props) => {
         `https://survey-api-dj9k.onrender.com/api/surveys/update-responses/${survey._id}`,
         {
           method: "PUT",
+          mode: 'no-cors',
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
